@@ -1,9 +1,6 @@
 # Virtual environment
 .venv/
 
-# Downloaded manuscript images
-images/
-
 # Python cache files
 __pycache__/
 *.pyc
