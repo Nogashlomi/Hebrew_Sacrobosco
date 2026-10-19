@@ -1,0 +1,15 @@
+# Virtual environment
+.venv/
+
+# Downloaded manuscript images
+images/
+
+# Python cache files
+__pycache__/
+*.pyc
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# macOS system files
+.DS_Store

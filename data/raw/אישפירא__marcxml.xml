@@ -1,0 +1,983 @@
+<?xml version='1.0' encoding='utf-8'?>
+<collection xmlns:ns0="http://www.loc.gov/MARC21/slim" xmlns="http://www.loc.gov/MARC21/slim"><ns0:record>
+          <ns0:leader>04778ntm a2200505 a 4500</ns0:leader>
+          <ns0:controlfield tag="001">990001309470205171</ns0:controlfield>
+          <ns0:controlfield tag="005">20260802084013.0</ns0:controlfield>
+          <ns0:controlfield tag="008">070917s15uu    xx      r     000 0 heb d</ns0:controlfield>
+          <ns0:datafield ind1=" " ind2=" " tag="035">
+            <ns0:subfield code="a">(IsJJNL)000130947NNL01-Aleph</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="041">
+            <ns0:subfield code="a">heb</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="090">
+            <ns0:subfield code="a">F 30347</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="0" ind2=" " tag="100">
+            <ns0:subfield code="a">יוהאנס דה סאקרו בוסקו</ns0:subfield>
+            <ns0:subfield code="9">heb</ns0:subfield>
+            <ns0:subfield code="8">PreferredLanguageHeading</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="1" ind2="0" tag="245">
+            <ns0:subfield code="a">אישפירא.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="260">
+            <ns0:subfield code="c">מאה ט"ז.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="300">
+            <ns0:subfield code="a">דף 70א-70ב.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="500">
+            <ns0:subfield code="a">בכה"י: "ספר האישפרא ... שעשאו חכם נוצרי אחד והעתיקו חכם יהודי בלשון הקדש"</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="500">
+            <ns0:subfield code="a">זהו עבור של ס' אשפריא של סקרובוסקו.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="500">
+            <ns0:subfield code="a">ראה: מ' שטיינשניידר, HU, עמ' 647.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="500">
+            <ns0:subfield code="a">רק ההתחלה.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="561">
+            <ns0:subfield code="a">ציוני בעלים: "לי אני אליהו גבה בכ"ר אליעזר יצ"ו" (דף 100א), "קניתי אני אליהו רבנו זה הספר בעד חמשי' וחמשה" (דף 127א).</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="581">
+            <ns0:subfield code="a">Catalogue des manuscrits hebreux et samaritains de la Bibliotheque imperiale, Paris, 1866.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="581">
+            <ns0:subfield code="a">S. Munk, Manuscrits hebreux de l'Oratoire a la Bibliotheque Nationale de Paris, Francfort-sur-le-Mein, 1911 no. 110.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="500">
+            <ns0:subfield code="a">נושא נוסף: מדעים. אסטרונומיה</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="590">
+            <ns0:subfield code="a">רשומה זמנית</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="597">
+            <ns0:subfield code="a">Source: Bibliothèque Nationale de France, The National Library of Israel. "Ktiv" Project, The National Library of Israel.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2="7" tag="650">
+            <ns0:subfield code="a">Astronomy</ns0:subfield>
+            <ns0:subfield code="v">Early works to 1800</ns0:subfield>
+            <ns0:subfield code="9">lat</ns0:subfield>
+            <ns0:subfield code="2">nli</ns0:subfield>
+            <ns0:subfield code="8">PreferredLanguageHeading</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="1" ind2="8" tag="773">
+            <ns0:subfield code="w">990001309310205171</ns0:subfield>
+            <ns0:subfield code="t">קובץ בפילוסופיה</ns0:subfield>
+            <ns0:subfield code="4">ANA</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="2" ind2=" " tag="710">
+            <ns0:subfield code="a">The National Library of France</ns0:subfield>
+            <ns0:subfield code="x">Paris</ns0:subfield>
+            <ns0:subfield code="c">France</ns0:subfield>
+            <ns0:subfield code="9">lat</ns0:subfield>
+            <ns0:subfield code="e">current owner</ns0:subfield>
+            <ns0:subfield code="8">PreferredLanguageHeading</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="903">
+            <ns0:subfield code="a">No restrictions;</ns0:subfield>
+            <ns0:subfield code="b">000000001</ns0:subfield>
+            <ns0:subfield code="c">Public domain</ns0:subfield>
+            <ns0:subfield code="d">Over 140 years from publishing date</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="906">
+            <ns0:subfield code="a">MSS</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="906">
+            <ns0:subfield code="a">MANUSCRIPT</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="906">
+            <ns0:subfield code="a">DIG</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="907">
+            <ns0:subfield code="a">Y</ns0:subfield>
+            <ns0:subfield code="b">990001309310205171</ns0:subfield>
+            <ns0:subfield code="c">IE162915961</ns0:subfield>
+            <ns0:subfield code="d">FL162917333</ns0:subfield>
+            <ns0:subfield code="e">PARIS BN 1005</ns0:subfield>
+            <ns0:subfield code="g">microfilm</ns0:subfield>
+            <ns0:subfield code="h">20210316</ns0:subfield>
+            <ns0:subfield code="i">288</ns0:subfield>
+            <ns0:subfield code="j">2</ns0:subfield>
+            <ns0:subfield code="k">AR_EVERYONE</ns0:subfield>
+            <ns0:subfield code="n">0136.tif</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="915">
+            <ns0:subfield code="a">Contract The National Library of France 27062018</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="921">
+            <ns0:subfield code="a">KBR 200701</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="934">
+            <ns0:subfield code="a">KRB 200701</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="939">
+            <ns0:subfield code="a">public domain non commercial use</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="1" ind2=" " tag="942">
+            <ns0:subfield code="a">The National Library of France</ns0:subfield>
+            <ns0:subfield code="x">Paris</ns0:subfield>
+            <ns0:subfield code="c">France</ns0:subfield>
+            <ns0:subfield code="9">lat</ns0:subfield>
+            <ns0:subfield code="z">Ms. hebr. 1005</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="4" ind2=" " tag="942">
+            <ns0:subfield code="a">The National Library of France</ns0:subfield>
+            <ns0:subfield code="x">Paris</ns0:subfield>
+            <ns0:subfield code="c">France</ns0:subfield>
+            <ns0:subfield code="9">lat</ns0:subfield>
+            <ns0:subfield code="z">Ms. Oratoire 110</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="957">
+            <ns0:subfield code="a">קולופון (23ב): "ונשלם הספר הזה קצור ההגיון מפי' ד' פרקי מדע לידי לי ... אליהו גבה בכ"ר אליעזר יצ"ו בשנת" (ההמשך חסר).</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="958">
+            <ns0:subfield code="a">ביזנטית</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="966">
+            <ns0:subfield code="a">Digitized manuscripts</ns0:subfield>
+            <ns0:subfield code="9">lat</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="999">
+            <ns0:subfield code="a">MANUSCRIPT</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="999">
+            <ns0:subfield code="a">MIC</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="999">
+            <ns0:subfield code="b">NOULI</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="AVA">
+            <ns0:subfield code="0">990001309310205171</ns0:subfield>
+            <ns0:subfield code="8">22329224820005171</ns0:subfield>
+            <ns0:subfield code="a">972NNL_INST</ns0:subfield>
+            <ns0:subfield code="b">NLI</ns0:subfield>
+            <ns0:subfield code="c">R mss microfilms</ns0:subfield>
+            <ns0:subfield code="d">F 30347</ns0:subfield>
+            <ns0:subfield code="e">available</ns0:subfield>
+            <ns0:subfield code="f">1</ns0:subfield>
+            <ns0:subfield code="g">0</ns0:subfield>
+            <ns0:subfield code="j">RMSS</ns0:subfield>
+            <ns0:subfield code="k">#</ns0:subfield>
+            <ns0:subfield code="p">1</ns0:subfield>
+            <ns0:subfield code="q">NLI Library</ns0:subfield>
+          </ns0:datafield>
+        </ns0:record>
+      <ns0:record>
+          <ns0:leader>03697ntm a2200445 a 4500</ns0:leader>
+          <ns0:controlfield tag="001">990000945500205171</ns0:controlfield>
+          <ns0:controlfield tag="005">20260912121405.0</ns0:controlfield>
+          <ns0:controlfield tag="008">070917s1608    xx      r     000 0 heb d</ns0:controlfield>
+          <ns0:datafield ind1=" " ind2=" " tag="035">
+            <ns0:subfield code="a">(IsJJNL)000094550NNL01-Aleph</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="041">
+            <ns0:subfield code="a">heb</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="090">
+            <ns0:subfield code="a">F 19319</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="0" ind2="0" tag="245">
+            <ns0:subfield code="a">אישפירא הקטן.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="260">
+            <ns0:subfield code="c">שס"ח (1608).</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="300">
+            <ns0:subfield code="a">דף 38א-49ב.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="500">
+            <ns0:subfield code="a">בכה"י: "ספר האישפירא הקטן"</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="500">
+            <ns0:subfield code="a">עם הפרוש כמו בדפוס אופיבאך ת"פ. ראה: שטיינשניידר, HU, עמ' 411.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="581">
+            <ns0:subfield code="a">A. Neubauer, Catalogue of the Hebrew Manuscripts in the Bodleian Library (Oxford 1886)</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="581">
+            <ns0:subfield code="a">Catalogue of the Hebrew manuscripts in the Bodleian Library; Supplement of Addenda and Corrigenda to Vol. I (A. Neubauer's Catalogue). Oxford 1994.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="500">
+            <ns0:subfield code="a">נושא נוסף: מדעים. אסטרונומיה</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="597">
+            <ns0:subfield code="a">From the collections of the Bodleian Libraries, University of Oxford, "Ktiv" Project, The National Library of Israel.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2="7" tag="650">
+            <ns0:subfield code="a">Astronomy</ns0:subfield>
+            <ns0:subfield code="v">Early works to 1800</ns0:subfield>
+            <ns0:subfield code="9">lat</ns0:subfield>
+            <ns0:subfield code="2">nli</ns0:subfield>
+            <ns0:subfield code="8">PreferredLanguageHeading</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="0" ind2=" " tag="740">
+            <ns0:subfield code="a">פרוש אישפירא הקטן</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="1" ind2="8" tag="773">
+            <ns0:subfield code="w">990000945470205171</ns0:subfield>
+            <ns0:subfield code="t">קובץ.</ns0:subfield>
+            <ns0:subfield code="4">ANA</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="1" ind2=" " tag="700">
+            <ns0:subfield code="a">אופנהיים, דוד בן אברהם,</ns0:subfield>
+            <ns0:subfield code="d">1664-1736</ns0:subfield>
+            <ns0:subfield code="9">heb</ns0:subfield>
+            <ns0:subfield code="e">בעלים קודמים</ns0:subfield>
+            <ns0:subfield code="8">PreferredLanguageHeading</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="2" ind2=" " tag="710">
+            <ns0:subfield code="a">The Bodleian Libraries, University of Oxford</ns0:subfield>
+            <ns0:subfield code="x">Oxford</ns0:subfield>
+            <ns0:subfield code="c">England</ns0:subfield>
+            <ns0:subfield code="9">lat</ns0:subfield>
+            <ns0:subfield code="e">current owner</ns0:subfield>
+            <ns0:subfield code="8">PreferredLanguageHeading</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="903">
+            <ns0:subfield code="a">Staff only;</ns0:subfield>
+            <ns0:subfield code="b">000000018</ns0:subfield>
+            <ns0:subfield code="c">Public domain</ns0:subfield>
+            <ns0:subfield code="d">Over 140 years from publishing date</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="906">
+            <ns0:subfield code="a">MSS</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="906">
+            <ns0:subfield code="a">MANUSCRIPT</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="915">
+            <ns0:subfield code="a">Contract The Bodleian Libraries University of Oxford 17012021</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="921">
+            <ns0:subfield code="a">KBR 200701</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="934">
+            <ns0:subfield code="a">KRB 200701</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="939">
+            <ns0:subfield code="a">no license subject to copyright</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="1" ind2=" " tag="942">
+            <ns0:subfield code="a">The Bodleian Libraries, University of Oxford</ns0:subfield>
+            <ns0:subfield code="x">Oxford</ns0:subfield>
+            <ns0:subfield code="c">England</ns0:subfield>
+            <ns0:subfield code="9">lat</ns0:subfield>
+            <ns0:subfield code="z">Ms. Opp. 694</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="3" ind2=" " tag="942">
+            <ns0:subfield code="a">Catalogue Neubauer</ns0:subfield>
+            <ns0:subfield code="x">Oxford</ns0:subfield>
+            <ns0:subfield code="c">England</ns0:subfield>
+            <ns0:subfield code="9">lat</ns0:subfield>
+            <ns0:subfield code="z">2034</ns0:subfield>
+            <ns0:subfield code="0">987007606090205171</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="6" ind2=" " tag="942">
+            <ns0:subfield code="a">The Bodleian Libraries, University of Oxford</ns0:subfield>
+            <ns0:subfield code="x">Oxford</ns0:subfield>
+            <ns0:subfield code="c">England</ns0:subfield>
+            <ns0:subfield code="9">lat</ns0:subfield>
+            <ns0:subfield code="z">Ms. Opp. 1663</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="957">
+            <ns0:subfield code="a">קולופון (בסוף כה"י): "תם ונשלם ... בחודש טבת שנת שס"ח לפ"ק, נאם הסופר ... יצחק בן לא"א שמואל ש"ץ מק"ק ווישנאוויץ".</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="958">
+            <ns0:subfield code="a">אשכנזית</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="999">
+            <ns0:subfield code="a">MANUSCRIPT</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="999">
+            <ns0:subfield code="a">MIC</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="999">
+            <ns0:subfield code="b">NOULI</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="AVA">
+            <ns0:subfield code="0">990000945470205171</ns0:subfield>
+            <ns0:subfield code="8">22328593850005171</ns0:subfield>
+            <ns0:subfield code="a">972NNL_INST</ns0:subfield>
+            <ns0:subfield code="b">NLI</ns0:subfield>
+            <ns0:subfield code="c">R mss microfilms</ns0:subfield>
+            <ns0:subfield code="d">F 19319</ns0:subfield>
+            <ns0:subfield code="e">available</ns0:subfield>
+            <ns0:subfield code="f">1</ns0:subfield>
+            <ns0:subfield code="g">0</ns0:subfield>
+            <ns0:subfield code="j">RMSS</ns0:subfield>
+            <ns0:subfield code="k">#</ns0:subfield>
+            <ns0:subfield code="p">1</ns0:subfield>
+            <ns0:subfield code="q">NLI Library</ns0:subfield>
+          </ns0:datafield>
+        </ns0:record>
+      <ns0:record>
+          <ns0:leader>05198ntm a2200565 a 4500</ns0:leader>
+          <ns0:controlfield tag="001">990000646430205171</ns0:controlfield>
+          <ns0:controlfield tag="005">20260912115732.0</ns0:controlfield>
+          <ns0:controlfield tag="008">070917q15uu16uuxx      r     000 0 heb d</ns0:controlfield>
+          <ns0:datafield ind1=" " ind2=" " tag="035">
+            <ns0:subfield code="a">(IsJJNL)000064643NNL01-Aleph</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="041">
+            <ns0:subfield code="a">heb</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="090">
+            <ns0:subfield code="a">F 20536</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="0" ind2=" " tag="100">
+            <ns0:subfield code="a">יוהאנס דה סאקרו בוסקו</ns0:subfield>
+            <ns0:subfield code="9">heb</ns0:subfield>
+            <ns0:subfield code="8">PreferredLanguageHeading</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="1" ind2="0" tag="245">
+            <ns0:subfield code="a">מראה האופנים.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="260">
+            <ns0:subfield code="c">מאה ט"ז-י"ז.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="300">
+            <ns0:subfield code="a">דף 9א-37ב.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="500">
+            <ns0:subfield code="a">בכה"י: "מראה אופנים"</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="500">
+            <ns0:subfield code="a">המתרגם: "שלמה בן אברהם אביגדור".</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="500">
+            <ns0:subfield code="a">עם פירושו של מתתיה בן מהר"ר שלמה דאלקרט.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="500">
+            <ns0:subfield code="a">דף 38א: "ספור תבנית הכדור ... אישפירא". הוראות להכין אישפירא ARMILLARY SPHERE.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="500">
+            <ns0:subfield code="a">חתימת צנזור (274ב).</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="500">
+            <ns0:subfield code="a">Censor: Dome[ni]co Irosolo[mit]ano.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="581">
+            <ns0:subfield code="a">Cf. M. Steinschneider, HU, p. 643-644.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="581">
+            <ns0:subfield code="a">A. Neubauer, Catalogue of the Hebrew Manuscripts in the Bodleian Library (Oxford 1886)</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="500">
+            <ns0:subfield code="a">נושא נוסף: מדעים. אסטרונומיה</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="597">
+            <ns0:subfield code="a">From the collections of the Bodleian Libraries, University of Oxford, "Ktiv" Project, The National Library of Israel.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="0" ind2="7" tag="600">
+            <ns0:subfield code="a">יוהאנס דה סאקרו בוסקו.</ns0:subfield>
+            <ns0:subfield code="t">מראה האופנים</ns0:subfield>
+            <ns0:subfield code="9">heb</ns0:subfield>
+            <ns0:subfield code="2">nli</ns0:subfield>
+            <ns0:subfield code="8">PreferredLanguageHeading</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2="7" tag="650">
+            <ns0:subfield code="a">Astronomy</ns0:subfield>
+            <ns0:subfield code="v">Early works to 1800</ns0:subfield>
+            <ns0:subfield code="9">lat</ns0:subfield>
+            <ns0:subfield code="2">nli</ns0:subfield>
+            <ns0:subfield code="8">PreferredLanguageHeading</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="0" ind2=" " tag="740">
+            <ns0:subfield code="a">מראה האופנים (פרשנות: דלקרוט, מתתיה בן שלמה)</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="0" ind2=" " tag="740">
+            <ns0:subfield code="a">מראה האופנים (בתרגום: שלמה בן אברהם אביגדור)</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="1" ind2="8" tag="773">
+            <ns0:subfield code="w">990000646410205171</ns0:subfield>
+            <ns0:subfield code="t">קובץ</ns0:subfield>
+            <ns0:subfield code="4">ANA</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="0" ind2=" " tag="700">
+            <ns0:subfield code="a">שלמה בן אברהם אביגדור</ns0:subfield>
+            <ns0:subfield code="9">heb</ns0:subfield>
+            <ns0:subfield code="e">מתרגם</ns0:subfield>
+            <ns0:subfield code="8">PreferredLanguageHeading</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="1" ind2=" " tag="700">
+            <ns0:subfield code="a">דלקרוט, מתתיה בן שלמה.</ns0:subfield>
+            <ns0:subfield code="t">פרוש מראה האופנים</ns0:subfield>
+            <ns0:subfield code="9">heb</ns0:subfield>
+            <ns0:subfield code="8">PreferredLanguageHeading</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="1" ind2=" " tag="700">
+            <ns0:subfield code="a">אופנהיים, דוד בן אברהם,</ns0:subfield>
+            <ns0:subfield code="d">1664-1736</ns0:subfield>
+            <ns0:subfield code="9">heb</ns0:subfield>
+            <ns0:subfield code="e">בעלים קודמים</ns0:subfield>
+            <ns0:subfield code="8">PreferredLanguageHeading</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="2" ind2=" " tag="710">
+            <ns0:subfield code="a">The Bodleian Libraries, University of Oxford</ns0:subfield>
+            <ns0:subfield code="x">Oxford</ns0:subfield>
+            <ns0:subfield code="c">England</ns0:subfield>
+            <ns0:subfield code="9">lat</ns0:subfield>
+            <ns0:subfield code="e">current owner</ns0:subfield>
+            <ns0:subfield code="8">PreferredLanguageHeading</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="903">
+            <ns0:subfield code="a">Staff only;</ns0:subfield>
+            <ns0:subfield code="b">000000018</ns0:subfield>
+            <ns0:subfield code="c">Public domain</ns0:subfield>
+            <ns0:subfield code="d">Over 140 years from publishing date</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="906">
+            <ns0:subfield code="a">MSS</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="906">
+            <ns0:subfield code="a">MANUSCRIPT</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="915">
+            <ns0:subfield code="a">Contract The Bodleian Libraries University of Oxford 17012021</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="921">
+            <ns0:subfield code="a">KTL 200701</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="921">
+            <ns0:subfield code="a">KBR 200701</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="934">
+            <ns0:subfield code="a">KRB 200701</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="939">
+            <ns0:subfield code="a">no license subject to copyright</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="1" ind2=" " tag="942">
+            <ns0:subfield code="a">The Bodleian Libraries, University of Oxford</ns0:subfield>
+            <ns0:subfield code="x">Oxford</ns0:subfield>
+            <ns0:subfield code="c">England</ns0:subfield>
+            <ns0:subfield code="9">lat</ns0:subfield>
+            <ns0:subfield code="z">Ms. Opp. 696</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="3" ind2=" " tag="942">
+            <ns0:subfield code="a">Catalogue Neubauer</ns0:subfield>
+            <ns0:subfield code="x">Oxford</ns0:subfield>
+            <ns0:subfield code="c">England</ns0:subfield>
+            <ns0:subfield code="9">lat</ns0:subfield>
+            <ns0:subfield code="z">2253</ns0:subfield>
+            <ns0:subfield code="0">987007606090205171</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="6" ind2=" " tag="942">
+            <ns0:subfield code="a">The Bodleian Libraries, University of Oxford</ns0:subfield>
+            <ns0:subfield code="x">Oxford</ns0:subfield>
+            <ns0:subfield code="c">England</ns0:subfield>
+            <ns0:subfield code="9">lat</ns0:subfield>
+            <ns0:subfield code="z">Ms. Opp. 1665</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="958">
+            <ns0:subfield code="a">אשכנזית</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="967">
+            <ns0:subfield code="a">אשפירא</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="999">
+            <ns0:subfield code="a">MANUSCRIPT</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="999">
+            <ns0:subfield code="a">MIC</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="999">
+            <ns0:subfield code="b">NOULI</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="AVA">
+            <ns0:subfield code="0">990000646410205171</ns0:subfield>
+            <ns0:subfield code="8">22329075510005171</ns0:subfield>
+            <ns0:subfield code="a">972NNL_INST</ns0:subfield>
+            <ns0:subfield code="b">NLI</ns0:subfield>
+            <ns0:subfield code="c">R mss microfilms</ns0:subfield>
+            <ns0:subfield code="d">F 20536</ns0:subfield>
+            <ns0:subfield code="e">available</ns0:subfield>
+            <ns0:subfield code="f">1</ns0:subfield>
+            <ns0:subfield code="g">0</ns0:subfield>
+            <ns0:subfield code="j">RMSS</ns0:subfield>
+            <ns0:subfield code="k">#</ns0:subfield>
+            <ns0:subfield code="p">1</ns0:subfield>
+            <ns0:subfield code="q">NLI Library</ns0:subfield>
+          </ns0:datafield>
+        </ns0:record>
+      <ns0:record>
+          <ns0:leader>02725ntm a2200457 a 4500</ns0:leader>
+          <ns0:controlfield tag="001">990001319890205171</ns0:controlfield>
+          <ns0:controlfield tag="005">20260802084046.0</ns0:controlfield>
+          <ns0:controlfield tag="008">191105q14uu15uuxx      r     000 0 heb d</ns0:controlfield>
+          <ns0:datafield ind1=" " ind2=" " tag="035">
+            <ns0:subfield code="a">(IsJJNL)000131989NNL01-Aleph</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="041">
+            <ns0:subfield code="a">heb</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="090">
+            <ns0:subfield code="a">F 31302</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="0" ind2="0" tag="245">
+            <ns0:subfield code="a">ספור תבנית הכדור.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="260">
+            <ns0:subfield code="c">מאה ט"ו-ט"ז.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="300">
+            <ns0:subfield code="a">דף 132א</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="500">
+            <ns0:subfield code="a">בכה"י: "ספור תבנית הכדור ר"ל אישפירא"</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="581">
+            <ns0:subfield code="a">Catalogue des manuscrits hebreux et samaritains de la Bibliotheque imperiale, Paris, 1866.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="500">
+            <ns0:subfield code="a">נושא נוסף: מדעים. אסטרונומיה</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="500">
+            <ns0:subfield code="a">נושא נוסף: אצטרולב</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="590">
+            <ns0:subfield code="a">רשומה זמנית</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="597">
+            <ns0:subfield code="a">Source: Bibliothèque Nationale de France, The National Library of Israel. "Ktiv" Project, The National Library of Israel.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2="7" tag="650">
+            <ns0:subfield code="a">Astronomy</ns0:subfield>
+            <ns0:subfield code="v">Early works to 1800</ns0:subfield>
+            <ns0:subfield code="9">lat</ns0:subfield>
+            <ns0:subfield code="2">nli</ns0:subfield>
+            <ns0:subfield code="8">PreferredLanguageHeading</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2="7" tag="650">
+            <ns0:subfield code="a">Astrolabes</ns0:subfield>
+            <ns0:subfield code="9">lat</ns0:subfield>
+            <ns0:subfield code="2">nli</ns0:subfield>
+            <ns0:subfield code="8">PreferredLanguageHeading</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="1" ind2="8" tag="773">
+            <ns0:subfield code="w">990001319780205171</ns0:subfield>
+            <ns0:subfield code="t">קובץ.</ns0:subfield>
+            <ns0:subfield code="4">ANA</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="2" ind2=" " tag="710">
+            <ns0:subfield code="a">The National Library of France</ns0:subfield>
+            <ns0:subfield code="x">Paris</ns0:subfield>
+            <ns0:subfield code="c">France</ns0:subfield>
+            <ns0:subfield code="9">lat</ns0:subfield>
+            <ns0:subfield code="e">current owner</ns0:subfield>
+            <ns0:subfield code="8">PreferredLanguageHeading</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="903">
+            <ns0:subfield code="a">No restrictions;</ns0:subfield>
+            <ns0:subfield code="b">000000001</ns0:subfield>
+            <ns0:subfield code="c">Public domain</ns0:subfield>
+            <ns0:subfield code="d">Over 140 years from publishing date</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="906">
+            <ns0:subfield code="a">DIG</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="906">
+            <ns0:subfield code="a">MANUSCRIPT</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="906">
+            <ns0:subfield code="a">MSS</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="907">
+            <ns0:subfield code="a">Y</ns0:subfield>
+            <ns0:subfield code="b">000131978</ns0:subfield>
+            <ns0:subfield code="c">IE53872070</ns0:subfield>
+            <ns0:subfield code="d">FL53873856</ns0:subfield>
+            <ns0:subfield code="e">PARIS BN 1284</ns0:subfield>
+            <ns0:subfield code="f">000131989</ns0:subfield>
+            <ns0:subfield code="g">manuscripts</ns0:subfield>
+            <ns0:subfield code="h">20171019</ns0:subfield>
+            <ns0:subfield code="i">320</ns0:subfield>
+            <ns0:subfield code="j">2</ns0:subfield>
+            <ns0:subfield code="k">AR_EVERYONE</ns0:subfield>
+            <ns0:subfield code="m">20171018</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="907">
+            <ns0:subfield code="a">Y</ns0:subfield>
+            <ns0:subfield code="b">000131978</ns0:subfield>
+            <ns0:subfield code="c">IE55895203</ns0:subfield>
+            <ns0:subfield code="d">FL55896244</ns0:subfield>
+            <ns0:subfield code="e">קובץ.</ns0:subfield>
+            <ns0:subfield code="f">000131989</ns0:subfield>
+            <ns0:subfield code="g">microfilm</ns0:subfield>
+            <ns0:subfield code="h">20180220</ns0:subfield>
+            <ns0:subfield code="i">168</ns0:subfield>
+            <ns0:subfield code="j">2</ns0:subfield>
+            <ns0:subfield code="k">AR_EVERYONE</ns0:subfield>
+            <ns0:subfield code="m">20171230</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="915">
+            <ns0:subfield code="a">Contract The National Library of France 27062018</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="921">
+            <ns0:subfield code="a">KBR 200701</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="934">
+            <ns0:subfield code="a">KRB 200701</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="939">
+            <ns0:subfield code="a">public domain non commercial use</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="1" ind2=" " tag="942">
+            <ns0:subfield code="a">The National Library of France</ns0:subfield>
+            <ns0:subfield code="x">Paris</ns0:subfield>
+            <ns0:subfield code="c">France</ns0:subfield>
+            <ns0:subfield code="9">lat</ns0:subfield>
+            <ns0:subfield code="z">Ms. hebr. 1284</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="6" ind2=" " tag="942">
+            <ns0:subfield code="a">The National Library of France</ns0:subfield>
+            <ns0:subfield code="x">Paris</ns0:subfield>
+            <ns0:subfield code="c">France</ns0:subfield>
+            <ns0:subfield code="9">lat</ns0:subfield>
+            <ns0:subfield code="z">Ms. anciens fonds 506</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="958">
+            <ns0:subfield code="a">איטלקית</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="966">
+            <ns0:subfield code="a">Digitized manuscripts</ns0:subfield>
+            <ns0:subfield code="9">lat</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="999">
+            <ns0:subfield code="a">MANUSCRIPT</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="999">
+            <ns0:subfield code="a">MIC</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="999">
+            <ns0:subfield code="b">NOULI</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="AVA">
+            <ns0:subfield code="0">990001319780205171</ns0:subfield>
+            <ns0:subfield code="8">22329123880005171</ns0:subfield>
+            <ns0:subfield code="a">972NNL_INST</ns0:subfield>
+            <ns0:subfield code="b">NLI</ns0:subfield>
+            <ns0:subfield code="c">R mss microfilms</ns0:subfield>
+            <ns0:subfield code="d">F 31302</ns0:subfield>
+            <ns0:subfield code="e">available</ns0:subfield>
+            <ns0:subfield code="f">1</ns0:subfield>
+            <ns0:subfield code="g">0</ns0:subfield>
+            <ns0:subfield code="j">RMSS</ns0:subfield>
+            <ns0:subfield code="k">#</ns0:subfield>
+            <ns0:subfield code="p">1</ns0:subfield>
+            <ns0:subfield code="q">NLI Library</ns0:subfield>
+          </ns0:datafield>
+        </ns0:record>
+      <ns0:record>
+          <ns0:leader>04994ntm a2200481 a 4500</ns0:leader>
+          <ns0:controlfield tag="001">990000945470205171</ns0:controlfield>
+          <ns0:controlfield tag="005">20260912121402.0</ns0:controlfield>
+          <ns0:controlfield tag="008">050527s1608    xx      r     000 0 heb d</ns0:controlfield>
+          <ns0:datafield ind1=" " ind2=" " tag="035">
+            <ns0:subfield code="a">(IsJJNL)000094547NNL01-Aleph</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="041">
+            <ns0:subfield code="a">heb</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="090">
+            <ns0:subfield code="a">F 19319</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="0" ind2="0" tag="245">
+            <ns0:subfield code="a">קובץ.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="260">
+            <ns0:subfield code="c">שס"ח (1608).</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="300">
+            <ns0:subfield code="a">97 דף.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="8" ind2=" " tag="505">
+            <ns0:subfield code="a">1) דף 1א-36ב: סקרובוסקו, יוהנס דה: מראה האופנים.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="8" ind2=" " tag="505">
+            <ns0:subfield code="a">2) דף 37א-37ב: תבנית הכדור.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="8" ind2=" " tag="505">
+            <ns0:subfield code="a">3) דף 38א-49ב: אישפירא הקטן.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="8" ind2=" " tag="505">
+            <ns0:subfield code="a">4) דף 50א-66א: חיות, מנחם מניש בן יצחק: פרוש על פרוש התורה לראב"ע (שמות ג:טו).</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="8" ind2=" " tag="505">
+            <ns0:subfield code="a">5) דף 71א-93א: כספי, יוסף בן אבא מארי אבן: פרוש הסודות שבפרוש התורה לראב"ע.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="8" ind2=" " tag="505">
+            <ns0:subfield code="a">6) דף 95א-97א: עזרא, אברהם בן מאיר אבן: חידה על אותיות אהו"י.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="581">
+            <ns0:subfield code="a">A. Neubauer, Catalogue of the Hebrew Manuscripts in the Bodleian Library (Oxford 1886)</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="581">
+            <ns0:subfield code="a">Catalogue of the Hebrew manuscripts in the Bodleian Library; Supplement of Addenda and Corrigenda to Vol. I (A. Neubauer's Catalogue). Oxford 1994.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="500">
+            <ns0:subfield code="a">לתוכן וקישור לפריטים בקובץ ראה למטה.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="597">
+            <ns0:subfield code="a">From the collections of the Bodleian Libraries, University of Oxford, "Ktiv" Project, The National Library of Israel.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="0" ind2=" " tag="700">
+            <ns0:subfield code="a">יצחק בן שמואל ש"ץ מוישנויץ</ns0:subfield>
+            <ns0:subfield code="9">heb</ns0:subfield>
+            <ns0:subfield code="e">(מעתיק)</ns0:subfield>
+            <ns0:subfield code="8">PreferredLanguageHeading</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="1" ind2=" " tag="700">
+            <ns0:subfield code="a">אופנהיים, דוד בן אברהם,</ns0:subfield>
+            <ns0:subfield code="d">1664-1736</ns0:subfield>
+            <ns0:subfield code="9">heb</ns0:subfield>
+            <ns0:subfield code="e">בעלים קודמים</ns0:subfield>
+            <ns0:subfield code="8">PreferredLanguageHeading</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="2" ind2=" " tag="710">
+            <ns0:subfield code="a">The Bodleian Libraries, University of Oxford</ns0:subfield>
+            <ns0:subfield code="x">Oxford</ns0:subfield>
+            <ns0:subfield code="c">England</ns0:subfield>
+            <ns0:subfield code="9">lat</ns0:subfield>
+            <ns0:subfield code="e">current owner</ns0:subfield>
+            <ns0:subfield code="8">PreferredLanguageHeading</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="751">
+            <ns0:subfield code="a">Cyców (Poland)</ns0:subfield>
+            <ns0:subfield code="9">lat</ns0:subfield>
+            <ns0:subfield code="e">related place</ns0:subfield>
+            <ns0:subfield code="8">PreferredLanguageHeading</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="903">
+            <ns0:subfield code="a">Staff only;</ns0:subfield>
+            <ns0:subfield code="b">000000018</ns0:subfield>
+            <ns0:subfield code="c">Public domain</ns0:subfield>
+            <ns0:subfield code="d">Over 140 years from publishing date</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="906">
+            <ns0:subfield code="a">MSS</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="906">
+            <ns0:subfield code="a">MANUSCRIPT</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="915">
+            <ns0:subfield code="a">Contract The Bodleian Libraries University of Oxford 17012021</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="921">
+            <ns0:subfield code="a">KBR 200701</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="934">
+            <ns0:subfield code="a">KRB 200701</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="939">
+            <ns0:subfield code="a">no license subject to copyright</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="1" ind2=" " tag="942">
+            <ns0:subfield code="a">The Bodleian Libraries, University of Oxford</ns0:subfield>
+            <ns0:subfield code="x">Oxford</ns0:subfield>
+            <ns0:subfield code="c">England</ns0:subfield>
+            <ns0:subfield code="9">lat</ns0:subfield>
+            <ns0:subfield code="z">Ms. Opp. 694</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="3" ind2=" " tag="942">
+            <ns0:subfield code="a">Catalogue Neubauer</ns0:subfield>
+            <ns0:subfield code="x">Oxford</ns0:subfield>
+            <ns0:subfield code="c">England</ns0:subfield>
+            <ns0:subfield code="9">lat</ns0:subfield>
+            <ns0:subfield code="z">2034</ns0:subfield>
+            <ns0:subfield code="0">987007606090205171</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="6" ind2=" " tag="942">
+            <ns0:subfield code="a">The Bodleian Libraries, University of Oxford</ns0:subfield>
+            <ns0:subfield code="x">Oxford</ns0:subfield>
+            <ns0:subfield code="c">England</ns0:subfield>
+            <ns0:subfield code="9">lat</ns0:subfield>
+            <ns0:subfield code="z">Ms. Opp. 1663</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="957">
+            <ns0:subfield code="a">קולופון (בסוף כה"י): "תם ונשלם ... בחודש טבת שנת שס"ח לפ"ק, נאם הסופר ... יצחק בן לא"א שמואל ש"ץ מק"ק ווישנאוויץ".</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="958">
+            <ns0:subfield code="a">אשכנזית</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="999">
+            <ns0:subfield code="a">MANUSCRIPT</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="999">
+            <ns0:subfield code="a">MIC</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="999">
+            <ns0:subfield code="b">NOULI</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="AVA">
+            <ns0:subfield code="0">990000945470205171</ns0:subfield>
+            <ns0:subfield code="8">22328593850005171</ns0:subfield>
+            <ns0:subfield code="a">972NNL_INST</ns0:subfield>
+            <ns0:subfield code="b">NLI</ns0:subfield>
+            <ns0:subfield code="c">R mss microfilms</ns0:subfield>
+            <ns0:subfield code="d">F 19319</ns0:subfield>
+            <ns0:subfield code="e">available</ns0:subfield>
+            <ns0:subfield code="f">1</ns0:subfield>
+            <ns0:subfield code="g">0</ns0:subfield>
+            <ns0:subfield code="j">RMSS</ns0:subfield>
+            <ns0:subfield code="k">#</ns0:subfield>
+            <ns0:subfield code="p">1</ns0:subfield>
+            <ns0:subfield code="q">NLI Library</ns0:subfield>
+          </ns0:datafield>
+        </ns0:record>
+      <ns0:record>
+          <ns0:leader>03966ntm a2200457 a 4500</ns0:leader>
+          <ns0:controlfield tag="001">990000945490205171</ns0:controlfield>
+          <ns0:controlfield tag="005">20260912121352.0</ns0:controlfield>
+          <ns0:controlfield tag="008">070917s1608    xx      r     000 0 heb d</ns0:controlfield>
+          <ns0:datafield ind1=" " ind2=" " tag="035">
+            <ns0:subfield code="a">(IsJJNL)000094549NNL01-Aleph</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="041">
+            <ns0:subfield code="a">heb</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="090">
+            <ns0:subfield code="a">F 19319</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="0" ind2="0" tag="245">
+            <ns0:subfield code="a">תבנית האישפירה.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="260">
+            <ns0:subfield code="c">שס"ח (1608).</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="300">
+            <ns0:subfield code="a">דף 37א-37ב.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="500">
+            <ns0:subfield code="a">בכה"י: "ספר תבנית הכדור ר"ל האישפירא"</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="500">
+            <ns0:subfield code="a">פותח: "לוקחין הברזל החד ונועצין באמצע כדור אחד".</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="581">
+            <ns0:subfield code="a">A. Neubauer, Catalogue of the Hebrew Manuscripts in the Bodleian Library (Oxford 1886)</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="581">
+            <ns0:subfield code="a">Catalogue of the Hebrew manuscripts in the Bodleian Library; Supplement of Addenda and Corrigenda to Vol. I (A. Neubauer's Catalogue). Oxford 1994.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="500">
+            <ns0:subfield code="a">נושא נוסף: מדעים. אסטרונומיה</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="597">
+            <ns0:subfield code="a">From the collections of the Bodleian Libraries, University of Oxford, "Ktiv" Project, The National Library of Israel.</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2="7" tag="650">
+            <ns0:subfield code="a">Astronomy</ns0:subfield>
+            <ns0:subfield code="v">Early works to 1800</ns0:subfield>
+            <ns0:subfield code="9">lat</ns0:subfield>
+            <ns0:subfield code="2">nli</ns0:subfield>
+            <ns0:subfield code="8">PreferredLanguageHeading</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="0" ind2=" " tag="740">
+            <ns0:subfield code="a">אישפירא</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="0" ind2=" " tag="740">
+            <ns0:subfield code="a">לוקחין הברזל החד ונועצין באמצע כדור אחד</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="1" ind2="8" tag="773">
+            <ns0:subfield code="w">990000945470205171</ns0:subfield>
+            <ns0:subfield code="t">קובץ.</ns0:subfield>
+            <ns0:subfield code="4">ANA</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="1" ind2=" " tag="700">
+            <ns0:subfield code="a">אופנהיים, דוד בן אברהם,</ns0:subfield>
+            <ns0:subfield code="d">1664-1736</ns0:subfield>
+            <ns0:subfield code="9">heb</ns0:subfield>
+            <ns0:subfield code="e">בעלים קודמים</ns0:subfield>
+            <ns0:subfield code="8">PreferredLanguageHeading</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="2" ind2=" " tag="710">
+            <ns0:subfield code="a">The Bodleian Libraries, University of Oxford</ns0:subfield>
+            <ns0:subfield code="x">Oxford</ns0:subfield>
+            <ns0:subfield code="c">England</ns0:subfield>
+            <ns0:subfield code="9">lat</ns0:subfield>
+            <ns0:subfield code="e">current owner</ns0:subfield>
+            <ns0:subfield code="8">PreferredLanguageHeading</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="903">
+            <ns0:subfield code="a">Staff only;</ns0:subfield>
+            <ns0:subfield code="b">000000018</ns0:subfield>
+            <ns0:subfield code="c">Public domain</ns0:subfield>
+            <ns0:subfield code="d">Over 140 years from publishing date</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="906">
+            <ns0:subfield code="a">MSS</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="906">
+            <ns0:subfield code="a">MANUSCRIPT</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="915">
+            <ns0:subfield code="a">Contract The Bodleian Libraries University of Oxford 17012021</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="921">
+            <ns0:subfield code="a">KBR 200701</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="934">
+            <ns0:subfield code="a">KRB 200701</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="939">
+            <ns0:subfield code="a">no license subject to copyright</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="1" ind2=" " tag="942">
+            <ns0:subfield code="a">The Bodleian Libraries, University of Oxford</ns0:subfield>
+            <ns0:subfield code="x">Oxford</ns0:subfield>
+            <ns0:subfield code="c">England</ns0:subfield>
+            <ns0:subfield code="9">lat</ns0:subfield>
+            <ns0:subfield code="z">Ms. Opp. 694</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="3" ind2=" " tag="942">
+            <ns0:subfield code="a">Catalogue Neubauer</ns0:subfield>
+            <ns0:subfield code="x">Oxford</ns0:subfield>
+            <ns0:subfield code="c">England</ns0:subfield>
+            <ns0:subfield code="9">lat</ns0:subfield>
+            <ns0:subfield code="z">2034</ns0:subfield>
+            <ns0:subfield code="0">987007606090205171</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1="6" ind2=" " tag="942">
+            <ns0:subfield code="a">The Bodleian Libraries, University of Oxford</ns0:subfield>
+            <ns0:subfield code="x">Oxford</ns0:subfield>
+            <ns0:subfield code="c">England</ns0:subfield>
+            <ns0:subfield code="9">lat</ns0:subfield>
+            <ns0:subfield code="z">Ms. Opp. 1663</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="957">
+            <ns0:subfield code="a">קולופון (בסוף כה"י): "תם ונשלם ... בחודש טבת שנת שס"ח לפ"ק, נאם הסופר ... יצחק בן לא"א שמואל ש"ץ מק"ק ווישנאוויץ".</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="958">
+            <ns0:subfield code="a">אשכנזית</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="999">
+            <ns0:subfield code="a">MANUSCRIPT</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="999">
+            <ns0:subfield code="a">MIC</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="999">
+            <ns0:subfield code="b">NOULI</ns0:subfield>
+          </ns0:datafield>
+          <ns0:datafield ind1=" " ind2=" " tag="AVA">
+            <ns0:subfield code="0">990000945470205171</ns0:subfield>
+            <ns0:subfield code="8">22328593850005171</ns0:subfield>
+            <ns0:subfield code="a">972NNL_INST</ns0:subfield>
+            <ns0:subfield code="b">NLI</ns0:subfield>
+            <ns0:subfield code="c">R mss microfilms</ns0:subfield>
+            <ns0:subfield code="d">F 19319</ns0:subfield>
+            <ns0:subfield code="e">available</ns0:subfield>
+            <ns0:subfield code="f">1</ns0:subfield>
+            <ns0:subfield code="g">0</ns0:subfield>
+            <ns0:subfield code="j">RMSS</ns0:subfield>
+            <ns0:subfield code="k">#</ns0:subfield>
+            <ns0:subfield code="p">1</ns0:subfield>
+            <ns0:subfield code="q">NLI Library</ns0:subfield>
+          </ns0:datafield>
+        </ns0:record>
+      </collection>

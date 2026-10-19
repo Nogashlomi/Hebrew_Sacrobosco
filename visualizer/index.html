@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sphaera Hebraica | Hebrew Manuscripts of Sacrobosco's De sphaera</title>
+  <link rel="stylesheet" href="style.css?v=3">
+  <!-- Leaflet Map CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+
+  <!-- ==================================================== -->
+  <!-- TOP MASTHEAD & ACADEMIC HEADER                       -->
+  <!-- ==================================================== -->
+  <header class="top-header">
+    <div class="header-topline">
+      <div class="project-title">
+        <h1>Hebrew Manuscripts of Sacrobosco</h1>
+      </div>
+    </div>
+
+
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs-bar" id="main-nav">
+      <button class="nav-tab active" data-tab="tab-home">Home</button>
+      <button class="nav-tab" data-tab="tab-catalogue">Manuscript Catalogue</button>
+      <button class="nav-tab" data-tab="tab-reader">Facsimile Reader</button>
+      <button class="nav-tab" data-tab="tab-persons">Prosopography & Scholars</button>
+      <button class="nav-tab" data-tab="tab-map">Geography & Timeline</button>
+      <button class="nav-tab" data-tab="tab-queries">Search Queries Analysis</button>
+      <button class="nav-tab" data-tab="tab-visuals">Visual Elements</button>
+      <button class="nav-tab" data-tab="tab-all-visuals">All Visuals & Clusters</button>
+    </nav>
+    <section id="tab-all-visuals" class="tab-pane">
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem 1.75rem; margin-bottom: 1.5rem; box-shadow: var(--shadow-xs);">
+        <h2 class="center-title">All Visuals</h2>
+        <div id="all-visuals-gallery" class="visuals-grid"></div>
+      </div>
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem 1.75rem; margin-bottom: 1.5rem; box-shadow: var(--shadow-xs);">
+        <h2 class="center-title">Image Clusters</h2>
+        <div id="clusters-gallery" class="visuals-cluster-container"></div>
+      </div>
+    </section>
+  </header>
+
+  <!-- ==================================================== -->
+  <!-- MAIN APPLICATION CONTENT                             -->
+  <!-- ==================================================== -->
+  <section id="tab-home" class="tab-pane active">
+  <div class="home-dashboard">
+    <h2 class="center-title">Hebrew Manuscripts of Sacrobosco</h2>
+    <div class="center-stats">
+      <div class="stat-item"><span class="label">Catalogued Manuscripts</span> <span class="value" id="stat-total-ms">235</span></div>
+      <div class="stat-item"><span class="label">Local Facsimiles</span> <span class="value" id="stat-downloaded-ms">11 (1,529 pages)</span></div>
+      <div class="stat-item"><span class="label">Open in Ktiv IIIF</span> <span class="value" id="stat-open-catalog">148 (22,150 pages)</span></div>
+      <div class="stat-item"><span class="label">Total Persons</span> <span class="value" id="stat-persons">0</span></div>
+      <div class="stat-item"><span class="label">Total Places</span> <span class="value" id="stat-places">0</span></div>
+    </div>
+  </div>
+</section>
+<main class="main-content">
+
+    <!-- ==================================================== -->
+    <!-- TAB 1: MANUSCRIPT CATALOGUE & DATABASE               -->
+    <!-- ==================================================== -->
+    <section id="tab-catalogue" class="tab-pane">
+      <div class="filter-card">
+        <div class="filter-row">
+          <div class="search-input-box">
+            <input type="text" id="catalogue-search" placeholder="Search manuscripts (shelfmark, title, author, city, colophon, notes)...">
+          </div>
+          
+          <select id="filter-century" class="filter-select">
+            <option value="">All Centuries / Eras</option>
+          </select>
+
+          <select id="filter-script" class="filter-select">
+            <option value="">All Scripts & Hand Styles</option>
+          </select>
+
+          <select id="filter-library" class="filter-select">
+            <option value="">All Holding Libraries</option>
+          </select>
+
+          <label class="toggle-filter" title="Display only manuscripts that are currently downloaded to the local images directory">
+            <input type="checkbox" id="filter-downloaded-only">
+            <span>Local Facsimiles Only</span>
+          </label>
+        </div>
+
+        <!-- Query terms chips -->
+        <div class="query-chips-bar">
+          <span class="chip-label">Search Query:</span>
+          <div id="query-chips" style="display: flex; flex-wrap: wrap; gap: 0.4rem;">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Header & Counter -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+        <div style="font-size: 0.92rem; color: var(--ink-secondary);">
+          Showing <strong id="filter-count-active" style="color: var(--accent-crimson); font-family: var(--font-mono);">0</strong> manuscripts of <span id="filter-count-total">0</span>
+        </div>
+        <div>
+          <button id="btn-reset-filters" class="btn-outline">Reset All Filters</button>
+        </div>
+      </div>
+
+      <!-- Manuscripts Card Grid -->
+      <table id="catalogue-table" class="catalogue-table">
+  <thead>
+    <tr>
+      <th>Shelfmark</th>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Century</th>
+      <th>Script</th>
+      <th>Library</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody id="catalogue-table-body"></tbody>
+</table>
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+
+    <!-- ==================================================== -->
+    <!-- TAB 2: FACSIMILE READER / VIEWER                     -->
+    <!-- ==================================================== -->
+    <section id="tab-reader" class="tab-pane">
+      <div class="reader-container">
+        <!-- Left Sidebar: Selection & Foliation -->
+        <aside class="reader-sidebar">
+          <div class="ms-selector-box">
+            <label for="reader-ms-select">Select Manuscript to Read:</label>
+            <select id="reader-ms-select">
+              <!-- Populated with downloaded manuscripts -->
+            </select>
+          </div>
+
+          <div id="reader-meta-box" class="reader-metadata-card">
+            <!-- Metadata summary filled by JS -->
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.1rem 0;">
+            <strong style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-muted);">Page Filmstrip:</strong>
+            <span id="reader-page-counter" style="font-size: 0.8rem; font-family: var(--font-mono); color: var(--accent-crimson); font-weight: 600;"></span>
+          </div>
+
+          <!-- Thumbnails Filmstrip Grid -->
+          <div id="reader-thumbnails" class="reader-thumbnails-pane">
+            <!-- Thumbnails rendered by JS -->
+          </div>
+        </aside>
+
+        <!-- Main Display Stage -->
+        <div class="reader-main-stage">
+          <div class="reader-stage-header">
+            <div id="reader-active-info" style="font-size: 0.9rem; font-weight: 500; font-family: var(--font-mono); color: #f5f5f5;">
+              Page 1
+            </div>
+
+            <div class="reader-controls">
+              <button id="btn-prev-page" class="reader-ctrl-btn" title="Previous page (Left arrow)">Previous</button>
+              <button id="btn-next-page" class="reader-ctrl-btn" title="Next page (Right arrow)">Next</button>
+              <button id="btn-zoom-in" class="reader-ctrl-btn" title="Zoom in">+</button>
+              <button id="btn-zoom-out" class="reader-ctrl-btn" title="Zoom out">-</button>
+              <button id="btn-zoom-reset" class="reader-ctrl-btn" title="Reset view">Reset</button>
+            </div>
+          </div>
+
+          <!-- High-res Image Viewport -->
+          <div id="reader-viewport" class="reader-image-viewport">
+            <img id="reader-main-img" src="" alt="Manuscript Facsimile Page">
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ==================================================== -->
+    <!-- TAB 3: PROSOPOGRAPHY & SCHOLARS DIRECTORY            -->
+    <!-- ==================================================== -->
+    <section id="tab-persons" class="tab-pane">
+      <div class="filter-card" style="margin-bottom: 1.5rem;">
+        <div class="filter-row">
+          <div class="search-input-box">
+            <input type="text" id="persons-search" placeholder="Search scholars & scribes (Sacrobosco, Almosnino, Avigdor, Delacrut, Oppenheim)...">
+          </div>
+          <div style="font-size: 0.9rem; color: var(--ink-secondary);">
+            Found <strong id="persons-count" style="color: var(--accent-crimson); font-family: var(--font-mono);">0</strong> identified historical figures
+          </div>
+        </div>
+      </div>
+
+      <div id="persons-grid" class="persons-grid">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+
+    <!-- ==================================================== -->
+    <!-- TAB 4: GEOGRAPHIC MAP & TIMELINE                     -->
+    <!-- ==================================================== -->
+    <section id="tab-map" class="tab-pane">
+      <div class="map-view-container">
+        <!-- Leaflet Map -->
+        <div class="map-pane">
+          <div id="leaflet-map"></div>
+        </div>
+
+        <!-- Sidebar / Filter by Time Bucket & Selected Location -->
+        <aside class="map-sidebar">
+          <div>
+            <h3 style="font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.6rem; color: var(--ink-muted);">Map Layer View:</h3>
+            <div style="display: flex; gap: 0.5rem;">
+              <button id="btn-map-writing" class="chip-btn active">Places of Copying / Origin</button>
+              <button id="btn-map-holding" class="chip-btn">Holding Libraries Today</button>
+            </div>
+          </div>
+
+          <div>
+            <h3 style="font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.6rem; color: var(--ink-muted);">Chronological Timeline:</h3>
+            <div id="map-timeline-buttons" class="timeline-btn-group">
+              <button class="chip-btn active" data-century="">All Eras</button>
+              <button class="chip-btn" data-century="14th">14th c.</button>
+              <button class="chip-btn" data-century="15th">15th c.</button>
+              <button class="chip-btn" data-century="16th">16th c.</button>
+              <button class="chip-btn" data-century="17th">17th c.</button>
+              <button class="chip-btn" data-century="18th">18th c.+</button>
+            </div>
+          </div>
+
+          <hr style="border: none; border-top: 1px solid var(--border-light); margin: 0.2rem 0;">
+
+          <!-- Selected Place Card / Results -->
+          <div id="map-selected-place-box">
+            <h3 id="map-place-title" style="font-family: var(--font-serif-text); font-size: 1.25rem; color: var(--ink-primary); margin-bottom: 0.35rem;">
+              Select a location on the map
+            </h3>
+            <p id="map-place-desc" style="font-size: 0.85rem; color: var(--ink-muted); line-height: 1.5;">
+              Click on any map marker to inspect manuscripts copied in or preserved at that center.
+            </p>
+            <div id="map-place-ms-list" style="margin-top: 1rem; display: flex; flex-direction: column; gap: 0.6rem;">
+              <!-- Manuscript cards list for selected place -->
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+
+    <!-- ==================================================== -->
+    <!-- TAB 5: SEARCH QUERIES ANALYSIS                       -->
+    <!-- ==================================================== -->
+    <section id="tab-queries" class="tab-pane">
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem 1.75rem; margin-bottom: 1.5rem; box-shadow: var(--shadow-xs);">
+        <h2 style="font-family: var(--font-serif-display); font-size: 1.35rem; margin-bottom: 0.6rem; color: var(--accent-crimson);">
+          Analysis of NLI Alma SRU Harvesting Queries
+        </h2>
+        <p style="color: var(--ink-secondary); font-size: 0.92rem; line-height: 1.6; max-width: 960px;">
+          The initial catalog harvest targeted the public SRU endpoint of the National Library of Israel for 10 Hebrew and Latin search expressions. 
+          The cards below show the distribution of matching records across these queries, how many represent distinct physical manuscripts, and how the core treatises (<em>Mar'eh ha-Ofanim</em>, <em>Sefer ha-Galgal</em>, and <em>Beit Elohim</em>) overlap across the corpus.
+        </p>
+      </div>
+
+      <div id="queries-matrix-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem;">
+        <!-- Query cards rendered by JS -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================================================== -->
+  <!-- MODAL: DETAILED SCHOLARLY MANUSCRIPT METADATA       -->
+  <!-- ==================================================== -->
+  <div id="ms-modal" class="modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close-btn" id="modal-close" title="Close dialog">&times;</button>
+      <div id="modal-body">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- Generated Data Store -->
+  <script src="data.js?v=2"></script>
+  <!-- Application Logic -->
+  <script src="app.js?v=3"></script>
+</body>
+</html>
+  <!-- ==================================================== -->
+  <!-- TAB 6: VISUAL ELEMENTS (ILLUSTRATIONS, DIAGRAMS, TABLES) -->
+  <!-- ==================================================== -->
+  <section id="tab-visuals" class="tab-pane">
+    <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem 1.75rem; margin-bottom: 1.5rem; box-shadow: var(--shadow-xs);">
+      <h2 style="font-family: var(--font-serif-display); font-size: 1.35rem; margin-bottom: 0.6rem; color: var(--accent-crimson);">Visual Elements Gallery</h2>
+      <p style="color: var(--ink-secondary); font-size: 0.92rem; margin-bottom: 1rem;">Automatic extraction of illustrations, diagrams and tables from manuscript facsimiles. Groups are clustered by visual type.</p>
+      <div id="visuals-gallery" class="visuals-grid"></div>
+    </div>
+  </section>
