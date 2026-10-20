@@ -1,9 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Build the interactive Web Visualizer for the Hebrew Sacrobosco Manuscripts project.
-Scans the CSV tables and the images/ folder, extracts prosopography, chronology, 
-geography, and page manifests, and outputs visualizer/data.js and visualizer/index.html.
+STEP 3 - Organize the metadata into what the visualizer needs.
+
+Joins the catalogue with the page index and the downloaded folders, extracts people, centuries,
+scripts and places (from the coordinate table below), and writes one clean JSON file.
+
+Input:  data/metadata/raw/MANUSCRIPTS_ONLY.csv, PAGE_LEVEL_METADATA.csv, ALL_OPEN_MANUSCRIPTS.csv
+        data/manuscripts/
+Output: data/metadata/clean/visualizer_data.json
 """
 
 import json
@@ -12,12 +17,9 @@ import sys
 from pathlib import Path
 import pandas as pd
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-CSV_DIR = PROJECT_ROOT / "data" / "csv"
-IMAGES_DIR = PROJECT_ROOT / "images"
-VIS_DIR = PROJECT_ROOT / "visualizer"
+from paths import PROJECT_ROOT, RAW_METADATA_DIR as CSV_DIR, MANUSCRIPTS_DIR as IMAGES_DIR, CLEAN_METADATA_DIR
 
-VIS_DIR.mkdir(parents=True, exist_ok=True)
+OUTPUT_JSON = CLEAN_METADATA_DIR / "visualizer_data.json"
 
 # Coordinates dictionary for historical places and library cities
 COORDINATES = {
@@ -124,17 +126,14 @@ def build_data():
         for mms_id, group in df_pages.groupby("mms_id"):
             pages_by_mms[str(mms_id)] = group.to_dict("records")
             
-    # Also inspect images/ folder directly
+    # Also inspect data/manuscripts/ directly (folder names start with the MMS ID)
     local_manuscript_dirs = {}
     if IMAGES_DIR.exists():
         for f in IMAGES_DIR.iterdir():
             if f.is_dir() and not f.name.startswith("."):
                 mms_part = f.name.split("_")[0]
                 local_manuscript_dirs[mms_part] = f
-                
-    # Also handle JTS_9121
-    if (IMAGES_DIR / "JTS_9121").exists():
-        local_manuscript_dirs["990000846580205171"] = IMAGES_DIR / "JTS_9121"
+
         
     manuscripts = []
     persons_map = {}
@@ -174,10 +173,12 @@ def build_data():
         
         if has_images:
             folder_path = local_manuscript_dirs[mms_id]
-            img_folder = f"images/{folder_path.name}"
+            img_folder = folder_path.relative_to(PROJECT_ROOT).as_posix()
             # Load page info
             if mms_id in pages_by_mms:
                 for p in pages_by_mms[mms_id]:
+                    if not (folder_path / str(p.get("file_name"))).exists():
+                        continue  # listed in the manifest but the download failed
                     img_list.append({
                         "file_name": p.get("file_name"),
                         "page_number": int(p.get("page_number", 1)),
@@ -217,7 +218,7 @@ def build_data():
             "notes": notes,
             "subjects": subjects,
             "query_terms": query_terms,
-            "has_local_images": has_images,
+            "has_local_images": len(img_list) > 0,
             "image_folder": img_folder,
             "downloaded_pages_count": len(img_list),
             "pages": img_list,
@@ -286,6 +287,8 @@ def build_data():
                 if lc:
                     places_holding_map.setdefault(lc, []).append(mms_id)
 
+    open_df = pd.read_csv(CSV_DIR / "ALL_OPEN_MANUSCRIPTS.csv", dtype=str).drop_duplicates("mms_id")
+
     # Format map locations with coordinates
     map_places = []
     
@@ -339,8 +342,8 @@ def build_data():
             "total_manuscripts": len(manuscripts),
             "downloaded_manuscripts": len([m for m in manuscripts if m["has_local_images"]]),
             "total_downloaded_pages": sum(m["downloaded_pages_count"] for m in manuscripts),
-            "total_open_in_catalog": 148,
-            "total_pages_in_catalog": 22150
+            "total_open_in_catalog": int(open_df["mms_id"].nunique()),
+            "total_pages_in_catalog": int(pd.to_numeric(open_df["canvases"], errors="coerce").sum())
         },
         "query_terms": {k: len(v) for k, v in queries_map.items()},
         "centuries": {k: len(v) for k, v in century_map.items()},
@@ -350,15 +353,11 @@ def build_data():
         "manuscripts": manuscripts
     }
 
-    # Write visualizer/data.js
-    data_js_path = VIS_DIR / "data.js"
-    with open(data_js_path, "w", encoding="utf-8") as f:
-        f.write("// Hebrew Sacrobosco Manuscripts Data Store\n")
-        f.write("window.SPHAERA_DATA = ")
+    CLEAN_METADATA_DIR.mkdir(parents=True, exist_ok=True)
+    with open(OUTPUT_JSON, "w", encoding="utf-8") as f:
         json.dump(output_data, f, ensure_ascii=False, indent=2)
-        f.write(";\n")
-        
-    print(f"Generated {data_js_path} ({data_js_path.stat().st_size / 1024:.1f} KB)")
+
+    print(f"Generated {OUTPUT_JSON.relative_to(PROJECT_ROOT)} ({OUTPUT_JSON.stat().st_size / 1024:.1f} KB)")
     print(f"  Total manuscripts: {len(manuscripts)}")
     print(f"  Manuscripts with images: {output_data['stats']['downloaded_manuscripts']}")
     print(f"  Pages indexed: {output_data['stats']['total_downloaded_pages']}")

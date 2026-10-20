@@ -10,3 +10,6 @@ __pycache__/
 
 # macOS system files
 .DS_Store
+
+# Built visualizer (regenerate with: python code/06_build_visualizer.py)
+visualizer/

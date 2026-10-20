@@ -1,15 +1,22 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
+STEP 2 - Download the digitized copies (IIIF page images) of the chosen manuscripts.
+
+Input:  data/metadata/raw/ALL_OPEN_MANUSCRIPTS.csv (which manuscripts) + MANUSCRIPTS_ONLY.csv (their MARC fields)
+Output: data/manuscripts/<mms_id>_<library>_<shelfmark>/NNNN.jpg + metadata.json
+        data/metadata/raw/MANUSCRIPTS_IMAGES_INDEX.csv, PAGE_LEVEL_METADATA.csv
+Usage:  python code/02_download_manuscripts.py --start 0 --limit 10
+
 Robust batch downloader for Hebrew Sacrobosco manuscripts from NLI / Ktiv.
 Features:
 - Polite to server (0.5s pause, sequential, timeout/retries).
 - Resume support (skips already downloaded pages).
-- Clean human-readable folder naming: images/{mms_id}_{safe_shelfmark}/
+- Clean human-readable folder naming: data/manuscripts/{mms_id}_{library}_{safe_shelfmark}/
 - Generates comprehensive metadata linkage:
   * metadata.json inside each manuscript folder
-  * data/csv/MANUSCRIPTS_IMAGES_INDEX.csv (manuscript-level summary & folder path)
-  * data/csv/PAGE_LEVEL_METADATA.csv (page-level image index with canvas labels)
+  * data/metadata/raw/MANUSCRIPTS_IMAGES_INDEX.csv (manuscript-level summary & folder path)
+  * data/metadata/raw/PAGE_LEVEL_METADATA.csv (page-level image index with canvas labels)
 """
 
 import argparse
@@ -21,9 +28,7 @@ from pathlib import Path
 import pandas as pd
 import requests
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-CSV_DIR = PROJECT_ROOT / "data" / "csv"
-IMAGES_DIR = PROJECT_ROOT / "images"
+from paths import PROJECT_ROOT, RAW_METADATA_DIR as CSV_DIR, MANUSCRIPTS_DIR as IMAGES_DIR
 
 SLEEP_S = 0.5
 WIDTH = 1200
@@ -220,7 +225,7 @@ def download_single_manuscript(record: dict, session: requests.Session):
         "library_code": lib_code,
         "shelfmark": first_shelfmark,
         "title": title,
-        "folder_path": f"images/{folder_name}",
+        "folder_path": str(target_dir.relative_to(PROJECT_ROOT)),
         "total_canvases": total_pages,
         "downloaded_pages": saved_count,
         "manifest_url": manifest_url,
@@ -230,6 +235,29 @@ def download_single_manuscript(record: dict, session: requests.Session):
     }
 
     return ms_summary, page_rows
+
+
+def download_by_rosetta_ids(mms_id: str, first_fl: int, pages, folder_name: str):
+    """
+    Fallback for manuscripts whose IIIF manifest has empty sequences (restricted to on-site viewing).
+    Requests page images straight from the IIIF Image API by Rosetta file ID, assuming the IDs run
+    in sequence through the codex (page n = FL<first_fl + n - 1>). There is no check that a returned
+    image really is the expected folio.
+
+    Only used so far for JTS Ms. 9121 (MMS 990000846580205171, parent 990000846560205171):
+    MARC 907$d gives FL155318969 = f. 8a, so page 1 = FL155318962.
+        download_by_rosetta_ids("990000846580205171", 155318962, [1, 2, 3], "990000846580205171_JTS_Ms._9121")
+    """
+    folder = IMAGES_DIR / folder_name
+    folder.mkdir(parents=True, exist_ok=True)
+    for page_num in pages:
+        fl_id = f"FL{first_fl + page_num - 1}"
+        img = requests.get(f"https://iiif.nli.org.il/IIIFv21/{fl_id}/full/{WIDTH},/0/default.jpg", timeout=120)
+        img.raise_for_status()
+        out_path = folder / f"{page_num:04d}.jpg"
+        out_path.write_bytes(img.content)
+        print(f"saved page {page_num} ({fl_id}) -> {out_path}")
+        time.sleep(SLEEP_S)
 
 
 def main():
@@ -250,7 +278,7 @@ def main():
 
     total_available = len(merged)
     start_idx = args.start
-    end_idx = start_idx + args.limit if args.limit else total_available
+    end_idx = start_idx + args.limit if args.limit is not None else total_available
     subset = merged.iloc[start_idx:end_idx]
 
     print(f"\n========================================================")
