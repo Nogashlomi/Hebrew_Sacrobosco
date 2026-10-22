@@ -31,6 +31,8 @@
       <button class="nav-tab" data-tab="tab-persons">Prosopography & Scholars</button>
       <button class="nav-tab" data-tab="tab-map">Geography & Timeline</button>
       <button class="nav-tab" data-tab="tab-queries">Search Queries Analysis</button>
+      <button class="nav-tab" data-tab="tab-illustrations">Illustrations</button>
+      <button class="nav-tab" data-tab="tab-clusters">Clusters</button>
     </nav>
   </header>
 
@@ -98,22 +100,23 @@
         </div>
       </div>
 
-      <!-- Manuscripts Card Grid -->
-      <table id="catalogue-table" class="catalogue-table">
-  <thead>
-    <tr>
-      <th>Shelfmark</th>
-      <th>Title</th>
-      <th>Author</th>
-      <th>Century</th>
-      <th>Script</th>
-      <th>Library</th>
-      <th>Status</th>
-    </tr>
-  </thead>
-  <tbody id="catalogue-table-body"></tbody>
-</table>
-        <!-- Rendered by JS -->
+      <!-- Manuscripts Table (click a heading to sort, a row for the full record) -->
+      <div class="data-table-wrap">
+        <table id="catalogue-table" class="data-table">
+          <thead>
+            <tr>
+              <th data-sort="shelfmark">Shelfmark</th>
+              <th data-sort="title">Title</th>
+              <th data-sort="author">Author</th>
+              <th data-sort="century">Century</th>
+              <th data-sort="place">Origin</th>
+              <th data-sort="library">Library</th>
+              <th data-sort="illustrations" class="num">Illustrations</th>
+              <th data-sort="status">Images</th>
+            </tr>
+          </thead>
+          <tbody id="catalogue-table-body"><!-- Rendered by JS --></tbody>
+        </table>
       </div>
     </section>
 
@@ -181,14 +184,29 @@
           <div class="search-input-box">
             <input type="text" id="persons-search" placeholder="Search scholars & scribes (Sacrobosco, Almosnino, Avigdor, Delacrut, Oppenheim)...">
           </div>
+          <select id="persons-role" class="filter-select">
+            <option value="">All Roles</option>
+          </select>
           <div style="font-size: 0.9rem; color: var(--ink-secondary);">
-            Found <strong id="persons-count" style="color: var(--accent-crimson); font-family: var(--font-mono);">0</strong> identified historical figures
+            Found <strong id="persons-count" style="color: var(--accent-crimson); font-family: var(--font-mono);">0</strong> identified historical figures.
+            Click a row to see their manuscripts.
           </div>
         </div>
       </div>
 
-      <div id="persons-grid" class="persons-grid">
-        <!-- Rendered by JS -->
+      <!-- Persons Table (click a heading to sort, a row to list the manuscripts) -->
+      <div class="data-table-wrap">
+        <table id="persons-table" class="data-table">
+          <thead>
+            <tr>
+              <th data-sort="name">Name</th>
+              <th data-sort="role">Role</th>
+              <th data-sort="count" class="num">Manuscripts</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="persons-table-body"><!-- Rendered by JS --></tbody>
+        </table>
       </div>
     </section>
 
@@ -260,6 +278,44 @@
 
       <div id="queries-matrix-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem;">
         <!-- Query cards rendered by JS -->
+      </div>
+    </section>
+
+
+    <!-- ==================================================== -->
+    <!-- TAB 6: ILLUSTRATIONS (all crops from step 4)         -->
+    <!-- ==================================================== -->
+    <section id="tab-illustrations" class="tab-pane">
+      <div class="filter-card">
+        <div class="filter-row">
+          <select id="ill-filter-ms" class="filter-select">
+            <option value="">All Manuscripts</option>
+          </select>
+          <select id="ill-filter-class" class="filter-select">
+            <option value="">All Classes</option>
+          </select>
+          <div style="font-size: 0.9rem; color: var(--ink-secondary);">
+            Showing <strong id="ill-count" style="color: var(--accent-crimson); font-family: var(--font-mono);">0</strong>
+            of <span id="ill-total">0</span> illustrations. Click an illustration to open its page in the reader.
+          </div>
+        </div>
+      </div>
+
+      <div id="ill-grid" class="ill-grid">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+
+    <!-- ==================================================== -->
+    <!-- TAB 7: CLUSTERS (repeating illustrations, step 5)    -->
+    <!-- ==================================================== -->
+    <section id="tab-clusters" class="tab-pane">
+      <div id="clusters-summary" class="clusters-summary">
+        <!-- Rendered by JS -->
+      </div>
+      <div id="clusters-body">
+        <!-- Rendered by JS -->
       </div>
     </section>
 

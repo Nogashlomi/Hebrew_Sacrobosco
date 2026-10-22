@@ -16,7 +16,9 @@ tab that shows them yet.
 Usage:  python code/06_build_visualizer.py
 """
 import json
+import re
 import shutil
+import time
 
 import pandas as pd
 
@@ -37,6 +39,12 @@ def main():
     for f in VISUALIZER_TEMPLATE_DIR.iterdir():
         if f.is_file():
             shutil.copy2(f, VISUALIZER_DIR / f.name)
+
+    # stamp script/style links (app.js?v=...) with the build time so browsers never show a stale copy
+    index_html = VISUALIZER_DIR / "index.html"
+    build = time.strftime("%Y%m%d%H%M%S")
+    index_html.write_text(re.sub(r"\.(js|css)\?v=\w+", rf".\1?v={build}", index_html.read_text(encoding="utf-8")),
+                          encoding="utf-8")
 
     data_js = VISUALIZER_DIR / "data.js"
     with data_js.open("w", encoding="utf-8") as f:

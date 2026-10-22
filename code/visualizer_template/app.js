@@ -33,7 +33,10 @@ document.addEventListener("DOMContentLoaded", () => {
       markersLayer: null
     },
     personsSearch: "",
-    personsRoleFilter: ""
+    personsRoleFilter: "",
+    catalogueSort: { key: "", asc: true },
+    personsSort: { key: "count", asc: false },
+    personsOpen: null
   };
 
   // -----------------------------------------------------------
@@ -237,101 +240,111 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (filtered.length === 0) {
       manuscriptsGrid.innerHTML = `
-        <div style="grid-column: 1 / -1; padding: 4rem 2rem; text-align: center; background: var(--bg-surface); border: 1px dashed var(--border-color); border-radius: var(--radius-md);">
-          <h3 style="font-family: var(--font-serif-text); font-size: 1.3rem; margin-bottom: 0.4rem; color: var(--ink-primary);">No manuscripts match your filter criteria</h3>
-          <p style="font-size: 0.88rem; color: var(--ink-muted); margin-bottom: 1.25rem;">Try relaxing your search keywords or resetting the selected filters.</p>
+        <tr><td colspan="8" class="table-empty">
+          <h3>No manuscripts match your filter criteria</h3>
+          <p>Try relaxing your search keywords or resetting the selected filters.</p>
           <button id="btn-empty-reset" class="btn-primary">Reset Filters</button>
-        </div>
+        </td></tr>
       `;
       const btnEmptyReset = document.getElementById("btn-empty-reset");
       if (btnEmptyReset) btnEmptyReset.onclick = resetFilters;
       return;
     }
 
+    sortRows(filtered, state.catalogueSort, catalogueSortValue);
     manuscriptsGrid.innerHTML = filtered.map(m => {
-      // Status pill
+      // Images column: local facsimile > Ktiv IIIF > catalogue record only
       let statusHtml = "";
       if (m.has_local_images) {
-        statusHtml = `<span class="status-pill downloaded" title="Complete high-resolution digital images stored locally">Facsimile (${m.downloaded_pages_count} pp)</span>`;
+        statusHtml = `<button class="status-pill downloaded btn-open-reader" data-mms="${m.mms_id}" title="Open the local facsimile in the reader">Read (${m.downloaded_pages_count} pp)</button>`;
       } else if (m.ktiv_link) {
-        statusHtml = `<span class="status-pill open-iiif" title="Open IIIF Manifest in Ktiv">Ktiv IIIF</span>`;
+        statusHtml = `<a class="status-pill open-iiif" href="${m.ktiv_link}" target="_blank" rel="noopener noreferrer" title="Open the record on the Ktiv portal">Ktiv ↗</a>`;
       } else {
-        statusHtml = `<span class="status-pill catalog-only">Catalog Record</span>`;
+        statusHtml = `<span class="status-pill catalog-only">Record only</span>`;
       }
-
-      // Shelfmark badge
-      const shelfmarkDisplay = m.shelfmark || "Shelfmark Not Recorded";
-
-      // Origin place & holding city
-      const originPlace = m.place_writing ? m.place_writing : "Origin Unknown";
-      const holdingDisplay = m.library_city ? `${m.library} (${m.library_city})` : m.library;
+      const nIll = illustrationCountByMs[m.mms_id] || 0;
 
       return `
-        <article class="ms-card" data-mms="${m.mms_id}">
-          <div>
-            <div class="ms-card-header">
-              <span class="ms-shelfmark-badge">${escapeHtml(shelfmarkDisplay)}</span>
-              ${statusHtml}
-            </div>
-
-            <div class="ms-card-titles">
-              <div class="ms-title-hebrew" dir="rtl">${escapeHtml(m.title || "ללא כותר עברי")}</div>
-              ${m.author ? `<div class="ms-title-latin">${escapeHtml(m.author)}</div>` : ""}
-            </div>
-
-            <div class="ms-card-meta">
-              <div class="meta-item">
-                <span class="meta-label">Date / Era:</span>
-                <span class="meta-val"><strong>${escapeHtml(m.century)}</strong> ${m.date_place ? `— <span style="color: var(--ink-muted);">${escapeHtml(m.date_place)}</span>` : ""}</span>
-              </div>
-              <div class="meta-item">
-                <span class="meta-label">Origin:</span>
-                <span class="meta-val">${escapeHtml(originPlace)}</span>
-              </div>
-              <div class="meta-item">
-                <span class="meta-label">Repository:</span>
-                <span class="meta-val">${escapeHtml(holdingDisplay)}</span>
-              </div>
-              <div class="meta-item">
-                <span class="meta-label">Script:</span>
-                <span class="meta-val">${escapeHtml(m.script)} ${m.extent ? `· (${escapeHtml(m.extent)})` : ""}</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="ms-card-footer">
-            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-              ${m.has_local_images ? `
-                <button class="btn-primary btn-open-reader" data-mms="${m.mms_id}">
-                  Read Facsimile
-                </button>
-              ` : ""}
-              <button class="btn-secondary btn-open-modal" data-mms="${m.mms_id}">
-                Details
-              </button>
-            </div>
-            ${m.ktiv_link ? `
-              <a href="${m.ktiv_link}" target="_blank" rel="noopener noreferrer" class="btn-secondary" title="View record on Ktiv Portal">
-                Ktiv
-              </a>
-            ` : ""}
-          </div>
-        </article>
+        <tr class="clickable-row" data-mms="${m.mms_id}" title="Show the full record">
+          <td class="cell-shelfmark">${escapeHtml(m.shelfmark || "—")}</td>
+          <td class="cell-hebrew" dir="rtl">${escapeHtml(m.title || "")}</td>
+          <td dir="auto">${escapeHtml(m.author || "")}</td>
+          <td class="cell-nowrap">${escapeHtml(m.century.replace(/ \(.*\)/, ""))}</td>
+          <td dir="auto">${escapeHtml(m.place_writing || "")}</td>
+          <td>${escapeHtml(m.library_city ? `${m.library}, ${m.library_city}` : m.library)}</td>
+          <td class="num">${nIll ? `<button class="link-btn btn-ms-illustrations" data-mms="${m.mms_id}" title="Show this manuscript's illustrations">${nIll}</button>` : ""}</td>
+          <td>${statusHtml}</td>
+        </tr>
       `;
     }).join("");
 
-    // Attach Click Handlers
-    document.querySelectorAll(".btn-open-reader").forEach(btn => {
-      btn.addEventListener("click", () => {
+    manuscriptsGrid.querySelectorAll(".clickable-row").forEach(row => {
+      row.addEventListener("click", () => openManuscriptModal(row.dataset.mms));
+    });
+    manuscriptsGrid.querySelectorAll(".btn-open-reader").forEach(btn => {
+      btn.addEventListener("click", e => {
+        e.stopPropagation();
         openManuscriptInReader(btn.dataset.mms);
       });
     });
-
-    document.querySelectorAll(".btn-open-modal").forEach(btn => {
-      btn.addEventListener("click", () => {
-        openManuscriptModal(btn.dataset.mms);
+    manuscriptsGrid.querySelectorAll(".btn-ms-illustrations").forEach(btn => {
+      btn.addEventListener("click", e => {
+        e.stopPropagation();
+        illFilterMs.value = btn.dataset.mms;
+        illFilterClass.value = "";
+        renderIllustrations();
+        switchTab("tab-illustrations");
       });
     });
+    manuscriptsGrid.querySelectorAll("a.status-pill").forEach(a => {
+      a.addEventListener("click", e => e.stopPropagation());
+    });
+  }
+
+  // Sorting shared by the catalogue and persons tables: click a heading to sort, again to reverse
+  function sortRows(rows, sort, valueOf) {
+    if (!sort.key) return;
+    const dir = sort.asc ? 1 : -1;
+    rows.sort((a, b) => {
+      const va = valueOf(a, sort.key), vb = valueOf(b, sort.key);
+      if (typeof va === "number") return (va - vb) * dir;
+      // empty values always last
+      if (!va !== !vb) return va ? -1 : 1;
+      return String(va).localeCompare(String(vb), undefined, { numeric: true }) * dir;
+    });
+  }
+
+  function makeSortable(table, sort, render) {
+    const headers = table.querySelectorAll("th[data-sort]");
+    const mark = () => headers.forEach(th => {
+      th.classList.toggle("sorted", th.dataset.sort === sort.key);
+      th.dataset.dir = th.dataset.sort === sort.key ? (sort.asc ? "asc" : "desc") : "";
+    });
+    headers.forEach(th => th.addEventListener("click", () => {
+      if (sort.key === th.dataset.sort) {
+        sort.asc = !sort.asc;
+      } else {
+        sort.key = th.dataset.sort;
+        sort.asc = !th.classList.contains("num");     // numbers start largest first
+      }
+      mark();
+      render();
+    }));
+    mark();
+  }
+
+  const illustrationCountByMs = {};
+  (data.illustrations || []).forEach(il => {
+    illustrationCountByMs[il.mms_id] = (illustrationCountByMs[il.mms_id] || 0) + 1;
+  });
+
+  function catalogueSortValue(m, key) {
+    switch (key) {
+      case "illustrations": return illustrationCountByMs[m.mms_id] || 0;
+      case "status": return m.has_local_images ? "1" : m.ktiv_link ? "2" : "3";
+      case "place": return m.place_writing;
+      default: return m[key];
+    }
   }
 
   // Filter Event Listeners
@@ -537,37 +550,62 @@ document.addEventListener("DOMContentLoaded", () => {
   // -----------------------------------------------------------
   const personsSearch = document.getElementById("persons-search");
   const personsCount = document.getElementById("persons-count");
-  const personsGrid = document.getElementById("persons-grid");
+  const personsRole = document.getElementById("persons-role");
+  const personsBody = document.getElementById("persons-table-body");
+
+  [...new Set(data.persons.map(p => p.role))].sort().forEach(role => {
+    const opt = document.createElement("option");
+    opt.value = role;
+    opt.textContent = `${role} (${data.persons.filter(p => p.role === role).length})`;
+    personsRole.appendChild(opt);
+  });
 
   function renderPersons() {
     const q = state.personsSearch.toLowerCase();
     const filtered = data.persons.filter(p => {
       if (q && !p.name.toLowerCase().includes(q)) return false;
+      if (state.personsRoleFilter && p.role !== state.personsRoleFilter) return false;
       return true;
     });
 
     personsCount.textContent = filtered.length;
+    sortRows(filtered, state.personsSort, (p, key) => p[key]);
 
-    personsGrid.innerHTML = filtered.map(p => `
-      <div class="person-card">
-        <div class="person-name-box">
-          <h3 class="person-name">${escapeHtml(p.name)}</h3>
-          <span class="person-role-badge">${escapeHtml(p.role)}</span>
-        </div>
+    personsBody.innerHTML = filtered.length ? filtered.map(p => {
+      const key = `${p.name}|${p.role}`;
+      const open = state.personsOpen === key;
+      return `
+        <tr class="clickable-row ${open ? "open" : ""}" data-key="${escapeHtml(key)}" title="Show this person's manuscripts">
+          <td class="cell-person" dir="auto">${escapeHtml(p.name)}</td>
+          <td><span class="person-role-badge">${escapeHtml(p.role)}</span></td>
+          <td class="num">${p.count}</td>
+          <td class="cell-toggle">${open ? "▾" : "▸"}</td>
+        </tr>
+        ${open ? `
+        <tr class="detail-row"><td colspan="4">
+          <ul class="person-ms-list">
+            ${p.manuscripts.map(id => msById[id]).filter(Boolean).map(m => `
+              <li>
+                <button class="link-btn btn-person-ms" data-mms="${m.mms_id}">${escapeHtml(m.shelfmark || m.mms_id)}</button>
+                <span class="person-ms-meta">${escapeHtml(m.library)} · ${escapeHtml(m.century.replace(/ \(.*\)/, ""))}</span>
+                ${m.has_local_images ? `<span class="status-pill downloaded">facsimile</span>` : ""}
+              </li>`).join("")}
+          </ul>
+          <button class="btn-secondary btn-person-filter" data-name="${escapeHtml(p.name)}">Show these in the Catalogue</button>
+        </td></tr>` : ""}
+      `;
+    }).join("") : `<tr><td colspan="4" class="table-empty"><p>No persons match your search.</p></td></tr>`;
 
-        <div style="font-size: 0.84rem; color: var(--ink-secondary); margin-bottom: 0.75rem;">
-          Recorded in <strong>${p.count}</strong> manuscript${p.count > 1 ? 's' : ''} in the corpus.
-        </div>
-
-        <div class="person-card-footer">
-          <button class="btn-secondary btn-person-filter" data-name="${escapeHtml(p.name)}">
-            View in Catalogue (${p.count})
-          </button>
-        </div>
-      </div>
-    `).join("");
-
-    personsGrid.querySelectorAll(".btn-person-filter").forEach(btn => {
+    personsBody.querySelectorAll(".clickable-row").forEach(row => {
+      row.addEventListener("click", () => {
+        state.personsOpen = state.personsOpen === row.dataset.key ? null : row.dataset.key;
+        renderPersons();
+      });
+    });
+    personsBody.querySelectorAll(".btn-person-ms").forEach(btn => {
+      btn.addEventListener("click", () => openManuscriptModal(btn.dataset.mms));
+    });
+    personsBody.querySelectorAll(".btn-person-filter").forEach(btn => {
       btn.addEventListener("click", () => {
         state.catalogueFilters.search = btn.dataset.name;
         catalogueSearch.value = btn.dataset.name;
@@ -579,6 +617,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   personsSearch.addEventListener("input", e => {
     state.personsSearch = e.target.value.trim();
+    renderPersons();
+  });
+
+  personsRole.addEventListener("change", e => {
+    state.personsRoleFilter = e.target.value;
     renderPersons();
   });
 
@@ -871,6 +914,150 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // -----------------------------------------------------------
+  // 8. Tab 6: Illustrations (crops extracted in step 4)
+  // -----------------------------------------------------------
+  const illustrations = data.illustrations || [];
+  const illById = Object.fromEntries(illustrations.map(il => [il.illustration_id, il]));
+  const msById = Object.fromEntries(data.manuscripts.map(m => [m.mms_id, m]));
+  const illFilterMs = document.getElementById("ill-filter-ms");
+  const illFilterClass = document.getElementById("ill-filter-class");
+  const illGrid = document.getElementById("ill-grid");
+
+  // cluster id per illustration, and the groups themselves (step 5; may be absent)
+  const clusterGroups = (data.clusters && data.clusters.clusters) || [];
+  const clusterOf = {};
+  clusterGroups.forEach(c => c.illustration_ids.forEach(id => { clusterOf[id] = c; }));
+
+  function shelfmarkOf(mmsId) {
+    const ms = msById[mmsId];
+    return ms ? ms.shelfmark.split(" | ")[0] : mmsId;
+  }
+
+  function illustrationCard(il) {
+    return `
+      <div class="ill-card" data-id="${escapeHtml(il.illustration_id)}" title="Open page ${escapeHtml(il.page_number)} in the reader">
+        <div class="ill-thumb"><img src="../${escapeHtml(il.crop_file)}" alt="${escapeHtml(il.class)}" loading="lazy"></div>
+        <div class="ill-caption">
+          <div class="ill-shelfmark">${escapeHtml(shelfmarkOf(il.mms_id))}</div>
+          <div class="ill-meta">p. ${escapeHtml(il.page_number)} · ${escapeHtml(il.class)}</div>
+        </div>
+      </div>
+    `;
+  }
+
+  function openIllustrationPage(id) {
+    const il = illById[id];
+    const ms = il && downloadedManuscripts.find(m => m.mms_id === il.mms_id);
+    if (!ms) return;
+    const pageIndex = ms.pages.findIndex(p => String(p.page_number) === String(parseInt(il.page_number, 10)));
+    openManuscriptInReader(ms.mms_id, Math.max(pageIndex, 0));
+  }
+
+  function attachIllustrationClicks(container) {
+    container.querySelectorAll(".ill-card").forEach(card => {
+      card.addEventListener("click", () => openIllustrationPage(card.dataset.id));
+    });
+  }
+
+  [...new Set(illustrations.map(il => il.mms_id))].forEach(mmsId => {
+    const opt = document.createElement("option");
+    opt.value = mmsId;
+    opt.textContent = `${shelfmarkOf(mmsId)} (${illustrations.filter(il => il.mms_id === mmsId).length})`;
+    illFilterMs.appendChild(opt);
+  });
+  [...new Set(illustrations.map(il => il.class))].sort().forEach(cls => {
+    const opt = document.createElement("option");
+    opt.value = cls;
+    opt.textContent = `${cls} (${illustrations.filter(il => il.class === cls).length})`;
+    illFilterClass.appendChild(opt);
+  });
+
+  function renderIllustrations() {
+    const shown = illustrations.filter(il =>
+      (!illFilterMs.value || il.mms_id === illFilterMs.value) &&
+      (!illFilterClass.value || il.class === illFilterClass.value));
+    document.getElementById("ill-count").textContent = shown.length;
+    document.getElementById("ill-total").textContent = illustrations.length;
+    illGrid.innerHTML = shown.length
+      ? shown.map(illustrationCard).join("")
+      : `<p class="empty-note">No illustrations yet. Run code/04_extract_illustrations.py and rebuild.</p>`;
+    attachIllustrationClicks(illGrid);
+  }
+
+  illFilterMs.addEventListener("change", renderIllustrations);
+  illFilterClass.addEventListener("change", renderIllustrations);
+
+  // -----------------------------------------------------------
+  // 9. Tab 7: Clusters (repeating illustrations from step 5)
+  // -----------------------------------------------------------
+  // clusters.json: id 0 = "other (no close match)", "repeating group N" = groups above the
+  // similarity threshold, "... (not compared)" = classes left out of the comparison.
+  function renderClusters() {
+    const summary = document.getElementById("clusters-summary");
+    const body = document.getElementById("clusters-body");
+    if (!clusterGroups.length) {
+      summary.innerHTML = `<p class="empty-note">No clusters yet. Run code/05_cluster_illustrations.py and rebuild.</p>`;
+      return;
+    }
+
+    const repeating = clusterGroups.filter(c => c.label.startsWith("repeating"));
+    const other = clusterGroups.find(c => c.cluster_id === 0) || { illustration_ids: [] };
+    const notCompared = clusterGroups.filter(c => c.label.endsWith("(not compared)"));
+    const across = repeating.filter(c => c.n_manuscripts > 1);
+    const within = repeating.filter(c => c.n_manuscripts === 1);
+    const nClustered = repeating.reduce((n, c) => n + c.illustration_ids.length, 0);
+    const nCompared = nClustered + other.illustration_ids.length;
+    const pct = nCompared ? Math.round(100 * nClustered / nCompared) : 0;
+    const threshold = data.clusters.similarity_threshold;
+
+    summary.innerHTML = `
+      <div class="clusters-headline">
+        <span class="clusters-big">${nClustered}</span> of ${nCompared} diagrams (${pct}%) were found in repeating groups
+      </div>
+      <div class="clusters-stats">
+        <div class="stat-item"><span class="label">Repeating groups</span> <span class="value">${repeating.length}</span></div>
+        <div class="stat-item"><span class="label">Across manuscripts</span> <span class="value">${across.length}</span></div>
+        <div class="stat-item"><span class="label">Within one manuscript</span> <span class="value">${within.length}</span></div>
+        <div class="stat-item"><span class="label">No close match</span> <span class="value">${other.illustration_ids.length}</span></div>
+      </div>
+      <p class="clusters-note">
+        A group is formed only when every two diagrams in it are at least
+        ${threshold != null ? `<strong>${Math.round(threshold * 100)}%</strong>` : "the chosen level"} similar
+        (${escapeHtml(data.clusters.method)}).
+        ${notCompared.length ? `Not compared: ${notCompared.map(c => `${c.illustration_ids.length} ${escapeHtml(c.label.replace(" (not compared)", ""))}`).join(", ")}.` : ""}
+        Click an illustration to open its page in the reader.
+      </p>
+    `;
+
+    const groupCard = c => `
+      <div class="cluster-card">
+        <div class="cluster-card-head">
+          <span class="cluster-name">Group ${c.cluster_id}</span>
+          <span class="cluster-counts">${c.illustration_ids.length} illustrations · ${c.n_manuscripts} manuscript${c.n_manuscripts > 1 ? "s" : ""}</span>
+        </div>
+        <div class="ill-grid compact">${c.illustration_ids.map(id => illById[id]).filter(Boolean).map(illustrationCard).join("")}</div>
+      </div>
+    `;
+    const section = (title, note, inner) => `
+      <h3 class="clusters-section-title">${title}</h3>
+      <p class="clusters-section-note">${note}</p>
+      ${inner}
+    `;
+
+    body.innerHTML =
+      section(`Repeating across manuscripts (${across.length} groups)`,
+              "The same kind of diagram found in two or more manuscripts.",
+              across.map(groupCard).join("")) +
+      section(`Repeating within one manuscript (${within.length} groups)`,
+              "Similar diagrams that recur inside a single manuscript.",
+              within.map(groupCard).join("")) +
+      section(`No close match (${other.illustration_ids.length})`,
+              "Diagrams with no other diagram above the similarity level: these appear only once in the corpus.",
+              `<div class="ill-grid compact">${other.illustration_ids.map(id => illById[id]).filter(Boolean).map(illustrationCard).join("")}</div>`);
+    attachIllustrationClicks(body);
+  }
+
   // Utility: HTML Escaping
   function escapeHtml(str) {
     if (!str) return "";
@@ -885,8 +1072,12 @@ document.addEventListener("DOMContentLoaded", () => {
   // -----------------------------------------------------------
   // Initial Boot
   // -----------------------------------------------------------
+  makeSortable(document.getElementById("catalogue-table"), state.catalogueSort, renderCatalogue);
+  makeSortable(document.getElementById("persons-table"), state.personsSort, renderPersons);
   renderCatalogue();
   renderPersons();
+  renderIllustrations();
+  renderClusters();
 
   // Pre-load first downloaded manuscript into reader
   if (downloadedManuscripts.length > 0) {

@@ -1,0 +1,351 @@
+{
+  "method": "greyscale CLIP ViT-B/32 + DINOv2-small embeddings, complete-linkage agglomerative",
+  "similarity_threshold": 0.82,
+  "clusters": [
+    {
+      "cluster_id": 0,
+      "label": "other (no close match)",
+      "n_manuscripts": 6,
+      "illustration_ids": [
+        "990000463750205171_0020_Content_Illustration_01",
+        "990000463750205171_0020_Content_Illustration_02",
+        "990001283830205171_0011_Content_Illustration_01",
+        "990001283830205171_0015_Content_Illustration_01",
+        "990001283830205171_0018_Content_Illustration_01",
+        "990001283830205171_0029_Content_Illustration_01",
+        "990001283830205171_0033_Content_Illustration_01",
+        "990001283830205171_0034_Content_Illustration_01",
+        "990001283830205171_0038_Content_Illustration_02",
+        "990001283830205171_0038_Content_Illustration_04",
+        "990001283830205171_0038_Content_Illustration_05",
+        "990001283830205171_0038_Content_Illustration_06",
+        "990001283830205171_0038_Content_Illustration_07",
+        "990001283830205171_0045_Content_Illustration_01",
+        "990001283830205171_0048_Content_Illustration_02",
+        "990001283830205171_0063_Content_Illustration_01",
+        "990001283830205171_0066_Content_Illustration_01",
+        "990001283830205171_0082_Content_Illustration_01",
+        "990001283830205171_0100_Content_Illustration_01",
+        "990001283830205171_0100_Content_Illustration_02",
+        "990001283830205171_0119_Content_Illustration_01",
+        "990001283830205171_0142_Content_Illustration_01",
+        "990001283830205171_0145_Content_Illustration_01",
+        "990001283830205171_0237_Content_Illustration_02",
+        "990001283830205171_0244_Content_Illustration_01",
+        "990001283830205171_0283_Content_Illustration_01",
+        "990001283830205171_0286_Content_Illustration_01",
+        "990001309470205171_0008_Content_Illustration_01",
+        "990001309470205171_0023_Content_Illustration_01",
+        "990001309470205171_0066_Content_Illustration_01",
+        "990001309470205171_0076_Content_Illustration_02",
+        "990001309470205171_0107_Content_Illustration_01",
+        "990001309470205171_0129_Content_Illustration_06",
+        "990001314250205171_0007_Content_Illustration_01",
+        "990001314250205171_0199_Content_Illustration_01",
+        "990001314250205171_0356_Content_Illustration_01",
+        "990001379080205171_0008_Content_Illustration_01",
+        "990001379080205171_0044_Content_Illustration_01",
+        "990001379080205171_0104_Content_Illustration_01",
+        "990001467840205171_0009_Content_Illustration_01"
+      ]
+    },
+    {
+      "cluster_id": 1,
+      "label": "repeating group 1",
+      "n_manuscripts": 1,
+      "illustration_ids": [
+        "990001314250205171_0011_Content_Illustration_01",
+        "990001314250205171_0012_Content_Illustration_01",
+        "990001314250205171_0013_Content_Illustration_01",
+        "990001314250205171_0014_Content_Illustration_01",
+        "990001314250205171_0015_Content_Illustration_02",
+        "990001314250205171_0016_Content_Illustration_01",
+        "990001314250205171_0016_Content_Illustration_02",
+        "990001314250205171_0017_Content_Illustration_01",
+        "990001314250205171_0019_Content_Illustration_01",
+        "990001314250205171_0020_Content_Illustration_01",
+        "990001314250205171_0021_Content_Illustration_01",
+        "990001314250205171_0024_Content_Illustration_01",
+        "990001314250205171_0034_Content_Illustration_01"
+      ]
+    },
+    {
+      "cluster_id": 2,
+      "label": "repeating group 2",
+      "n_manuscripts": 2,
+      "illustration_ids": [
+        "990001283830205171_0292_Content_Illustration_01",
+        "990001283830205171_0293_Content_Illustration_01",
+        "990001379080205171_0028_Content_Illustration_01",
+        "990001379080205171_0039_Content_Illustration_01",
+        "990001379080205171_0045_Content_Illustration_01",
+        "990001379080205171_0046_Content_Illustration_01"
+      ]
+    },
+    {
+      "cluster_id": 3,
+      "label": "repeating group 3",
+      "n_manuscripts": 2,
+      "illustration_ids": [
+        "990001283830205171_0237_Content_Illustration_01",
+        "990001314250205171_0036_Content_Illustration_01",
+        "990001314250205171_0037_Content_Illustration_01",
+        "990001314250205171_0037_Content_Illustration_02"
+      ]
+    },
+    {
+      "cluster_id": 4,
+      "label": "repeating group 4",
+      "n_manuscripts": 3,
+      "illustration_ids": [
+        "990001283830205171_0279_Content_Illustration_01",
+        "990001314250205171_0015_Content_Illustration_01",
+        "990001314250205171_0245_Content_Illustration_01",
+        "990001379080205171_0008_Content_Illustration_02"
+      ]
+    },
+    {
+      "cluster_id": 5,
+      "label": "repeating group 5",
+      "n_manuscripts": 1,
+      "illustration_ids": [
+        "990001309470205171_0040_Content_Illustration_01",
+        "990001309470205171_0041_Content_Illustration_01",
+        "990001309470205171_0128_Content_Illustration_02",
+        "990001309470205171_0128_Content_Illustration_03"
+      ]
+    },
+    {
+      "cluster_id": 6,
+      "label": "repeating group 6",
+      "n_manuscripts": 2,
+      "illustration_ids": [
+        "990001283830205171_0287_Content_Illustration_01",
+        "990001283830205171_0290_Content_Illustration_01",
+        "990001379080205171_0031_Content_Illustration_01",
+        "990001379080205171_0037_Content_Illustration_01"
+      ]
+    },
+    {
+      "cluster_id": 7,
+      "label": "repeating group 7",
+      "n_manuscripts": 1,
+      "illustration_ids": [
+        "990001309470205171_0129_Content_Illustration_01",
+        "990001309470205171_0129_Content_Illustration_03",
+        "990001309470205171_0129_Content_Illustration_04",
+        "990001309470205171_0129_Content_Illustration_05"
+      ]
+    },
+    {
+      "cluster_id": 8,
+      "label": "repeating group 8",
+      "n_manuscripts": 1,
+      "illustration_ids": [
+        "990001283830205171_0027_Content_Illustration_01",
+        "990001283830205171_0047_Content_Illustration_01",
+        "990001283830205171_0048_Content_Illustration_01"
+      ]
+    },
+    {
+      "cluster_id": 9,
+      "label": "repeating group 9",
+      "n_manuscripts": 3,
+      "illustration_ids": [
+        "990001283830205171_0280_Content_Illustration_02",
+        "990001314250205171_0046_Content_Illustration_01",
+        "990001379080205171_0010_Content_Illustration_01"
+      ]
+    },
+    {
+      "cluster_id": 10,
+      "label": "repeating group 10",
+      "n_manuscripts": 3,
+      "illustration_ids": [
+        "990000463750205171_0006_Content_Illustration_01",
+        "990001283830205171_0280_Content_Illustration_01",
+        "990001379080205171_0072_Content_Illustration_01"
+      ]
+    },
+    {
+      "cluster_id": 11,
+      "label": "repeating group 11",
+      "n_manuscripts": 1,
+      "illustration_ids": [
+        "990001309470205171_0124_Content_Illustration_01",
+        "990001309470205171_0128_Content_Illustration_01",
+        "990001309470205171_0129_Content_Illustration_02"
+      ]
+    },
+    {
+      "cluster_id": 12,
+      "label": "repeating group 12",
+      "n_manuscripts": 1,
+      "illustration_ids": [
+        "990001314250205171_0040_Content_Illustration_01",
+        "990001314250205171_0041_Content_Illustration_01",
+        "990001314250205171_0047_Content_Illustration_01"
+      ]
+    },
+    {
+      "cluster_id": 13,
+      "label": "repeating group 13",
+      "n_manuscripts": 1,
+      "illustration_ids": [
+        "990001309470205171_0076_Content_Illustration_01",
+        "990001309470205171_0076_Content_Illustration_03",
+        "990001309470205171_0076_Content_Illustration_04"
+      ]
+    },
+    {
+      "cluster_id": 14,
+      "label": "repeating group 14",
+      "n_manuscripts": 1,
+      "illustration_ids": [
+        "990001379080205171_0005_Content_Illustration_01",
+        "990001379080205171_0006_Content_Illustration_01",
+        "990001379080205171_0012_Content_Illustration_01"
+      ]
+    },
+    {
+      "cluster_id": 15,
+      "label": "repeating group 15",
+      "n_manuscripts": 2,
+      "illustration_ids": [
+        "990001283830205171_0235_Content_Illustration_01",
+        "990001283830205171_0282_Content_Illustration_01",
+        "990001379080205171_0017_Content_Illustration_01"
+      ]
+    },
+    {
+      "cluster_id": 16,
+      "label": "repeating group 16",
+      "n_manuscripts": 1,
+      "illustration_ids": [
+        "990001379080205171_0019_Content_Illustration_01",
+        "990001379080205171_0023_Content_Illustration_01",
+        "990001379080205171_0027_Content_Illustration_01"
+      ]
+    },
+    {
+      "cluster_id": 17,
+      "label": "repeating group 17",
+      "n_manuscripts": 1,
+      "illustration_ids": [
+        "990001283830205171_0029_Content_Illustration_02",
+        "990001283830205171_0039_Content_Illustration_01"
+      ]
+    },
+    {
+      "cluster_id": 18,
+      "label": "repeating group 18",
+      "n_manuscripts": 2,
+      "illustration_ids": [
+        "990001283830205171_0293_Content_Illustration_02",
+        "990001379080205171_0048_Content_Illustration_01"
+      ]
+    },
+    {
+      "cluster_id": 19,
+      "label": "repeating group 19",
+      "n_manuscripts": 1,
+      "illustration_ids": [
+        "990001467840205171_0002_Content_Illustration_01",
+        "990001467840205171_0002_Content_Illustration_02"
+      ]
+    },
+    {
+      "cluster_id": 20,
+      "label": "repeating group 20",
+      "n_manuscripts": 1,
+      "illustration_ids": [
+        "990001283830205171_0146_Content_Illustration_01",
+        "990001283830205171_0152_Content_Illustration_01"
+      ]
+    },
+    {
+      "cluster_id": 21,
+      "label": "repeating group 21",
+      "n_manuscripts": 1,
+      "illustration_ids": [
+        "990001283830205171_0064_Content_Illustration_01",
+        "990001283830205171_0065_Content_Illustration_01"
+      ]
+    },
+    {
+      "cluster_id": 22,
+      "label": "repeating group 22",
+      "n_manuscripts": 1,
+      "illustration_ids": [
+        "990001314250205171_0221_Content_Illustration_01",
+        "990001314250205171_0242_Content_Illustration_01"
+      ]
+    },
+    {
+      "cluster_id": 23,
+      "label": "repeating group 23",
+      "n_manuscripts": 1,
+      "illustration_ids": [
+        "990001309470205171_0072_Content_Illustration_01",
+        "990001309470205171_0072_Content_Illustration_02"
+      ]
+    },
+    {
+      "cluster_id": 24,
+      "label": "repeating group 24",
+      "n_manuscripts": 1,
+      "illustration_ids": [
+        "990001283830205171_0156_Content_Illustration_01",
+        "990001283830205171_0156_Content_Illustration_02"
+      ]
+    },
+    {
+      "cluster_id": 25,
+      "label": "repeating group 25",
+      "n_manuscripts": 1,
+      "illustration_ids": [
+        "990001283830205171_0038_Content_Illustration_01",
+        "990001283830205171_0038_Content_Illustration_03"
+      ]
+    },
+    {
+      "cluster_id": 26,
+      "label": "Decoration (not compared)",
+      "n_manuscripts": 3,
+      "illustration_ids": [
+        "990001283830205171_0031_Decoration_01",
+        "990001283830205171_0039_Decoration_01",
+        "990001283830205171_0141_Decoration_01",
+        "990001309470205171_0094_Decoration_01",
+        "990001467840205171_0002_Decoration_01"
+      ]
+    },
+    {
+      "cluster_id": 27,
+      "label": "Initial (not compared)",
+      "n_manuscripts": 3,
+      "illustration_ids": [
+        "990001283830205171_0101_Initial_01",
+        "990001283830205171_0120_Initial_01",
+        "990001283830205171_0244_Initial_01",
+        "990001309470205171_0110_Initial_01",
+        "990001309470205171_0110_Initial_02",
+        "990001309470205171_0111_Initial_01",
+        "990001309470205171_0111_Initial_02",
+        "990001309470205171_0115_Initial_01",
+        "990001314740205171_0076_Initial_01"
+      ]
+    },
+    {
+      "cluster_id": 28,
+      "label": "Table (not compared)",
+      "n_manuscripts": 1,
+      "illustration_ids": [
+        "990001283830205171_0082_Table_01",
+        "990001283830205171_0220_Table_01",
+        "990001283830205171_0231_Table_01",
+        "990001283830205171_0232_Table_01"
+      ]
+    }
+  ]
+}

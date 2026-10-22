@@ -4,3 +4,6 @@ openpyxl
 jupyter
 ipykernel
 pillow
+torch
+transformers
+scikit-learn
