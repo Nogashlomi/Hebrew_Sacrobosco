@@ -1,0 +1,20 @@
+{
+  "mms_id": "990001676870205171",
+  "other_mms_ids": [
+    "990001676860205171"
+  ],
+  "title": "ספר הגלגל.",
+  "shelfmark": "Cod. hebr. 141",
+  "holding_library": "The Hamburg State and University Library Carl von Ossietzky",
+  "library_code": "Hamburg",
+  "date_place": "",
+  "script": "אשכנזית",
+  "colophon": "",
+  "total_pages": 37,
+  "downloaded_pages": 37,
+  "manifest_url": "https://iiif.nli.org.il/IIIFv21/990001676870205171/manifest",
+  "license": "https://www.nli.org.il/contenteditors/pages-for-terms-of-use/public-domain-non-commercial-use",
+  "attribution": "From the collections of Staats- und Universitӓtsbibliothek Hamburg, The National Library of Israel. \"Ktiv\" Project, The National Library of Israel.",
+  "folder_name": "990001676870205171_Hamburg_Cod._hebr._141",
+  "downloaded_at": "2026-10-24T11:04:35"
+}

@@ -1,14 +1,20 @@
 {
   "mms_id": "990001379080205171",
+  "other_mms_ids": [
+    "990001379070205171"
+  ],
   "title": "ספר הגלגל.",
   "shelfmark": "Ms. Oct. 62",
   "holding_library": "University Library Johann Christian Senckenberg",
-  "library_code": "University",
+  "library_code": "Frankfurt",
   "date_place": "מאה ט\"ו-ט\"ז.",
   "script": "איטלקית",
   "colophon": "",
   "total_pages": 106,
   "downloaded_pages": 106,
   "manifest_url": "https://iiif.nli.org.il/IIIFv21/990001379080205171/manifest",
-  "folder_name": "990001379080205171_University_Ms._Oct._62"
+  "license": "https://www.nli.org.il/contenteditors/pages-for-terms-of-use/public-domain-non-commercial-use",
+  "attribution": "From the collections of Universitatsbibliothek J.C Senckenberg Frankfurt am Main, The National Library of Israel. \"Ktiv\" Project, The National Library of Israel.",
+  "folder_name": "990001379080205171_University_Ms._Oct._62",
+  "downloaded_at": "2026-10-24T11:04:33"
 }

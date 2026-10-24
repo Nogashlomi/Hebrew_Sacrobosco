@@ -1,5 +1,6 @@
 {
   "mms_id": "990000463750205171",
+  "other_mms_ids": [],
   "title": "ספר הגלגל.",
   "shelfmark": "Ms. Heb. 6694=28",
   "holding_library": "The National Library of Israel",
@@ -10,5 +11,8 @@
   "total_pages": 20,
   "downloaded_pages": 20,
   "manifest_url": "https://iiif.nli.org.il/IIIFv21/990000463750205171/manifest",
-  "folder_name": "990000463750205171_NLI_Ms._Heb._6694_28"
+  "license": "https://www.nli.org.il/contenteditors/pages-for-terms-of-use/public-domain-free-use",
+  "attribution": "The National Library of Israel. \"Ktiv\" Project מאוסף הספרייה הלאומית. פרוייקט \"כתיב\"",
+  "folder_name": "990000463750205171_NLI_Ms._Heb._6694_28",
+  "downloaded_at": "2026-10-24T11:04:32"
 }

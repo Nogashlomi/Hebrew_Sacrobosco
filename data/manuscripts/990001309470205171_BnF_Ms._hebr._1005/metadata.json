@@ -1,5 +1,6 @@
 {
   "mms_id": "990001309470205171",
+  "other_mms_ids": [],
   "title": "אישפירא.",
   "shelfmark": "Ms. hebr. 1005",
   "holding_library": "The National Library of France",
@@ -10,5 +11,8 @@
   "total_pages": 144,
   "downloaded_pages": 144,
   "manifest_url": "https://iiif.nli.org.il/IIIFv21/990001309470205171/manifest",
-  "folder_name": "990001309470205171_BnF_Ms._hebr._1005"
+  "license": "https://www.nli.org.il/contenteditors/pages-for-terms-of-use/public-domain-non-commercial-use",
+  "attribution": "Source: Bibliothèque Nationale de France, The National Library of Israel. \"Ktiv\" Project, The National Library of Israel.",
+  "folder_name": "990001309470205171_BnF_Ms._hebr._1005",
+  "downloaded_at": "2026-10-24T11:04:32"
 }

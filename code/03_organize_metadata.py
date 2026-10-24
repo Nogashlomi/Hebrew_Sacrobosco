@@ -6,7 +6,8 @@ STEP 3 - Organize the metadata into what the visualizer needs.
 Joins the catalogue with the page index and the downloaded folders, extracts people, centuries,
 scripts and places (from the coordinate table below), and writes one clean JSON file.
 
-Input:  data/metadata/raw/MANUSCRIPTS_ONLY.csv, PAGE_LEVEL_METADATA.csv, ALL_OPEN_MANUSCRIPTS.csv
+Input:  data/metadata/raw/MANUSCRIPTS_ONLY.csv, PAGE_LEVEL_METADATA.csv, ALL_OPEN_MANUSCRIPTS.csv,
+        MANUSCRIPTS_IMAGES_INDEX.csv (same_codex_as: records that share a downloaded codex)
         data/manuscripts/
 Output: data/metadata/clean/visualizer_data.json
 """
@@ -107,6 +108,105 @@ def clean_field(val):
     return str(val).strip()
 
 
+def normalize_text_title(title: str):
+    """'מראה האופנים (קטע).' -> ('מראה האופנים', True). Returns (None, False) for miscellany titles."""
+    t = re.sub(r"[\s.:;,/]+$", "", title.strip())
+    fragment = "קטע" in t
+    t = re.sub(r"\s*\([^)]*\)", "", t).strip(" .:;,")
+    if not t or t.startswith(("קובץ", "קבץ")):
+        return None, False
+    return t, fragment
+
+
+def build_codices_and_texts(manuscripts, index_csv):
+    """Group catalogue records into physical manuscripts (codices) and list the texts each contains.
+
+    Records belong to one codex when one is the parent volume of the other (MARC 773$w), when they share
+    downloaded page images (step 2's same_codex_as), or when they have the same library and shelfmark.
+    Texts come from each record's own title (a work inside the volume) and its added titles (MARC 740$a);
+    miscellany titles ('קובץ ...') describe the volume, not a text.
+    """
+    parent = {m["mms_id"]: m["mms_id"] for m in manuscripts}
+
+    def find(x):
+        parent.setdefault(x, x)
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+
+    def union(a, b):
+        ra, rb = find(a), find(b)
+        if ra != rb:
+            parent[rb] = ra
+
+    by_mark = {}
+    for m in manuscripts:
+        if m["parent_mms"] and m["parent_mms"] != m["mms_id"]:
+            union(m["parent_mms"], m["mms_id"])
+        mark = (m["library"].split("|")[0].strip(), m["shelfmark"].split("|")[0].strip())
+        if mark[1] and mark[1] != "Shelfmark Not Recorded":
+            if mark in by_mark:
+                union(by_mark[mark], m["mms_id"])
+            else:
+                by_mark[mark] = m["mms_id"]
+    if index_csv.exists():
+        idx = pd.read_csv(index_csv, dtype=str).fillna("")
+        if "same_codex_as" in idx.columns:
+            for _, r in idx[idx["same_codex_as"] != ""].iterrows():
+                union(r["same_codex_as"], r["mms_id"])
+
+    groups = {}
+    for m in manuscripts:
+        groups.setdefault(find(m["mms_id"]), []).append(m)
+
+    codices, texts = [], {}
+    for members in groups.values():
+        # the volume record (no parent of its own) describes the codex best; else the first record
+        main = next((m for m in members if not m["parent_mms"]), members[0])
+        codex_id = main["mms_id"]
+        years = [m["year"] for m in members if m["year"]]
+        centuries = [m["century"] for m in members if m["century"] and m["century"] != "Unknown Era"]
+        with_images = next((m for m in members if m["has_local_images"]), None)
+        codex_texts = {}
+        for m in members:
+            m["codex_id"] = codex_id
+            for raw in [m["title"]] + m["added_titles"]:
+                name, fragment = normalize_text_title(raw)
+                if name:
+                    entry = codex_texts.setdefault(name, {"title": name, "fragment": fragment, "records": []})
+                    entry["fragment"] = entry["fragment"] and fragment
+                    if m["mms_id"] not in entry["records"]:
+                        entry["records"].append(m["mms_id"])
+        codices.append({
+            "codex_id": codex_id,
+            "shelfmark": main["shelfmark"].split("|")[0].strip(),
+            "library": main["library"].split("|")[0].strip(),
+            "library_city": main["library_city"],
+            "title": main["title"],
+            "century": centuries[0] if centuries else "Unknown Era",
+            "year": min(years) if years else None,
+            "place_writing": next((m["place_writing"] for m in members if m["place_writing"]), ""),
+            "script": next((m["script"] for m in members if m["script"] and m["script"] != "Not Specified"), ""),
+            "records": [m["mms_id"] for m in members],
+            "has_images": with_images is not None,
+            "image_record": with_images["mms_id"] if with_images else "",
+            "texts": sorted(codex_texts),
+            "contents": next((m["contents"] for m in members if m["contents"]), ""),
+        })
+        for name, entry in codex_texts.items():
+            t = texts.setdefault(name, {"title": name, "codices": [], "fragment_in": []})
+            t["codices"].append(codex_id)
+            if entry["fragment"]:
+                t["fragment_in"].append(codex_id)
+
+    text_list = sorted(texts.values(), key=lambda t: (-len(t["codices"]), t["title"]))
+    for t in text_list:
+        t["count"] = len(t["codices"])
+    codices.sort(key=lambda c: (c["year"] or 9999, c["shelfmark"]))
+    return codices, text_list
+
+
 def build_data():
     print("Reading catalogue and image data...")
     ms_csv = CSV_DIR / "MANUSCRIPTS_ONLY.csv"
@@ -133,6 +233,17 @@ def build_data():
             if f.is_dir() and not f.name.startswith("."):
                 mms_part = f.name.split("_")[0]
                 local_manuscript_dirs[mms_part] = f
+
+    # Records that share a codex with a downloaded record (step 2's same_codex_as) use its folder and pages
+    index_csv = CSV_DIR / "MANUSCRIPTS_IMAGES_INDEX.csv"
+    if index_csv.exists():
+        df_index = pd.read_csv(index_csv, dtype=str).fillna("")
+        if "same_codex_as" in df_index.columns:
+            for _, r in df_index[df_index["same_codex_as"] != ""].iterrows():
+                owner = r["same_codex_as"]
+                if owner in local_manuscript_dirs:
+                    local_manuscript_dirs[r["mms_id"]] = local_manuscript_dirs[owner]
+                    pages_by_mms[r["mms_id"]] = pages_by_mms.get(owner, [])
 
         
     manuscripts = []
@@ -223,7 +334,10 @@ def build_data():
             "downloaded_pages_count": len(img_list),
             "pages": img_list,
             "manifest_url": f"https://iiif.nli.org.il/IIIFv21/{mms_id}/manifest",
-            "ktiv_link": clean_field(row.get("ms_ktiv_link"))
+            "ktiv_link": clean_field(row.get("ms_ktiv_link")),
+            "parent_mms": clean_field(row.get("773$w")).split("|")[0].strip(),
+            "added_titles": [t.strip() for t in clean_field(row.get("740$a")).split("|") if t.strip()],
+            "contents": clean_field(row.get("505$a"))
         }
         
         manuscripts.append(ms_obj)
@@ -289,6 +403,21 @@ def build_data():
 
     open_df = pd.read_csv(CSV_DIR / "ALL_OPEN_MANUSCRIPTS.csv", dtype=str).drop_duplicates("mms_id")
 
+    # Physical books: catalogue records that share a codex (same_codex_as) are counted once
+    books_df = pd.DataFrame()
+    index_csv = CSV_DIR / "MANUSCRIPTS_IMAGES_INDEX.csv"
+    if index_csv.exists():
+        books_df = pd.read_csv(index_csv, dtype=str).fillna("")
+        if "status" in books_df.columns:   # step 2 checks every record live: count those with pages in Ktiv
+            open_df = books_df[books_df["status"] != "no_pages_in_manifest"].rename(columns={"total_canvases": "canvases"})
+        if "same_codex_as" in books_df.columns:
+            books_df = books_df[books_df["same_codex_as"] == ""]
+        if "status" in books_df.columns:
+            books_df = books_df[books_df["status"] != "no_pages_in_manifest"]
+    def book_pages(df, col):
+        return int(pd.to_numeric(df[col], errors="coerce").sum()) if not df.empty else 0
+    downloaded_books = books_df[books_df["status"] == "complete"] if "status" in books_df.columns else books_df
+
     # Format map locations with coordinates
     map_places = []
     
@@ -337,20 +466,30 @@ def build_data():
     for p in sorted_persons:
         p["count"] = len(p["manuscripts"])
 
+    codices, texts = build_codices_and_texts(manuscripts, CSV_DIR / "MANUSCRIPTS_IMAGES_INDEX.csv")
+
     output_data = {
         "stats": {
+            "physical_manuscripts": len(codices),
+            "distinct_texts": len(texts),
             "total_manuscripts": len(manuscripts),
             "downloaded_manuscripts": len([m for m in manuscripts if m["has_local_images"]]),
             "total_downloaded_pages": sum(m["downloaded_pages_count"] for m in manuscripts),
             "total_open_in_catalog": int(open_df["mms_id"].nunique()),
-            "total_pages_in_catalog": int(pd.to_numeric(open_df["canvases"], errors="coerce").sum())
+            "total_pages_in_catalog": int(pd.to_numeric(open_df["canvases"], errors="coerce").sum()),
+            "open_books": len(books_df),
+            "open_book_pages": book_pages(books_df, "total_canvases"),
+            "downloaded_books": len(downloaded_books),
+            "downloaded_book_pages": book_pages(downloaded_books, "downloaded_pages")
         },
         "query_terms": {k: len(v) for k, v in queries_map.items()},
         "centuries": {k: len(v) for k, v in century_map.items()},
         "scripts": {k: len(v) for k, v in script_map.items()},
         "places": map_places,
         "persons": sorted_persons,
-        "manuscripts": manuscripts
+        "manuscripts": manuscripts,
+        "codices": codices,
+        "texts": texts
     }
 
     CLEAN_METADATA_DIR.mkdir(parents=True, exist_ok=True)
@@ -363,6 +502,7 @@ def build_data():
     print(f"  Pages indexed: {output_data['stats']['total_downloaded_pages']}")
     print(f"  Map locations: {len(map_places)}")
     print(f"  Persons indexed: {len(sorted_persons)}")
+    print(f"  Physical manuscripts: {len(codices)} | distinct texts: {len(texts)}")
 
 
 if __name__ == "__main__":

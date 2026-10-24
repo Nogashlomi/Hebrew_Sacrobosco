@@ -1,0 +1,24 @@
+{
+  "mms_id": "990000692350205171",
+  "other_mms_ids": [
+    "990000692370205171",
+    "990000692450205171",
+    "990000692400205171",
+    "990000692460205171",
+    "990000692420205171"
+  ],
+  "title": "מראה האופנים.",
+  "shelfmark": "Ms. Guenzburg 274",
+  "holding_library": "The Russian State Library",
+  "library_code": "RSL",
+  "date_place": "מאה י\"ז.",
+  "script": "אשכנזית",
+  "colophon": "בראש כה\"י ובדפים 119א, 119ב: \"נאום הסופר אשכול הכופר אברהם בן לא\"א יצחק ז\"ל ממדינת מעהרין\" והוא כנראה מעתיק דפים 5-120 ואולי גם 133-137.",
+  "total_pages": 186,
+  "downloaded_pages": 186,
+  "manifest_url": "https://iiif.nli.org.il/IIIFv21/990000692350205171/manifest",
+  "license": "https://www.nli.org.il/contenteditors/pages-for-terms-of-use/public-domain-free-use",
+  "attribution": "The Russian State Library. \"Ktiv\" Project, The National Library of Israel",
+  "folder_name": "990000692350205171_RSL_Ms._Guenzburg_274",
+  "downloaded_at": "2026-10-24T11:04:39"
+}

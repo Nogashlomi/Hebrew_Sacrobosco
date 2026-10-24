@@ -3,38 +3,56 @@
 """
 STEP 2 - Download the digitized copies (IIIF page images) of the chosen manuscripts.
 
-Input:  data/metadata/raw/ALL_OPEN_MANUSCRIPTS.csv (which manuscripts) + MANUSCRIPTS_ONLY.csv (their MARC fields)
+Input:  data/metadata/raw/MANUSCRIPTS_ONLY.csv (every catalogued manuscript and its MARC fields). Each record's
+        IIIF manifest is checked live, because Ktiv opens manuscripts over time; the older
+        ALL_OPEN_MANUSCRIPTS.csv list (October 2026) missed some that are open now.
 Output: data/manuscripts/<mms_id>_<library>_<shelfmark>/NNNN.jpg + metadata.json
-        data/metadata/raw/MANUSCRIPTS_IMAGES_INDEX.csv, PAGE_LEVEL_METADATA.csv
-Usage:  python code/02_download_manuscripts.py --start 0 --limit 10
+        data/metadata/raw/MANUSCRIPTS_IMAGES_INDEX.csv  one row per catalogue record (status, folder, page counts)
+        data/metadata/raw/PAGE_LEVEL_METADATA.csv       one row per downloaded page
+        data/metadata/raw/DOWNLOAD_FAILURES.csv         what could not be downloaded in the last run, and why
+Usage:  python code/02_download_manuscripts.py                 (everything; safe to rerun, skips what is done)
+        python code/02_download_manuscripts.py --dry-run       (only report what would be downloaded)
+        python code/02_download_manuscripts.py --only <mms_id>
+        python code/02_download_manuscripts.py --start 0 --limit 10
 
-Robust batch downloader for Hebrew Sacrobosco manuscripts from NLI / Ktiv.
-Features:
-- Polite to server (0.5s pause, sequential, timeout/retries).
-- Resume support (skips already downloaded pages).
-- Clean human-readable folder naming: data/manuscripts/{mms_id}_{library}_{safe_shelfmark}/
-- Generates comprehensive metadata linkage:
-  * metadata.json inside each manuscript folder
-  * data/metadata/raw/MANUSCRIPTS_IMAGES_INDEX.csv (manuscript-level summary & folder path)
-  * data/metadata/raw/PAGE_LEVEL_METADATA.csv (page-level image index with canvas labels)
+How it works:
+- Several catalogue records often describe the same physical codex (a parent "קובץ" record plus one
+  record per work bound in it). Ktiv gives them the same IIIF manifest, so the codex is downloaded once,
+  into the folder of one record (the "owner"); the other records point to that folder in the index CSV
+  and are listed in the folder's metadata.json under "other_mms_ids".
+- Some manifests list pages whose images are restricted to on-site viewing; the image server answers
+  "no permissions". These codices are recorded as "restricted" and no folder is created for them.
+- Resumable: a page already on disk is kept only if PAGE_LEVEL_METADATA.csv says it came from the same
+  IIIF image; anything else is fetched again. Files are written atomically, so an interrupted run never
+  leaves a half-written image.
+- Polite: one request at a time, a pause between pages, and a longer back-off when the server says
+  it is busy (HTTP 429/503).
 """
 
 import argparse
 import json
 import re
-import sys
 import time
+from datetime import datetime
 from pathlib import Path
+
 import pandas as pd
 import requests
 
 from paths import PROJECT_ROOT, RAW_METADATA_DIR as CSV_DIR, MANUSCRIPTS_DIR as IMAGES_DIR
 
-SLEEP_S = 0.5
-WIDTH = 1200
+SLEEP_S = 0.5            # pause after every image request
+WIDTH = 1200             # downloaded image width in pixels
 TIMEOUT = 60
+MAX_ATTEMPTS = 4         # per page
+BUSY_WAIT_S = 30         # first back-off when the server is busy; grows with each attempt
+MAX_CONSECUTIVE_FAILS = 15   # give up on a codex after this many failed pages in a row
+USER_AGENT = "HebrewSacroboscoResearch/1.0 (academic research; polite requester)"
 
-# Ensure directories exist
+INDEX_CSV = CSV_DIR / "MANUSCRIPTS_IMAGES_INDEX.csv"
+PAGES_CSV = CSV_DIR / "PAGE_LEVEL_METADATA.csv"
+FAILURES_CSV = CSV_DIR / "DOWNLOAD_FAILURES.csv"
+
 IMAGES_DIR.mkdir(parents=True, exist_ok=True)
 CSV_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -48,286 +66,415 @@ def sanitize_filename(name: str) -> str:
     return clean[:40]
 
 
+LIBRARY_CODES = [  # (substring of the library name, lower case) -> short code; first match wins
+    ("france", "BnF"), ("bnf", "BnF"), ("paris", "BnF"),
+    ("bavarian", "BSB"), ("munich", "BSB"),
+    ("national library of israel", "NLI"),
+    ("british", "BL"),
+    ("russian state", "RSL"), ("guenzburg", "RSL"),
+    ("national library of russia", "NLR"),
+    ("palatina", "Palatina"), ("parma", "Palatina"),
+    ("theological", "JTS"), ("jts", "JTS"),
+    ("hebrew union", "HUC"), ("huc", "HUC"),
+    ("ets haim", "EtsHaim"),
+    ("berlin", "Berlin"),
+    ("hungarian", "Budapest"),
+    ("oriental", "IOM"), ("petersburg", "IOM"),
+    ("vatican", "Vatican"),
+    ("bodleian", "Bodleian"), ("oxford", "Bodleian"),
+    ("laurentian", "Laurenziana"),
+    ("ambrosian", "Ambrosiana"),
+    ("mantua", "Mantua"),
+    ("leipzig", "Leipzig"),
+    ("austrian", "ONB"),
+    ("hamburg", "Hamburg"),
+    ("national central library of fl", "BNCF"),
+    ("columbia", "Columbia"),
+    ("cambridge", "Cambridge"),
+    ("national academ", "NatAcad"),
+    ("bar-ilan", "BarIlan"),
+    ("leiden", "Leiden"),
+    ("ringelblum", "Ringelblum"),
+    ("victor emmanuel", "BNN"),
+    ("state library victoria", "SLV"),
+    ("beth din", "BethDin"),
+    ("montefiore", "Montefiore"),
+    ("katz", "Penn"),
+    ("johann christian senckenberg", "Frankfurt"),
+]
+
+
 def get_library_code(lib_name: str) -> str:
-    """Short code for famous manuscript libraries."""
+    """Short code for manuscript libraries."""
     lib = (lib_name or "").lower()
-    if "france" in lib or "bnf" in lib or "paris" in lib:
-        return "BnF"
-    if "bavarian" in lib or "munich" in lib:
-        return "BSB"
-    if "israel" in lib or "national library of israel" in lib:
-        return "NLI"
-    if "british" in lib:
-        return "BL"
-    if "russian state" in lib or "guenzburg" in lib:
-        return "RSL"
-    if "palatina" in lib or "parma" in lib:
-        return "Palatina"
-    if "theological" in lib or "jts" in lib:
-        return "JTS"
-    if "hebrew union" in lib or "huc" in lib:
-        return "HUC"
-    if "ets haim" in lib:
-        return "EtsHaim"
-    if "berlin" in lib:
-        return "Berlin"
-    if "hungarian" in lib:
-        return "Budapest"
-    if "oriental" in lib or "petersburg" in lib:
-        return "IOM"
-    if "vatican" in lib:
-        return "Vatican"
-    if "bodleian" in lib or "oxford" in lib:
-        return "Bodleian"
+    for key, code in LIBRARY_CODES:
+        if key in lib:
+            return code
     return sanitize_filename(lib_name)[:10]
 
 
-def fetch_manifest(mms_id: str):
-    """Fetch IIIF manifest testing direct endpoint first, then DOCID."""
+def safe_str(val, max_len=None):
+    if val is None or pd.isna(val):
+        return ""
+    s = str(val).strip()
+    return s[:max_len] if max_len else s
+
+
+def first_value(val) -> str:
+    """MARC fields with several values are joined with ' | '; take the first."""
+    return safe_str(val).split("|")[0].strip()
+
+
+def fetch_manifest(mms_id: str, session: requests.Session):
+    """Fetch the IIIF manifest (direct endpoint first, then DOCID). Returns (url, manifest, canvases)."""
     urls = [
         f"https://iiif.nli.org.il/IIIFv21/{mms_id}/manifest",
-        f"https://iiif.nli.org.il/IIIFv21/DOCID/PNX_MANUSCRIPTS{mms_id}/manifest"
+        f"https://iiif.nli.org.il/IIIFv21/DOCID/PNX_MANUSCRIPTS{mms_id}/manifest",
     ]
     for url in urls:
-        try:
-            r = requests.get(url, timeout=TIMEOUT)
-            if r.status_code == 200:
-                man = r.json()
-                seq = man.get("sequences", [])
-                if seq and len(seq) > 0 and "canvases" in seq[0] and seq[0]["canvases"]:
-                    return url, man, seq[0]["canvases"]
-                elif "items" in man and man["items"]:
-                    return url, man, man["items"]
-        except Exception:
-            pass
+        for attempt in range(1, 4):
+            try:
+                r = session.get(url, timeout=TIMEOUT)
+                if r.status_code in (429, 503):
+                    time.sleep(BUSY_WAIT_S * attempt)
+                    continue
+                if r.status_code == 200:
+                    man = r.json()
+                    seq = man.get("sequences", [])
+                    if seq and seq[0].get("canvases"):
+                        return url, man, seq[0]["canvases"]
+                    if man.get("items"):
+                        return url, man, man["items"]
+                break
+            except Exception:
+                time.sleep(2 * attempt)
+        time.sleep(SLEEP_S)
     return None, None, []
 
 
-def download_single_manuscript(record: dict, session: requests.Session):
-    mms_id = str(record["mms_id"])
-    title = str(record.get("ms_title", "") or record.get("title", ""))
-    shelfmark_raw = str(record.get("942$z") or record.get("090$a") or "ms")
-    # Take first shelfmark if multiple separated by |
-    first_shelfmark = shelfmark_raw.split("|")[0].strip()
-    lib_raw = str(record.get("710$a") or record.get("942$a") or record.get("library", "Unknown"))
-    first_lib = lib_raw.split("|")[0].strip()
-    lib_code = get_library_code(first_lib)
-    safe_sm = sanitize_filename(first_shelfmark)
-
-    folder_name = f"{mms_id}_{lib_code}_{safe_sm}"
-    target_dir = IMAGES_DIR / folder_name
-    target_dir.mkdir(parents=True, exist_ok=True)
-
-    print(f"\n========================================================")
-    print(f"Manuscript: {mms_id} | {lib_code}: {first_shelfmark}")
-    print(f"Title:      {title[:60]}")
-    print(f"Folder:     {target_dir.relative_to(PROJECT_ROOT)}")
-    print(f"========================================================")
-
-    manifest_url, manifest_json, canvases = fetch_manifest(mms_id)
-    if not canvases:
-        # Check parent record if applicable
-        parent_id = record.get("773$w")
-        if pd.notna(parent_id) and parent_id != "" and parent_id != mms_id:
-            manifest_url, manifest_json, canvases = fetch_manifest(parent_id)
-
-    if not canvases:
-        print(f"No canvases found for {mms_id}. Skipping.")
-        return None, []
-
-    total_pages = len(canvases)
-    print(f"Found {total_pages} pages in manifest.")
-
-    page_rows = []
-    saved_count = 0
-
-    for i, cv in enumerate(canvases, 1):
-        canvas_label = cv.get("label", f"Page {i}")
-        file_name = f"{i:04d}.jpg"
-        file_path = target_dir / file_name
-
-        # Extract image service base URL
-        base = None
-        if "images" in cv and cv["images"]:
+def image_service(cv: dict):
+    """IIIF image service base URL of one canvas (IIIF v2 or v3)."""
+    try:
+        if cv.get("images"):
             svc = cv["images"][0]["resource"].get("service", {})
             svc = svc[0] if isinstance(svc, list) else svc
-            base = svc.get("@id") or svc.get("id")
-        elif "items" in cv and cv["items"]:
+            return svc.get("@id") or svc.get("id")
+        if cv.get("items"):
             body = cv["items"][0]["items"][0]["body"]
-            s = body.get("service", [{}])[0]
-            base = s.get("id") or s.get("@id")
+            svc = body.get("service", [{}])[0]
+            return svc.get("id") or svc.get("@id")
+    except (KeyError, IndexError, TypeError):
+        pass
+    return None
 
-        if not base:
+
+def label_text(label) -> str:
+    if isinstance(label, dict):  # IIIF v3 language map
+        label = next(iter(label.values()), [""])
+    if isinstance(label, list):
+        label = label[0] if label else ""
+    return str(label)
+
+
+def fetch_image(url: str, session: requests.Session):
+    """Download one image. Returns (bytes, None) or (None, error). error 'restricted' = no permission."""
+    error = None
+    for attempt in range(1, MAX_ATTEMPTS + 1):
+        try:
+            resp = session.get(url, timeout=TIMEOUT)
+            ctype = resp.headers.get("content-type", "")
+            if resp.status_code == 200 and ctype.startswith("image") and resp.content[:2] == b"\xff\xd8":
+                return resp.content, None
+            if "no permissions" in resp.text[:500] or "unauthorized" in resp.text[:500]:
+                return None, "restricted"
+            error = f"HTTP {resp.status_code} {ctype.split(';')[0]}"
+            if resp.status_code in (429, 503):
+                wait = int(resp.headers.get("Retry-After", BUSY_WAIT_S * attempt))
+                print(f"    server busy ({resp.status_code}), waiting {wait}s")
+                time.sleep(wait)
+                continue
+        except Exception as e:
+            error = f"{type(e).__name__}: {str(e)[:120]}"
+        time.sleep(2 * attempt)
+    return None, error
+
+
+def load_csv(path: Path):
+    return pd.read_csv(path, dtype=str).fillna("").to_dict("records") if path.exists() else []
+
+
+def save_csv(rows, path: Path):
+    pd.DataFrame(rows).to_csv(path, index=False, encoding="utf-8-sig")
+
+
+def existing_folder(mms_id: str):
+    hits = sorted(IMAGES_DIR.glob(f"{mms_id}_*"))
+    return hits[0] if hits else None
+
+
+def collect_codices(merged: pd.DataFrame, session: requests.Session):
+    """Fetch every manifest and group the catalogue records by physical codex (same page images)."""
+    codices = {}
+    unavailable = []
+    for n, (_, row) in enumerate(merged.iterrows(), 1):
+        rec = row.to_dict()
+        mms_id = str(rec["mms_id"])
+        url, man, canvases = fetch_manifest(mms_id, session)
+        parent = safe_str(rec.get("773$w"))
+        if not canvases and parent and parent != mms_id:
+            url, man, canvases = fetch_manifest(parent, session)
+        services = [image_service(cv) for cv in canvases]
+        print(f"  manifest {n}/{len(merged)} {mms_id}: {len(canvases)} pages")
+        if not canvases or not services[0]:
+            unavailable.append((rec, url))
             continue
+        key = services[0]
+        codex = codices.setdefault(key, {"records": [], "manifest": man, "manifest_url": url,
+                                         "canvases": canvases, "services": services})
+        codex["records"].append(rec)
+    return merge_same_shelfmark(codices), unavailable
 
-        img_url = f"{base}/full/{WIDTH},/0/default.jpg"
 
-        # Check if already downloaded
-        if file_path.exists() and file_path.stat().st_size > 1000:
-            saved_count += 1
+def merge_same_shelfmark(codices):
+    """Ktiv sometimes holds two photographic sets of one manuscript (e.g. RSL Guenzburg 274), attached to
+    different catalogue records. Their images differ, so they are joined by library + shelfmark instead.
+    The set linked to more catalogue records is kept; the other set's records point to it."""
+    merged = {}
+    owner_of_mark = {}
+    for key, codex in sorted(codices.items(), key=lambda kv: -len(kv[1]["records"])):
+        marks = {record_fields(r)[1:] for r in codex["records"]}
+        target = next((owner_of_mark[m] for m in marks if m in owner_of_mark), None)
+        if target is None:
+            merged[key] = codex
+            for m in marks:
+                owner_of_mark[m] = key
         else:
-            # Download with up to 3 retries
-            for attempt in range(1, 4):
-                try:
-                    resp = session.get(img_url, timeout=TIMEOUT)
-                    resp.raise_for_status()
-                    file_path.write_bytes(resp.content)
-                    saved_count += 1
-                    break
-                except Exception as e:
-                    if attempt == 3:
-                        print(f"  Error downloading page {i}: {e}")
-                    time.sleep(1.0)
+            print(f"  same shelfmark, second photo set skipped: {', '.join(str(r['mms_id']) for r in codex['records'])}")
+            merged[target]["records"].extend(codex["records"])
+    return merged
+
+
+def choose_owner(records):
+    """The record whose MMS ID names the folder: one already downloaded, else a work rather than
+    the parent miscellany ('קובץ'), else the first."""
+    for rec in records:
+        if existing_folder(rec["mms_id"]):
+            return rec
+    for rec in records:
+        if not str(rec.get("title", "")).startswith("קובץ"):
+            return rec
+    return records[0]
+
+
+def record_fields(rec):
+    lib = first_value(rec.get("710$a")) or first_value(rec.get("942$a")) or safe_str(rec.get("library")) or "Unknown"
+    shelfmark = first_value(rec.get("942$z")) or first_value(rec.get("090$a")) or "ms"
+    return lib, get_library_code(lib), shelfmark
+
+
+def manifest_license(man):
+    lic = man.get("license") or ""
+    lic = lic[0] if isinstance(lic, list) and lic else lic
+    attr = man.get("attribution") or ""
+    attr = attr[0] if isinstance(attr, list) and attr else attr
+    return str(lic), str(attr)
+
+
+def download_codex(codex, session, trusted_pages, failures):
+    """Download every page of one codex into its owner's folder. Returns (status, folder, page_rows)."""
+    records = codex["records"]
+    owner = choose_owner(records)
+    mms_id = str(owner["mms_id"])
+    lib, lib_code, shelfmark = record_fields(owner)
+    canvases, services = codex["canvases"], codex["services"]
+    total = len(canvases)
+
+    target_dir = existing_folder(mms_id) or IMAGES_DIR / f"{mms_id}_{lib_code}_{sanitize_filename(shelfmark)}"
+    print(f"\n=== {mms_id} | {lib_code}: {shelfmark} | {total} pages | {target_dir.name}")
+    others = [str(r["mms_id"]) for r in records if str(r["mms_id"]) != mms_id]
+    if others:
+        print(f"    same codex as: {', '.join(others)}")
+
+    # Check access with the first page before creating anything on disk
+    first_url = f"{services[0]}/full/{WIDTH},/0/default.jpg"
+    first_file = target_dir / "0001.jpg"
+    if trusted_pages.get(str(first_file.relative_to(PROJECT_ROOT))) != first_url or not first_file.exists():
+        data, err = fetch_image(first_url, session)
+        time.sleep(SLEEP_S)
+        if err == "restricted":
+            print("    images restricted (no permission on the image server) - skipped")
+            failures.append({"mms_id": mms_id, "folder": "", "page_number": "", "url": first_url,
+                             "error": "restricted: image server refuses access (on-site viewing only)"})
+            return "restricted", None, []
+        if data is None:
+            print(f"    first page failed: {err} - skipped")
+            failures.append({"mms_id": mms_id, "folder": "", "page_number": 1, "url": first_url, "error": err})
+            return "failed", None, []
+        target_dir.mkdir(parents=True, exist_ok=True)
+        write_atomic(first_file, data)
+
+    page_rows, saved, fails_in_row = [], 0, 0
+    for i, (cv, base) in enumerate(zip(canvases, services), 1):
+        file_name = f"{i:04d}.jpg"
+        file_path = target_dir / file_name
+        rel = str(file_path.relative_to(PROJECT_ROOT))
+        img_url = f"{base}/full/{WIDTH},/0/default.jpg" if base else ""
+        ok = False
+        if not base:
+            failures.append({"mms_id": mms_id, "folder": target_dir.name, "page_number": i, "url": "",
+                             "error": "no image service in manifest"})
+        elif file_path.exists() and (i == 1 or trusted_pages.get(rel) == img_url):
+            ok = True
+        else:
+            data, err = fetch_image(img_url, session)
+            if data is not None:
+                write_atomic(file_path, data)
+                ok = True
+            else:
+                failures.append({"mms_id": mms_id, "folder": target_dir.name, "page_number": i,
+                                 "url": img_url, "error": err})
+                print(f"    page {i} failed: {err}")
             time.sleep(SLEEP_S)
 
-        if i % 25 == 0 or i == total_pages:
-            print(f"  Progress: {i}/{total_pages} pages processed ({saved_count} saved)")
+        if ok:
+            saved += 1
+            fails_in_row = 0
+            page_rows.append({
+                "mms_id": mms_id, "library_code": lib_code, "shelfmark": shelfmark,
+                "page_number": i, "canvas_label": label_text(cv.get("label", f"Page {i}")),
+                "file_name": file_name, "relative_path": rel,
+                "width": cv.get("width"), "height": cv.get("height"), "iiif_image_url": img_url,
+            })
+        else:
+            fails_in_row += 1
+            if fails_in_row >= MAX_CONSECUTIVE_FAILS:
+                print(f"    {fails_in_row} pages failed in a row - stopping this codex, rerun later")
+                break
+        if i % 25 == 0 or i == total:
+            print(f"    {i}/{total} pages ({saved} saved)")
 
-        page_rows.append({
-            "mms_id": mms_id,
-            "library_code": lib_code,
-            "shelfmark": first_shelfmark,
-            "page_number": i,
-            "canvas_label": canvas_label,
-            "file_name": file_name,
-            "relative_path": str(file_path.relative_to(PROJECT_ROOT)),
-            "width": cv.get("width"),
-            "height": cv.get("height"),
-            "iiif_image_url": img_url
-        })
-
-    def safe_str(val, max_len=None):
-        if pd.isna(val) or val is None:
-            return ""
-        s = str(val).strip()
-        return s[:max_len] if max_len else s
-
-    # Save local metadata.json inside the manuscript folder
+    lic, attr = manifest_license(codex["manifest"])
     meta_doc = {
         "mms_id": mms_id,
-        "title": title,
-        "shelfmark": first_shelfmark,
-        "holding_library": first_lib,
+        "other_mms_ids": others,
+        "title": safe_str(owner.get("title")) or safe_str(owner.get("ms_title")),
+        "shelfmark": shelfmark,
+        "holding_library": lib,
         "library_code": lib_code,
-        "date_place": safe_str(record.get("ms_date_place")),
-        "script": safe_str(record.get("958$a")),
-        "colophon": safe_str(record.get("957$a")),
-        "total_pages": total_pages,
-        "downloaded_pages": saved_count,
-        "manifest_url": manifest_url,
-        "folder_name": folder_name
+        "date_place": safe_str(owner.get("ms_date_place")),
+        "script": safe_str(owner.get("958$a")),
+        "colophon": safe_str(owner.get("957$a")),
+        "total_pages": total,
+        "downloaded_pages": saved,
+        "manifest_url": codex["manifest_url"],
+        "license": lic,
+        "attribution": attr,
+        "folder_name": target_dir.name,
+        "downloaded_at": datetime.now().isoformat(timespec="seconds"),
     }
-    with open(target_dir / "metadata.json", "w", encoding="utf-8") as f:
-        json.dump(meta_doc, f, ensure_ascii=False, indent=2)
+    (target_dir / "metadata.json").write_text(json.dumps(meta_doc, ensure_ascii=False, indent=2), encoding="utf-8")
+    status = "complete" if saved == total else "partial"
+    return status, target_dir, page_rows
 
-    ms_summary = {
-        "mms_id": mms_id,
+
+def write_atomic(path: Path, data: bytes):
+    tmp = path.with_suffix(".part")
+    tmp.write_bytes(data)
+    tmp.replace(path)
+
+
+def index_row(rec, codex, owner_id, status, folder, saved):
+    lib, lib_code, shelfmark = record_fields(rec)
+    lic = manifest_license(codex["manifest"])[0] if codex else ""
+    return {
+        "mms_id": str(rec["mms_id"]),
         "library_code": lib_code,
-        "shelfmark": first_shelfmark,
-        "title": title,
-        "folder_path": str(target_dir.relative_to(PROJECT_ROOT)),
-        "total_canvases": total_pages,
-        "downloaded_pages": saved_count,
-        "manifest_url": manifest_url,
-        "date_place": safe_str(record.get("ms_date_place")),
-        "script": safe_str(record.get("958$a")),
-        "colophon": safe_str(record.get("957$a"), 100)
+        "shelfmark": shelfmark,
+        "title": safe_str(rec.get("title")) or safe_str(rec.get("ms_title")),
+        "status": status,
+        "folder_path": str(folder.relative_to(PROJECT_ROOT)) if folder else "",
+        "same_codex_as": owner_id if owner_id != str(rec["mms_id"]) else "",
+        "total_canvases": len(codex["canvases"]) if codex else 0,
+        "downloaded_pages": saved,
+        "manifest_url": codex["manifest_url"] if codex else "",
+        "license": lic.rsplit("/", 1)[-1],
+        "date_place": safe_str(rec.get("ms_date_place")),
+        "script": safe_str(rec.get("958$a")),
+        "colophon": safe_str(rec.get("957$a"), 100),
     }
-
-    return ms_summary, page_rows
-
-
-def download_by_rosetta_ids(mms_id: str, first_fl: int, pages, folder_name: str):
-    """
-    Fallback for manuscripts whose IIIF manifest has empty sequences (restricted to on-site viewing).
-    Requests page images straight from the IIIF Image API by Rosetta file ID, assuming the IDs run
-    in sequence through the codex (page n = FL<first_fl + n - 1>). There is no check that a returned
-    image really is the expected folio.
-
-    Only used so far for JTS Ms. 9121 (MMS 990000846580205171, parent 990000846560205171):
-    MARC 907$d gives FL155318969 = f. 8a, so page 1 = FL155318962.
-        download_by_rosetta_ids("990000846580205171", 155318962, [1, 2, 3], "990000846580205171_JTS_Ms._9121")
-    """
-    folder = IMAGES_DIR / folder_name
-    folder.mkdir(parents=True, exist_ok=True)
-    for page_num in pages:
-        fl_id = f"FL{first_fl + page_num - 1}"
-        img = requests.get(f"https://iiif.nli.org.il/IIIFv21/{fl_id}/full/{WIDTH},/0/default.jpg", timeout=120)
-        img.raise_for_status()
-        out_path = folder / f"{page_num:04d}.jpg"
-        out_path.write_bytes(img.content)
-        print(f"saved page {page_num} ({fl_id}) -> {out_path}")
-        time.sleep(SLEEP_S)
 
 
 def main():
     parser = argparse.ArgumentParser(description="Download open Hebrew Sacrobosco manuscripts.")
-    parser.add_argument("--limit", type=int, default=None, help="Number of manuscripts to download.")
-    parser.add_argument("--start", type=int, default=0, help="Start index (0-based).")
+    parser.add_argument("--start", type=int, default=0, help="First codex to process (0-based).")
+    parser.add_argument("--limit", type=int, default=None, help="Number of codices to process.")
+    parser.add_argument("--only", help="Process only the codex containing this MMS ID.")
+    parser.add_argument("--dry-run", action="store_true", help="Fetch manifests and report; download nothing.")
     args = parser.parse_args()
 
-    # Load open manuscripts list and merge with full MARC metadata
-    open_df = pd.read_csv(CSV_DIR / "ALL_OPEN_MANUSCRIPTS.csv", dtype=str)
-    all_ms_df = pd.read_csv(CSV_DIR / "MANUSCRIPTS_ONLY.csv", dtype=str)
-
-    # Merge to get all rich MARC columns
-    merged = open_df.merge(all_ms_df, left_on="mms_id", right_on="ms_mms_id", how="left", suffixes=("", "_full"))
-
-    # De-duplicate by MMS ID to ensure one folder per manuscript
+    merged = pd.read_csv(CSV_DIR / "MANUSCRIPTS_ONLY.csv", dtype=str)
+    merged["mms_id"] = merged["ms_mms_id"]
+    merged["title"] = merged["ms_title"]
     merged = merged.drop_duplicates(subset=["mms_id"]).reset_index(drop=True)
 
-    total_available = len(merged)
-    start_idx = args.start
-    end_idx = start_idx + args.limit if args.limit is not None else total_available
-    subset = merged.iloc[start_idx:end_idx]
-
-    print(f"\n========================================================")
-    print(f"BATCH DOWNLOAD INITIATED")
-    print(f"Total open manuscripts in catalog: {total_available}")
-    print(f"Processing range: [{start_idx} to {end_idx-1}] ({len(subset)} manuscripts)")
-    print(f"Image width: {WIDTH}px | Pause: {SLEEP_S}s")
-    print(f"========================================================")
-
-    index_csv = CSV_DIR / "MANUSCRIPTS_IMAGES_INDEX.csv"
-    pages_csv = CSV_DIR / "PAGE_LEVEL_METADATA.csv"
-
-    # Load existing indices if present
-    existing_ms_summaries = pd.read_csv(index_csv).to_dict("records") if index_csv.exists() else []
-    existing_pages = pd.read_csv(pages_csv).to_dict("records") if pages_csv.exists() else []
-
-    seen_mms = {str(r["mms_id"]) for r in existing_ms_summaries}
-
     session = requests.Session()
-    session.headers.update({
-        "User-Agent": "HebrewSacroboscoResearch/1.0 (academic research; polite requester)"
-    })
+    session.headers.update({"User-Agent": USER_AGENT})
 
-    for idx, (_, row) in enumerate(subset.iterrows(), 1):
-        mms_id = str(row["mms_id"])
-        print(f"\n>>> Processing [{idx}/{len(subset)}] MMS: {mms_id} <<<")
-        ms_summary, page_rows = download_single_manuscript(row.to_dict(), session)
+    print(f"Fetching IIIF manifests for {len(merged)} catalogue records...")
+    codices, unavailable = collect_codices(merged, session)
+    keys = list(codices)
+    if args.only:
+        keys = [k for k in keys if any(str(r["mms_id"]) == args.only for r in codices[k]["records"])]
+    keys = keys[args.start: args.start + args.limit if args.limit is not None else None]
 
-        if ms_summary:
-            # Update index
-            if mms_id in seen_mms:
-                existing_ms_summaries = [s for s in existing_ms_summaries if str(s["mms_id"]) != mms_id]
-            existing_ms_summaries.append(ms_summary)
-            seen_mms.add(mms_id)
+    print(f"\n{len(merged)} records -> {len(codices)} distinct codices "
+          f"({sum(len(c['canvases']) for c in codices.values())} pages); "
+          f"{len(unavailable)} records without pages in their manifest")
+    print(f"Processing {len(keys)} codices | width {WIDTH}px | pause {SLEEP_S}s")
+    if args.dry_run:
+        return
 
-            # Update page level rows
-            existing_pages = [p for p in existing_pages if str(p["mms_id"]) != mms_id]
-            existing_pages.extend(page_rows)
+    index_rows = {r["mms_id"]: r for r in load_csv(INDEX_CSV)}
 
-            # Persist updated CSVs after each manuscript finishes
-            pd.DataFrame(existing_ms_summaries).to_csv(index_csv, index=False, encoding="utf-8-sig")
-            pd.DataFrame(existing_pages).to_csv(pages_csv, index=False, encoding="utf-8-sig")
-            print(f"Updated index tables: {index_csv.name} and {pages_csv.name}")
+    # Outage guard: if far fewer records have pages than last time, Ktiv is probably down (e.g. Cloudflare
+    # error 520); stop before the index is overwritten with "no pages".
+    had_pages = sum(1 for r in index_rows.values() if r.get("status") in ("complete", "partial", "restricted"))
+    have_pages = len(merged) - len(unavailable)
+    if not args.only and had_pages and have_pages < 0.5 * had_pages:
+        raise SystemExit(f"Only {have_pages} records have pages now, against {had_pages} last time: Ktiv seems "
+                         f"unavailable. Nothing was changed; try again later.")
+    page_rows = load_csv(PAGES_CSV)
+    trusted_pages = {r["relative_path"]: r["iiif_image_url"] for r in page_rows}
+    failures = []
 
-    print(f"\n========================================================")
-    print(f"BATCH FINISHED!")
-    print(f"Total manuscripts indexed: {len(existing_ms_summaries)}")
-    print(f"Total pages indexed:       {len(existing_pages)}")
-    print(f"========================================================")
+    for rec, url in unavailable:
+        index_rows[str(rec["mms_id"])] = index_row(rec, None, str(rec["mms_id"]), "no_pages_in_manifest", None, 0)
+        failures.append({"mms_id": str(rec["mms_id"]), "folder": "", "page_number": "", "url": url or "",
+                         "error": "manifest has no pages (restricted or not digitized)"})
+
+    for n, key in enumerate(keys, 1):
+        codex = codices[key]
+        print(f"\n>>> [{n}/{len(keys)}]")
+        status, folder, rows = download_codex(codex, session, trusted_pages, failures)
+        owner_id = str(choose_owner(codex["records"])["mms_id"])
+        for rec in codex["records"]:
+            index_rows[str(rec["mms_id"])] = index_row(rec, codex, owner_id, status, folder, len(rows))
+        # Replace this codex's page rows (none are left for a restricted codex)
+        codex_ids = {str(r["mms_id"]) for r in codex["records"]}
+        page_rows = [p for p in page_rows if p["mms_id"] not in codex_ids] + rows
+        # Persist after every codex so an interrupted run loses nothing
+        save_csv(list(index_rows.values()), INDEX_CSV)
+        save_csv(page_rows, PAGES_CSV)
+        save_csv([dict(f, time=datetime.now().isoformat(timespec="seconds")) for f in failures], FAILURES_CSV)
+
+    save_csv(list(index_rows.values()), INDEX_CSV)
+    save_csv([dict(f, time=datetime.now().isoformat(timespec="seconds")) for f in failures], FAILURES_CSV)
+    statuses = pd.Series([r.get("status", "") for r in index_rows.values()]).value_counts()
+    print("\n========================================================")
+    print("BATCH FINISHED")
+    print(f"Records by status:\n{statuses.to_string()}")
+    print(f"Pages indexed: {len(page_rows)} | failures logged: {len(failures)} -> {FAILURES_CSV.name}")
+    print("========================================================")
 
 
 if __name__ == "__main__":

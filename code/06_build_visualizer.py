@@ -35,6 +35,14 @@ def main():
     clusters_json = CLUSTERS_DIR / "clusters.json"
     data["clusters"] = json.loads(clusters_json.read_text(encoding="utf-8")) if clusters_json.exists() else None
 
+    # each group's most typical crop (smallest distance to the group centre) is its example picture
+    clusters_csv = CLUSTERS_DIR / "clusters.csv"
+    if data["clusters"] and clusters_csv.exists():
+        distance = pd.read_csv(clusters_csv, dtype={"illustration_id": str}).set_index("illustration_id")["distance"]
+        for c in data["clusters"]["clusters"]:
+            ids = [i for i in c["illustration_ids"] if i in distance.index]
+            c["example_id"] = min(ids, key=lambda i: distance[i]) if ids else (c["illustration_ids"] or [""])[0]
+
     VISUALIZER_DIR.mkdir(parents=True, exist_ok=True)
     for f in VISUALIZER_TEMPLATE_DIR.iterdir():
         if f.is_file():

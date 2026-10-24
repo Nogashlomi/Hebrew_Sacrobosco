@@ -32,6 +32,7 @@ from paths import PROJECT_ROOT, MANUSCRIPTS_DIR, ILLUSTRATIONS_DIR
 CORDEEP_DIR = PROJECT_ROOT / "external" / "sphaera-cordeep"
 CORDEEP_CLASSES = ["Content Illustration", "Decoration", "Initial", "Printer's Mark", "Table"]
 METHOD = "cordeep-yolov5_300epochs_aug"
+DUPLICATE_OVERLAP = 0.6   # two boxes on one page overlapping this much (IoU) are one drawing
 
 ILLUSTRATIONS_CSV = ILLUSTRATIONS_DIR / "illustrations.csv"
 ILLUSTRATION_COLUMNS = [
@@ -110,6 +111,35 @@ def process_manuscript(folder: Path, conf: float, max_area: float, device: str) 
     return rows
 
 
+def box_overlap(a: dict, b: dict) -> float:
+    """Intersection over union of two crops' boxes (0 = apart, 1 = the same box)."""
+    ax, ay, aw, ah = (float(a[k]) for k in ("x", "y", "width", "height"))
+    bx, by, bw, bh = (float(b[k]) for k in ("x", "y", "width", "height"))
+    iw = max(0.0, min(ax + aw, bx + bw) - max(ax, bx))
+    ih = max(0.0, min(ay + ah, by + bh) - max(ay, by))
+    inter = iw * ih
+    return inter / (aw * ah + bw * bh - inter) if inter else 0.0
+
+
+def drop_duplicate_boxes(rows: List[dict], threshold: float = DUPLICATE_OVERLAP) -> List[dict]:
+    """CorDeep can box one drawing twice on a page, often under two classes (e.g. Initial and
+    Content Illustration). Keep the more confident box and delete the other crop."""
+    by_page = {}
+    for r in rows:
+        by_page.setdefault((r["manuscript_folder"], str(r["page_number"])), []).append(r)
+    kept = []
+    for page_rows in by_page.values():
+        chosen = []
+        for r in sorted(page_rows, key=lambda r: -float(r["score"])):
+            if all(box_overlap(r, k) < threshold for k in chosen):
+                chosen.append(r)
+            else:
+                (PROJECT_ROOT / r["crop_file"]).unlink(missing_ok=True)
+        kept.extend(chosen)
+    order = {id(r): i for i, r in enumerate(rows)}
+    return sorted(kept, key=lambda r: order[id(r)])
+
+
 def main():
     parser = argparse.ArgumentParser(description="Extract illustrations from downloaded manuscripts with CorDeep.")
     parser.add_argument("--only", help="Process a single manuscript folder (by name).")
@@ -148,7 +178,17 @@ def main():
             old_rows = [r for r in old_rows if r["manuscript_folder"] != folder.name]
         rows.extend(process_manuscript(folder, args.conf, args.max_area, args.device))
 
-    all_rows = old_rows + rows
+    # drop crops whose manuscript folder is gone (e.g. a second photo set of the same manuscript)
+    gone = {r["manuscript_folder"] for r in old_rows if not (MANUSCRIPTS_DIR / r["manuscript_folder"]).is_dir()}
+    for name in gone:
+        print(f"{name}: manuscript folder removed, dropping its crops")
+        shutil.rmtree(ILLUSTRATIONS_DIR / name, ignore_errors=True)
+    old_rows = [r for r in old_rows if r["manuscript_folder"] not in gone]
+
+    before = len(old_rows) + len(rows)
+    all_rows = drop_duplicate_boxes(old_rows + rows)
+    if len(all_rows) < before:
+        print(f"{before - len(all_rows)} duplicate boxes removed (same drawing boxed twice on a page)")
     ILLUSTRATIONS_DIR.mkdir(parents=True, exist_ok=True)
     with ILLUSTRATIONS_CSV.open("w", encoding="utf-8-sig", newline="") as f:
         w = csv.DictWriter(f, fieldnames=ILLUSTRATION_COLUMNS)

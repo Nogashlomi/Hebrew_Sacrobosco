@@ -1,5 +1,6 @@
 {
   "mms_id": "990001467840205171",
+  "other_mms_ids": [],
   "title": "ספר הגלגל.",
   "shelfmark": "Ms. Guenzburg 1067",
   "holding_library": "The Russian State Library",
@@ -10,5 +11,8 @@
   "total_pages": 12,
   "downloaded_pages": 12,
   "manifest_url": "https://iiif.nli.org.il/IIIFv21/990001467840205171/manifest",
-  "folder_name": "990001467840205171_RSL_Ms._Guenzburg_1067"
+  "license": "https://www.nli.org.il/contenteditors/pages-for-terms-of-use/public-domain-free-use",
+  "attribution": "The Russian State Library. \"Ktiv\" Project, The National Library of Israel",
+  "folder_name": "990001467840205171_RSL_Ms._Guenzburg_1067",
+  "downloaded_at": "2026-10-24T11:04:33"
 }

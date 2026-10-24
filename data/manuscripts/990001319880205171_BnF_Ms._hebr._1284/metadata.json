@@ -1,0 +1,21 @@
+{
+  "mms_id": "990001319880205171",
+  "other_mms_ids": [
+    "990001319780205171",
+    "990001319890205171"
+  ],
+  "title": "מראה האופנים.",
+  "shelfmark": "Ms. hebr. 1284",
+  "holding_library": "The National Library of France",
+  "library_code": "BnF",
+  "date_place": "מאה ט\"ו-ט\"ז.",
+  "script": "איטלקית",
+  "colophon": "",
+  "total_pages": 168,
+  "downloaded_pages": 168,
+  "manifest_url": "https://iiif.nli.org.il/IIIFv21/990001319880205171/manifest",
+  "license": "https://www.nli.org.il/contenteditors/pages-for-terms-of-use/public-domain-non-commercial-use",
+  "attribution": "Source: Bibliothèque Nationale de France, The National Library of Israel. \"Ktiv\" Project, The National Library of Israel.",
+  "folder_name": "990001319880205171_BnF_Ms._hebr._1284",
+  "downloaded_at": "2026-10-24T11:05:07"
+}

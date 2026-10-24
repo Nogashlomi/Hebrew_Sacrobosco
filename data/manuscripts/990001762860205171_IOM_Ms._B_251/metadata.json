@@ -1,0 +1,20 @@
+{
+  "mms_id": "990001762860205171",
+  "other_mms_ids": [
+    "990001762800205171"
+  ],
+  "title": "ספר הגלגל.",
+  "shelfmark": "Ms. B 251",
+  "holding_library": "Institute of Oriental Manuscripts, the Russian Academy of Sciences",
+  "library_code": "IOM",
+  "date_place": "שי\"ח (1558).",
+  "script": "אשכנזית",
+  "colophon": "קולופון (דף 46א, 62ב): \"סליק זה הספר ... ח אדר ראשון שנת שי\"ח נאום משה ב\"ר יצחק המכונ' מייזיש\".",
+  "total_pages": 71,
+  "downloaded_pages": 71,
+  "manifest_url": "https://iiif.nli.org.il/IIIFv21/990001762860205171/manifest",
+  "license": "https://www.nli.org.il/contenteditors/pages-for-terms-of-use/public-domain-non-commercial-use",
+  "attribution": "From the collection of the Institute of Oriental Manuscripts of the Russian Academy of Sciences, The National Library of Israel. \"Ktiv\" Project, The National Library of Israel.",
+  "folder_name": "990001762860205171_IOM_Ms._B_251",
+  "downloaded_at": "2026-10-24T11:04:35"
+}

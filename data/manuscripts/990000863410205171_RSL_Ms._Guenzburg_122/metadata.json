@@ -1,0 +1,20 @@
+{
+  "mms_id": "990000863410205171",
+  "other_mms_ids": [
+    "990000863370205171"
+  ],
+  "title": "מראה האופנים.",
+  "shelfmark": "Ms. Guenzburg 122",
+  "holding_library": "The Russian State Library",
+  "library_code": "RSL",
+  "date_place": "של\"ו (1576).",
+  "script": "איטלקית",
+  "colophon": "קולופון (דפים 116א-218ב): \"נשלם ... בחדש ... אדר ... שנת של\"ו ... פה מנטובה\" (134ב).",
+  "total_pages": 225,
+  "downloaded_pages": 225,
+  "manifest_url": "https://iiif.nli.org.il/IIIFv21/990000863410205171/manifest",
+  "license": "https://www.nli.org.il/contenteditors/pages-for-terms-of-use/public-domain-free-use",
+  "attribution": "The Russian State Library. \"Ktiv\" Project, The National Library of Israel",
+  "folder_name": "990000863410205171_RSL_Ms._Guenzburg_122",
+  "downloaded_at": "2026-10-24T11:04:39"
+}

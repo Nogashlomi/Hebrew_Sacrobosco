@@ -1,0 +1,20 @@
+{
+  "mms_id": "990000836020205171",
+  "other_mms_ids": [
+    "990000836000205171"
+  ],
+  "title": "בית אלהים.",
+  "shelfmark": "Ms. A 218",
+  "holding_library": "Institute of Oriental Manuscripts, the Russian Academy of Sciences",
+  "library_code": "IOM",
+  "date_place": "מאה י\"ז.",
+  "script": "מזרחית",
+  "colophon": "",
+  "total_pages": 206,
+  "downloaded_pages": 206,
+  "manifest_url": "https://iiif.nli.org.il/IIIFv21/990000836020205171/manifest",
+  "license": "https://www.nli.org.il/contenteditors/pages-for-terms-of-use/public-domain-non-commercial-use",
+  "attribution": "From the collection of the Institute of Oriental Manuscripts of the Russian Academy of Sciences, The National Library of Israel. \"Ktiv\" Project, The National Library of Israel.",
+  "folder_name": "990000836020205171_IOM_Ms._A_218",
+  "downloaded_at": "2026-10-24T11:05:11"
+}

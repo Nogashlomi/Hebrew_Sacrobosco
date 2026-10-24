@@ -1,0 +1,20 @@
+{
+  "mms_id": "990001767020205171",
+  "other_mms_ids": [
+    "990001767000205171"
+  ],
+  "title": "מראה האופנים.",
+  "shelfmark": "Cod.hebr. 294",
+  "holding_library": "Bavarian State Library",
+  "library_code": "BSB",
+  "date_place": "רנ\"ד (1494).",
+  "script": "ספרדית",
+  "colophon": "קולופונים (לדפים 1א-200ב): \"נשלם ספר החזיון ... אני יעקב בכ\"ר יצחק פרץ נב\"ת ספרדי כתבתי זה הספר הנקרא צורת הארץ פה עיר קשטילו לכמ\"ר מנחם בכ\"ר דוד והשלמתי יום א יב תמוז ... שנת נ'ד'ר' לאביר יעקב\" (60א), | \"חזק ונתחזק הסופר לא יזק מעתה ועד עולם עד שיעלה חמור בסולם אשר יעקב אבינו חלם\" (76ב).",
+  "total_pages": 421,
+  "downloaded_pages": 421,
+  "manifest_url": "https://iiif.nli.org.il/IIIFv21/990001767020205171/manifest",
+  "license": "https://www.nli.org.il/contenteditors/pages-for-terms-of-use/public-domain-free-use",
+  "attribution": "Bavarian State Library, The National Library of Israel. \"Ktiv\" Project, The National Library of Israel.",
+  "folder_name": "990001767020205171_BSB_Cod.hebr._294",
+  "downloaded_at": "2026-10-24T11:05:07"
+}

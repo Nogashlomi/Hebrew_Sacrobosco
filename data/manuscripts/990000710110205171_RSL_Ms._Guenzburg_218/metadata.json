@@ -1,0 +1,20 @@
+{
+  "mms_id": "990000710110205171",
+  "other_mms_ids": [
+    "990000710090205171"
+  ],
+  "title": "מראה האופנים.",
+  "shelfmark": "Ms. Guenzburg 218",
+  "holding_library": "The Russian State Library",
+  "library_code": "RSL",
+  "date_place": "שי\"ח.",
+  "script": "איטלקית",
+  "colophon": "קולופונים של מעתיק דפים 1-153: \"ותשלם ... היום יום ב' ה' אלול כב לולייו חמשת אלפים ושיח לבריאת עולם ... ע\"י יצחק צרפתי יצ\"ו בכמ\"ר אברהם משה צרפתי מקוסטניזה מאימולה פה אורבינו ... בבית כמה\"ר אלחנן יצ\"ו מקמרינו\" (120ב); | וקולופון נוסף באותה כתיבה אך קשה לקרוא (בדף 153א);",
+  "total_pages": 291,
+  "downloaded_pages": 291,
+  "manifest_url": "https://iiif.nli.org.il/IIIFv21/990000710090205171/manifest",
+  "license": "https://www.nli.org.il/contenteditors/pages-for-terms-of-use/public-domain-free-use",
+  "attribution": "The Russian State Library. \"Ktiv\" Project, The National Library of Israel",
+  "folder_name": "990000710110205171_RSL_Ms._Guenzburg_218",
+  "downloaded_at": "2026-10-24T11:04:39"
+}

@@ -1,0 +1,20 @@
+{
+  "mms_id": "990000689360205171",
+  "other_mms_ids": [
+    "990000689350205171"
+  ],
+  "title": "מראה האופנים.",
+  "shelfmark": "Ms. Guenzburg 1076",
+  "holding_library": "The Russian State Library",
+  "library_code": "RSL",
+  "date_place": "רכ\"ז[?] (1467).",
+  "script": "איטלקית",
+  "colophon": "קולופון (דף 64א): \"נשלם החבור הזה ונשלמה כתיבתו תמוז שנת חמשה אלפים ושבע ועשרים ליצירה ת\"ל\" לפי צורת הכתב וגם לפי העובדה שהחבור הראשון נתחבר בשנת קנ\"ט, לא יתכן שקולופון זה מרמז לשנת 1267, וכנראה נשמטו המאות והכוונה לשנת רכ\"ז.",
+  "total_pages": 96,
+  "downloaded_pages": 96,
+  "manifest_url": "https://iiif.nli.org.il/IIIFv21/990000689360205171/manifest",
+  "license": "https://www.nli.org.il/contenteditors/pages-for-terms-of-use/public-domain-free-use",
+  "attribution": "The Russian State Library. \"Ktiv\" Project, The National Library of Israel",
+  "folder_name": "990000689360205171_RSL_Ms._Guenzburg_1076",
+  "downloaded_at": "2026-10-24T11:04:39"
+}
