@@ -42,29 +42,60 @@ document.addEventListener("DOMContentLoaded", () => {
   // -----------------------------------------------------------
   // 0. Initialize Masthead Global Statistics
   // -----------------------------------------------------------
-  document.getElementById("stat-total-ms").textContent = data.stats.total_manuscripts;
-  // Books = physical codices; several catalogue records can describe works bound in the same book
-  const s = data.stats;
-  document.getElementById("stat-downloaded-ms").textContent = s.downloaded_books !== undefined
-    ? `${s.downloaded_books} books, ${s.downloaded_book_pages.toLocaleString()} pages (${s.downloaded_manuscripts} catalogue records)`
-    : `${s.downloaded_manuscripts} (${s.total_downloaded_pages.toLocaleString()} pages)`;
-  document.getElementById("stat-open-catalog").textContent = s.open_books !== undefined
-    ? `${s.open_books} books, ${s.open_book_pages.toLocaleString()} pages (${s.total_open_in_catalog} catalogue records)`
-    : `${s.total_open_in_catalog} (${s.total_pages_in_catalog.toLocaleString()} pages)`;
+  // Home: from the searches to the page images, per physical manuscript (data.funnel, step 3)
+  const f = data.funnel;
+  const fmt = n => (n || 0).toLocaleString();
+  const pct = (n, of) => of ? Math.round(100 * n / of) : 0;
+  if (f) {
+    document.getElementById("home-funnel").innerHTML = `
+      <div class="funnel-steps">
+        <div class="funnel-step"><span class="funnel-num">${f.search_terms}</span><span class="funnel-label">catalogue searches</span>
+          <span class="funnel-note">in the National Library of Israel catalogue (Ktiv)</span></div>
+        <div class="funnel-arrow">→</div>
+        ${f.records_found ? `<div class="funnel-step"><span class="funnel-num">${fmt(f.records_found)}</span><span class="funnel-label">catalogue records found</span>
+          <span class="funnel-note">all kinds, incl. printed books</span></div>
+        <div class="funnel-arrow">→</div>` : ""}
+        <div class="funnel-step"><span class="funnel-num">${fmt(f.manuscript_records)}</span><span class="funnel-label">manuscript records</span>
+          <span class="funnel-note">one record per volume or per work inside a volume</span></div>
+        <div class="funnel-arrow">→</div>
+        <div class="funnel-step main"><span class="funnel-num">${fmt(f.physical_manuscripts)}</span><span class="funnel-label">physical manuscripts</span>
+          <span class="funnel-note">records describing the same book merged</span></div>
+      </div>
+
+      <div class="funnel-split-title">Of the <strong>${fmt(f.physical_manuscripts)}</strong> physical manuscripts:</div>
+      <div class="funnel-bar">
+        <span class="seg open" style="flex: ${f.open}" title="${f.open} open">${f.open}</span>
+        <span class="seg restricted" style="flex: ${f.restricted}" title="${f.restricted} restricted">${f.restricted}</span>
+        <span class="seg none" style="flex: ${f.not_digitized}" title="${f.not_digitized} not digitized">${f.not_digitized}</span>
+      </div>
+      <div class="funnel-legend">
+        <div><i class="open"></i><strong>${f.open} digitized and open</strong> (${pct(f.open, f.physical_manuscripts)}%) ·
+          ${fmt(f.open_pages)} pages · <strong>all ${f.downloaded} downloaded</strong> into this project and readable in the Facsimile Reader</div>
+        <div><i class="restricted"></i><strong>${f.restricted} digitized but restricted</strong> (${pct(f.restricted, f.physical_manuscripts)}%) ·
+          ${fmt(f.restricted_pages)} pages · Ktiv has images but does not serve them openly, so they are not here</div>
+        <div><i class="none"></i><strong>${f.not_digitized} not digitized</strong> (${pct(f.not_digitized, f.physical_manuscripts)}%) ·
+          catalogue record only</div>
+      </div>`;
+  }
   const persons = data.persons || [];
   const roleCounts = {};
   persons.forEach(p => { roleCounts[p.role] = (roleCounts[p.role] || 0) + 1; });
-  const roleShort = { "Author": "authors", "Translator": "translators", "Commentator": "commentators",
-                      "Scribe / Copyist": "scribes", "Associated Person / Owner": "owners & others" };
+  const roleShort = { "Author": "authors", "Translator": "translators", "Scribe": "scribes",
+                      "Former owner": "former owners", "Censor": "censors" };
   const roleText = Object.keys(roleShort).filter(r => roleCounts[r])
-    .concat(Object.keys(roleCounts).filter(r => !roleShort[r]))
-    .map(r => `${roleCounts[r]} ${roleShort[r] || r}`).join(", ");
+    .map(r => `${roleCounts[r]} ${roleShort[r]}`).concat(
+      persons.length - Object.keys(roleShort).reduce((n, r) => n + (roleCounts[r] || 0), 0) > 0
+        ? [`${persons.length - Object.keys(roleShort).reduce((n, r) => n + (roleCounts[r] || 0), 0)} others`] : []).join(", ");
   document.getElementById("stat-persons").textContent = roleText ? `${persons.length} (${roleText})` : persons.length;
-  document.getElementById("stat-places").textContent = (data.places || []).length;
+  const nWriting = (data.places || []).filter(p => p.type === "writing").length;
+  document.getElementById("stat-places").textContent =
+    `${nWriting} places of writing, ${(data.places || []).length - nWriting} cities of holding libraries`;
   const homeIllustrations = data.illustrations || [];
-  const illustrationMss = new Set(homeIllustrations.map(r => r.mms_id)).size;
+  const codexOfRecord = {};
+  (data.codices || []).forEach(c => c.records.forEach(r => { codexOfRecord[r] = c.codex_id; }));
+  const illustrationMss = new Set(homeIllustrations.map(r => codexOfRecord[r.mms_id] || r.mms_id)).size;
   document.getElementById("stat-illustrations").textContent =
-    `${homeIllustrations.length.toLocaleString()} (in ${illustrationMss} manuscripts)`;
+    `${homeIllustrations.length.toLocaleString()} in ${illustrationMss} of the ${f ? f.downloaded : "downloaded"} downloaded manuscripts`;
   const repeatingGroups = ((data.clusters && data.clusters.clusters) || []).filter(c => c.label.startsWith("repeating"));
   const acrossGroups = repeatingGroups.filter(c => c.n_manuscripts > 1).length;
   document.getElementById("stat-clusters").textContent = data.clusters
@@ -207,6 +238,11 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Filtering Logic
+  function textsOfRecord(mmsId) {
+    const c = (data.codices || []).find(x => x.records.includes(mmsId));
+    return c ? [c.contents || "", ...(c.texts || [])].join(" ") : "";
+  }
+
   function getFilteredManuscripts() {
     return data.manuscripts.filter(m => {
       // Free text search
@@ -222,7 +258,8 @@ document.addEventListener("DOMContentLoaded", () => {
           m.place_writing,
           m.colophon,
           m.notes,
-          m.subjects
+          m.subjects,
+          textsOfRecord(m.mms_id)
         ].join(" ").toLowerCase();
         if (!haystack.includes(q)) return false;
       }
@@ -590,6 +627,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ${field("Illustrations", illText)}
         ${ms.colophon ? field("Colophon", heb(ms.colophon.length > 160 ? ms.colophon.slice(0, 160) + "…" : ms.colophon)) : ""}
       </div>
+      ${codexTextsHtml(ms.mms_id, true)}
       ${peopleHtml}
       <div class="rmh-links">
         ${ms.ktiv_link ? `<a href="${escapeHtml(ms.ktiv_link)}" target="_blank" rel="noopener">Open in Ktiv ↗</a>` : ""}
@@ -849,6 +887,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     personsCount.textContent = filtered.length;
+    renderPersonsViz(filtered);
     sortRows(filtered, state.personsSort, (p, key) => p[key]);
 
     personsBody.innerHTML = filtered.length ? filtered.map(p => {
@@ -857,7 +896,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return `
         <tr class="clickable-row ${open ? "open" : ""}" data-key="${escapeHtml(key)}" title="Show this person's manuscripts">
           <td class="cell-person" dir="auto">${escapeHtml(p.name)}</td>
-          <td><span class="person-role-badge">${escapeHtml(p.role)}</span></td>
+          <td><span class="person-role-badge">${escapeHtml(p.role)}</span>${p.dates ? ` <span class="person-dates">${escapeHtml(p.dates)}</span>` : ""}</td>
           <td class="num">${p.count}</td>
           <td class="cell-toggle">${open ? "▾" : "▸"}</td>
         </tr>
@@ -894,6 +933,142 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   }
+
+  // ---- When and where (timeline + map) for the persons that pass the search / role filter ----
+  const ROLE_COLOUR = { "Author": "#8e283b", "Author (attributed)": "#8e283b", "Author of an included text": "#c0596b",
+    "Translator": "#b07d2b", "Scribe": "#2f7a4b", "Annotator": "#4d8f6b", "Compiler": "#4d8f6b",
+    "Former owner": "#3a5f9e", "Censor": "#6b4a9e", "Signatory": "#3a5f9e", "Addressee": "#3a5f9e" };
+  const roleColour = r => ROLE_COLOUR[r] || "#8a8f98";
+  // roles that put a person where the physical copy was: the place of writing says something about them.
+  // Authors and translators are left out of that map: a copy of their work says where it was copied, not where they lived.
+  const HANDS_ON = new Set(["Scribe", "Annotator", "Compiler", "Former owner", "Censor", "Signatory", "Addressee"]);
+  let pvShown = [];
+  let pvMapMode = "ms";
+  let pvMap = null, pvLayer = null;
+
+  function personSpan(p) {
+    const ys = [];
+    if (p.born !== null) ys.push(p.born);
+    if (p.died !== null) ys.push(p.died);
+    if (p.floruit_from !== null) ys.push(p.floruit_from, p.floruit_to);
+    p.ms.forEach(m => { if (m.year) ys.push(m.year); });
+    return ys.length ? [Math.min(...ys), Math.max(...ys)] : null;
+  }
+
+  function renderPersonsViz(filtered) {
+    const from = +document.getElementById("pv-from").value || -500, to = +document.getElementById("pv-to").value || 2000;
+    const limit = +document.getElementById("pv-limit").value;
+    const inRange = p => { const s = personSpan(p); return s && s[1] >= from && s[0] <= to; };
+    pvShown = filtered.filter(inRange).sort((a, b) => b.count - a.count).slice(0, limit)
+      .sort((a, b) => personSpan(a)[0] - personSpan(b)[0]);
+    renderPersonsTimeline(pvShown, from, to, filtered.filter(p => !personSpan(p)).length);
+    renderPersonsMap();
+  }
+
+  function renderPersonsTimeline(list, from, to, undated) {
+    const box = document.getElementById("persons-timeline");
+    if (!list.length) { box.innerHTML = `<p class="empty-note">No dated persons match.</p>`; return; }
+    const W = Math.max(640, box.clientWidth || 900), labelW = 230, rowH = 18, top = 26;
+    const x = y => labelW + (Math.max(from, Math.min(to, y)) - from) / (to - from) * (W - labelW - 16);
+    const H = top + list.length * rowH + 10;
+    const step = (to - from) > 600 ? 100 : 50;
+    let ticks = "";
+    for (let y = Math.ceil(from / step) * step; y <= to; y += step) {
+      ticks += `<line x1="${x(y)}" x2="${x(y)}" y1="${top - 6}" y2="${H}" class="pt-grid"/>
+                <text x="${x(y)}" y="${top - 10}" class="pt-tick">${y}</text>`;
+    }
+    const rows = list.map((p, i) => {
+      const y = top + i * rowH + rowH / 2, col = roleColour(p.role);
+      let bars = "";
+      if (p.born !== null && p.died !== null) {
+        bars += `<rect x="${x(p.born)}" y="${y - 4}" width="${Math.max(2, x(p.died) - x(p.born))}" height="8" rx="2" fill="${col}"><title>${escapeHtml(p.dates)}</title></rect>`;
+      } else if (p.floruit_from !== null) {
+        bars += `<rect x="${x(p.floruit_from)}" y="${y - 4}" width="${Math.max(2, x(p.floruit_to) - x(p.floruit_from))}" height="8" rx="2" fill="${col}" opacity="0.3"><title>${escapeHtml(p.dates)}</title></rect>`;
+      } else if (p.died !== null || p.born !== null) {
+        const yr = p.died !== null ? p.died : p.born;
+        bars += `<text x="${x(yr)}" y="${y + 4}" class="pt-mark" fill="${col}">${p.died !== null ? "†" : "*"}<title>${escapeHtml(p.dates)}</title></text>`;
+      }
+      const dots = p.ms.filter(m => m.year && m.year >= from && m.year <= to).map(m =>
+        `<circle cx="${x(m.year)}" cy="${y}" r="3.3" fill="${m.year_approx ? "#fff" : col}" stroke="${col}" stroke-width="1.4">
+           <title>${escapeHtml(m.shelfmark)} · ${m.year_approx ? "c. " : ""}${m.year}${m.place ? " · " + escapeHtml(m.place) : ""}</title></circle>`).join("");
+      return `<g class="pt-row" data-name="${escapeHtml(p.name)}">
+        <rect x="0" y="${y - rowH / 2}" width="${W}" height="${rowH}" class="pt-hit"/>
+        <text x="${labelW - 8}" y="${y + 4}" class="pt-label" text-anchor="end"><tspan>${escapeHtml(p.name.length > 34 ? p.name.slice(0, 33) + "…" : p.name)}</tspan><title>${escapeHtml(p.name)} · ${escapeHtml(p.role)} · ${p.count} manuscripts</title></text>
+        ${bars}${dots}</g>`;
+    }).join("");
+    const roles = [...new Set(list.map(p => p.role))];
+    box.innerHTML = `<div class="pt-legend">${roles.map(r => `<span><i style="background:${roleColour(r)}"></i>${escapeHtml(r)}</span>`).join("")}
+        ${undated ? `<span class="muted">${undated} persons without any date are not shown</span>` : ""}</div>
+      <svg viewBox="0 0 ${W} ${H}" width="100%" class="pt-svg">${ticks}${rows}</svg>`;
+    box.querySelectorAll(".pt-row").forEach(g => g.addEventListener("click", () => {
+      personsSearch.value = g.dataset.name;
+      state.personsSearch = g.dataset.name;
+      renderPersons();
+      personsBody.scrollIntoView({ block: "start", behavior: "smooth" });
+    }));
+  }
+
+  function renderPersonsMap() {
+    const el = document.getElementById("persons-map");
+    if (!el.offsetParent || typeof L === "undefined") return;     // tab hidden: drawn when shown
+    if (!pvMap) {
+      pvMap = L.map(el).setView([46, 12], 4);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors', maxZoom: 12,
+        className: "net-tiles" }).addTo(pvMap);
+    }
+    if (pvLayer) pvLayer.remove();
+    pvLayer = L.layerGroup().addTo(pvMap);
+    const byPlace = {};
+    let missing = 0;
+    pvShown.forEach(p => {
+      const pts = pvMapMode === "known" ? p.known_places.map(k => ({ place: k.place, lat: k.lat, lon: k.lon, info: k.kind + (k.from ? ` ${k.from}–${k.to || ""}` : "") }))
+        : p.ms.filter(m => m.lat !== null && m.roles.some(r => HANDS_ON.has(r))).map(m => ({ place: m.place, lat: m.lat, lon: m.lon, info: `${m.shelfmark}${m.year ? ", " + (m.year_approx ? "c. " : "") + m.year : ""}` }));
+      if (!pts.length) { missing++; return; }
+      pts.forEach(pt => {
+        const k = pt.lat + "," + pt.lon;
+        const e = byPlace[k] = byPlace[k] || { place: pt.place, lat: pt.lat, lon: pt.lon, persons: new Map() };
+        if (!e.persons.has(p.name)) e.persons.set(p.name, { p, info: [] });
+        e.persons.get(p.name).info.push(pt.info);
+      });
+    });
+    const places = Object.values(byPlace);
+    places.forEach(e => {
+      const n = e.persons.size;
+      const roles = {};
+      e.persons.forEach(({ p }) => { roles[p.role] = (roles[p.role] || 0) + 1; });
+      const main = Object.entries(roles).sort((a, b) => b[1] - a[1])[0][0];
+      L.circleMarker([e.lat, e.lon], { radius: 5 + Math.sqrt(n) * 3.2, color: "#fff", weight: 1.5,
+        fillColor: roleColour(main), fillOpacity: 0.85 })
+        .bindTooltip(`<strong>${escapeHtml(e.place)}</strong>: ${n} person${n === 1 ? "" : "s"}`)
+        .on("click", () => showPlacePersons(e)).addTo(pvLayer);
+    });
+    document.getElementById("pv-map-note").textContent = pvMapMode === "known"
+      ? `${places.length} places · ${pvShown.length - missing} of the ${pvShown.length} persons shown are in the curated file`
+      : `${places.length} places · ${pvShown.length - missing} of the ${pvShown.length} persons shown: scribes, owners, censors, annotators with a known place of writing (authors and translators are left out: a copy of their work does not say where they lived)`;
+    document.getElementById("persons-map-list").innerHTML = `<p class="clusters-section-note">Click a circle to list its persons. Circle size = number of persons; colour = their most common role.</p>`;
+  }
+
+  function showPlacePersons(e) {
+    const rows = [...e.persons.values()].sort((a, b) => b.p.count - a.p.count);
+    document.getElementById("persons-map-list").innerHTML = `
+      <h4 class="pml-title">${escapeHtml(e.place)} <span class="muted">(${rows.length})</span></h4>
+      ${rows.map(({ p, info }) => `<div class="pml-row">
+        <div dir="auto"><span class="net-dot" style="background:${roleColour(p.role)}"></span> <strong>${escapeHtml(p.name)}</strong></div>
+        <div class="muted">${escapeHtml(p.role)}${p.dates ? " · " + escapeHtml(p.dates) : ""}</div>
+        <div class="muted pml-info">${escapeHtml([...new Set(info)].join(" · "))}</div></div>`).join("")}`;
+  }
+
+  ["pv-from", "pv-to", "pv-limit"].forEach(id => document.getElementById(id).addEventListener("change", renderPersons));
+  document.querySelectorAll("#pv-map-mode .chip-btn").forEach(b => b.addEventListener("click", () => {
+    pvMapMode = b.dataset.mode;
+    document.querySelectorAll("#pv-map-mode .chip-btn").forEach(x => x.classList.toggle("active", x === b));
+    renderPersonsMap();
+  }));
+  document.querySelector('[data-tab="tab-persons"]').addEventListener("click", () => setTimeout(() => {
+    renderPersons();
+    if (pvMap) pvMap.invalidateSize();
+  }, 60));
 
   personsSearch.addEventListener("input", e => {
     state.personsSearch = e.target.value.trim();
@@ -1091,6 +1266,32 @@ document.addEventListener("DOMContentLoaded", () => {
   const modalClose = document.getElementById("modal-close");
   const modalBody = document.getElementById("modal-body");
 
+  // Texts in the physical manuscript, as the catalogue record gives them: the numbered contents list
+  // (folios + author + title) when the record has one, else the titles of the record and its added titles (740).
+  function codexTextsHtml(mmsId, compact) {
+    const ms = msById[mmsId];
+    const c = ms && (data.codices || []).find(x => x.records.includes(mmsId));
+    if (!c) return "";
+    const items = (c.contents || "").split(/\s*\|\s*/).map(x => x.trim()).filter(Boolean).map(x => {
+      const m = /^(\d+)\)\s*(?:(דף[^:]*|דפים[^:]*|f\.[^:]*|ff\.[^:]*):\s*)?(.*)$/.exec(x);
+      return m ? { n: m[1], folios: (m[2] || "").trim(), text: m[3].replace(/\.$/, "") } : { n: "", folios: "", text: x };
+    });
+    const others = c.records.length > 1 ? `<div class="ct-note">One physical book described by ${c.records.length} catalogue records; texts of all of them are listed.</div>` : "";
+    if (items.length) {
+      return `<div class="codex-texts ${compact ? "compact" : ""}">
+        <div class="ct-head">Texts in this manuscript (${items.length}) <span class="ct-src">from the catalogue's contents list</span></div>
+        <ol class="ct-list">${items.map(it => `<li><span class="ct-text">${escapeHtml(it.text)}</span>${it.folios ? `<span class="ct-fol">${escapeHtml(it.folios)}</span>` : ""}</li>`).join("")}</ol>
+        ${others}</div>`;
+    }
+    if (c.texts && c.texts.length) {
+      return `<div class="codex-texts ${compact ? "compact" : ""}">
+        <div class="ct-head">Texts in this manuscript (${c.texts.length}) <span class="ct-src">from the record's titles; no contents list in the catalogue</span></div>
+        <div class="ct-chips">${c.texts.map(t => `<span class="ct-chip">${escapeHtml(t)}</span>`).join("")}</div>
+        ${others}</div>`;
+    }
+    return "";
+  }
+
   function openManuscriptModal(mmsId) {
     const ms = data.manuscripts.find(m => m.mms_id === mmsId);
     if (!ms) return;
@@ -1114,6 +1315,8 @@ document.addEventListener("DOMContentLoaded", () => {
         <div><strong>Script & Hand:</strong><br>${escapeHtml(ms.script)}</div>
         <div><strong>Extent & Format:</strong><br>${escapeHtml(ms.extent || "Not Recorded")}</div>
       </div>
+
+      ${codexTextsHtml(ms.mms_id)}
 
       ${ms.colophon ? `
         <div style="margin-bottom: 1.25rem;">
@@ -1515,7 +1718,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const top = Object.entries(together).sort((a, b) => b[1] - a[1]).slice(0, 8);
     return `
       <table class="text-ms-table">
-        <thead><tr><th>Manuscript</th><th>Library</th><th>Date</th><th>Place</th><th>Other texts in it</th><th></th></tr></thead>
+        <thead><tr><th>Manuscript</th><th>Library</th><th>Date</th><th>Place</th><th>Other texts in it</th><th>Ktiv subjects</th><th></th></tr></thead>
         <tbody>${mss.map(c => `
           <tr>
             <td style="font-family: var(--font-mono); white-space: nowrap;">${escapeHtml(codexLabel(c))}${t.fragment_in.includes(c.codex_id) ? " <em>(fragment)</em>" : ""}</td>
@@ -1523,6 +1726,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <td style="white-space: nowrap;">${escapeHtml(shortCentury(c))}</td>
             <td>${escapeHtml(codexPlace(c))}</td>
             <td class="text-others">${escapeHtml(c.texts.filter(o => o !== t.title).join(" · "))}</td>
+            <td class="text-others">${escapeHtml((c.ktiv_subjects || []).filter(x => !(c.ktiv_subjects || []).some(y => y !== x && y.startsWith(x))).join(" · "))}</td>
             <td>${c.has_images ? `<button class="status-pill downloaded btn-read-codex" data-mms="${escapeHtml(c.image_record)}">Read</button>` : ""}</td>
           </tr>`).join("")}
         </tbody>
@@ -1531,6 +1735,85 @@ document.addEventListener("DOMContentLoaded", () => {
         ${top.map(([o, n]) => `<span class="text-others">${escapeHtml(o)}</span> (${n})`).join(" · ")}</div>` : ""}
     `;
   }
+
+  // Subject tags (Ktiv 500 "נושא נוסף" headings + LC 650 subjects), counted per physical manuscript
+  const subjectTags = data.subject_tags || [];
+  let subjectSource = "Ktiv";
+  let openSubject = null;
+
+  function renderSubjects() {
+    const list = document.getElementById("subjects-list");
+    list.classList.toggle("rtl", subjectSource === "Ktiv");
+    const tags = subjectTags.filter(t => t.source === subjectSource);
+    const withTag = new Set(tags.flatMap(t => t.codices));
+    document.getElementById("subjects-note").innerHTML = subjectSource === "Ktiv"
+      ? `Ktiv subject headings (the catalogue's "נושא נוסף" note). A heading like "מדעים. אסטרונומיה" is also counted under its
+         top level "מדעים", and dated censorship notes under "צנזורה". ${withTag.size} of ${codices.length} manuscripts have one;
+         a manuscript is counted once even when several of its catalogue records carry the tag. Click a tag for its manuscripts.`
+      : `Library of Congress subject headings (MARC 650). ${withTag.size} of ${codices.length} manuscripts have one.
+         Click a tag for its manuscripts.`;
+    if (!tags.length) { list.innerHTML = `<p class="empty-note">No subject tags. Re-run code/03_organize_metadata.py and rebuild.</p>`; return; }
+    const tops = tags.filter(t => t.top).sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag));
+    const childrenOf = p => tags.filter(t => t.parent === p).sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag));
+    const max = Math.max(...tops.map(t => t.count), 1);
+    const row = (t, child) => `
+      <div class="subject-row ${child ? "child" : ""} ${openSubject === t.tag ? "open" : ""}" data-tag="${escapeHtml(t.tag)}"
+           title="${t.count} manuscripts (${t.records.length} catalogue records)">
+        <span class="subject-name" dir="auto">${escapeHtml(child ? t.tag.slice(t.parent.length).replace(/^[.\s]+/, "") : t.tag)}</span>
+        <span class="bar-track"><span class="bar-fill ${child ? "gold" : ""}" style="width: ${Math.max(2, 100 * t.count / max)}%; display: block;"></span></span>
+        <span class="text-count-num">${t.count}</span>
+      </div>
+      ${openSubject === t.tag ? `<div class="subject-detail">${subjectDetail(t)}</div>` : ""}`;
+    // long sub-lists (e.g. censorship years) open when their parent tag is clicked
+    const openParent = (tags.find(t => t.tag === openSubject) || {}).parent || openSubject;
+    list.innerHTML = tops.map(t => {
+      const kids = childrenOf(t.tag);
+      const showKids = kids.length <= 7 || openParent === t.tag;
+      return row(t, false) + (showKids ? kids.map(c => row(c, true)).join("")
+        : `<div class="subject-row child subject-more" data-tag="${escapeHtml(t.tag)}">+ ${kids.length} sub-tags (click to show)</div>`);
+    }).join("");
+    list.querySelectorAll(".subject-row").forEach(r => r.addEventListener("click", () => {
+      openSubject = openSubject === r.dataset.tag ? null : r.dataset.tag;
+      renderSubjects();
+    }));
+    list.querySelectorAll(".btn-read-codex").forEach(btn => {
+      btn.addEventListener("click", e => { e.stopPropagation(); openManuscriptInReader(btn.dataset.mms); });
+    });
+  }
+
+  function subjectDetail(t) {
+    const mss = t.codices.map(id => codexById[id]).filter(Boolean)
+      .sort((a, b) => (codexYear(a) || 9999) - (codexYear(b) || 9999));
+    const key = t.source === "Ktiv" ? "ktiv_subjects" : "lc_subjects";
+    const together = {};
+    mss.forEach(c => (c[key] || []).forEach(o => {
+      if (o !== t.tag && o !== t.parent && !o.startsWith(t.tag + ". ") && !(t.tag.startsWith(o) )) together[o] = (together[o] || 0) + 1;
+    }));
+    const top = Object.entries(together).sort((a, b) => b[1] - a[1]).slice(0, 10);
+    return `
+      ${top.length ? `<div class="text-together"><strong>Other tags on these manuscripts:</strong>
+        ${top.map(([o, n]) => `<span class="text-others" dir="auto">${escapeHtml(o)}</span> (${n})`).join(" · ")}</div>` : ""}
+      <table class="text-ms-table">
+        <thead><tr><th>Manuscript</th><th>Library</th><th>Date</th><th>Place</th><th>Texts</th><th></th></tr></thead>
+        <tbody>${mss.map(c => `
+          <tr>
+            <td style="font-family: var(--font-mono); white-space: nowrap;">${escapeHtml(codexLabel(c))}</td>
+            <td>${escapeHtml(c.library)}</td>
+            <td style="white-space: nowrap;">${escapeHtml(shortCentury(c))}</td>
+            <td>${escapeHtml(codexPlace(c))}</td>
+            <td class="text-others">${escapeHtml(c.texts.join(" · "))}</td>
+            <td>${c.has_images ? `<button class="status-pill downloaded btn-read-codex" data-mms="${escapeHtml(c.image_record)}">Read</button>` : ""}</td>
+          </tr>`).join("")}
+        </tbody>
+      </table>`;
+  }
+
+  document.querySelectorAll("#subjects-source .chip-btn").forEach(b => b.addEventListener("click", () => {
+    subjectSource = b.dataset.source;
+    openSubject = null;
+    document.querySelectorAll("#subjects-source .chip-btn").forEach(x => x.classList.toggle("active", x === b));
+    renderSubjects();
+  }));
 
   textsSearch.addEventListener("input", renderTexts);
   textsMultiOnly.addEventListener("change", renderTexts);
@@ -1745,6 +2028,145 @@ ${illsPerCodex[c.codex_id] || 0} illustrations${fam === undefined ? "" : ` · Fa
   familiesThreshold.addEventListener("change", renderFamilies);
   familiesRows.addEventListener("change", renderFamilies);
 
+  // -----------------------------------------------------------
+  // Tab: Print Parallels (step 7: print illustration clusters x manuscript illustrations)
+  // -----------------------------------------------------------
+  const printData = data.print_matches;
+  const printClusters = (printData && printData.print_clusters) || [];
+  const tierRank = { strong: 3, probable: 2, possible: 1 };
+  const printFilterTier = document.getElementById("print-filter-tier");
+  const printFilterMs = document.getElementById("print-filter-ms");
+  const printSort = document.getElementById("print-sort");
+
+  // print clusters linked to each manuscript illustration (shown in the reader too)
+  const printsOfIll = {};
+  printClusters.forEach(p => p.matches.forEach(m => {
+    (printsOfIll[m.illustration_id] = printsOfIll[m.illustration_id] || []).push({ print: p, match: m });
+  }));
+  const strongPrints = printClusters.filter(p => p.matches.some(m => m.tier === "strong")).length;
+  document.getElementById("stat-print").textContent = printData
+    ? `${printClusters.length} printed-edition image clusters resemble manuscript illustrations (${strongPrints} with a strong match)`
+    : "not computed yet";
+
+  const codexOfIllId = id => illById[id] ? codexOfIll(illById[id]) : null;
+  [...new Set(printClusters.flatMap(p => p.matches.map(m => (codexOfIllId(m.illustration_id) || {}).codex_id)))]
+    .filter(Boolean).map(id => codexById[id] || codexOfMms(id))
+    .sort((a, b) => codexLabel(a).localeCompare(codexLabel(b)))
+    .forEach(c => {
+      const opt = document.createElement("option");
+      opt.value = c.codex_id;
+      opt.textContent = `${codexLabel(c)} · ${shortCentury(c)}`;
+      printFilterMs.appendChild(opt);
+    });
+
+  function printMatchCard(m) {
+    const il = illById[m.illustration_id];
+    if (!il) return "";
+    const c = codexOfIll(il);
+    const place = codexPlace(c);
+    const grp = clusterOf[il.illustration_id];
+    const grpBtn = grp && grp.label.startsWith("repeating")
+      ? `<button class="link-btn print-grp" data-cluster="${grp.cluster_id}" title="Show this manuscript group in the Clusters tab">ms group ${grp.cluster_id}</button>` : "";
+    return `
+      <div class="ill-card print-match" data-id="${escapeHtml(il.illustration_id)}" title="Open page ${escapeHtml(il.page_number)} in the reader">
+        <div class="ill-thumb"><img src="../${escapeHtml(il.crop_file)}" alt="Manuscript illustration" loading="lazy"></div>
+        <div class="ill-caption">
+          <div class="print-match-top"><span class="tier-badge tier-${m.tier}">${m.tier}</span>
+            <span class="print-score" title="CSLS score ${m.score} · raw cosine ${m.cosine}">${m.score.toFixed(3)}</span></div>
+          <div class="ill-shelfmark">${escapeHtml(codexLabel(c))}</div>
+          <div class="ill-meta">${escapeHtml(c.library || "")}</div>
+          <div class="ill-meta">${escapeHtml(shortCentury(c))}${place ? ` · ${escapeHtml(place)}` : ""}${c.script && c.script !== "Not Specified" ? ` · ${escapeHtml(c.script)}` : ""}</div>
+          <div class="ill-meta">p. ${escapeHtml(il.page_number)} ${grpBtn}</div>
+        </div>
+      </div>`;
+  }
+
+  function renderPrintSummary() {
+    const box = document.getElementById("print-summary");
+    if (!printData) {
+      box.innerHTML = `<p class="empty-note">No print matches yet. Run code/07_match_print_illustrations.py and rebuild.</p>`;
+      return;
+    }
+    const pairs = printClusters.flatMap(p => p.matches);
+    const count = t => pairs.filter(m => m.tier === t).length;
+    const perCodex = {};
+    printClusters.forEach(p => {
+      new Set(p.matches.filter(m => m.tier !== "possible").map(m => (codexOfIllId(m.illustration_id) || {}).codex_id))
+        .forEach(id => { if (id) perCodex[id] = (perCodex[id] || 0) + 1; });
+    });
+    const top = Object.entries(perCodex).sort((a, b) => b[1] - a[1]).slice(0, 10)
+      .map(([id, n]) => { const c = codexById[id] || codexOfMms(id); return [`${codexLabel(c)} · ${shortCentury(c)}`, n, `${codexLabel(c)}, ${c.library}`]; });
+    const t = printData.tiers;
+    box.innerHTML = `
+      <div class="clusters-headline">
+        <span class="clusters-big">${printClusters.length}</span> of ${printData.n_print_clusters.toLocaleString()} print illustration clusters
+        resemble at least one of ${printData.n_ms_illustrations.toLocaleString()} manuscript diagrams
+      </div>
+      <div class="clusters-stats">
+        <div class="stat-item"><span class="label">Strong pairs</span> <span class="value">${count("strong")}</span></div>
+        <div class="stat-item"><span class="label">Probable pairs</span> <span class="value">${count("probable")}</span></div>
+        <div class="stat-item"><span class="label">Possible pairs</span> <span class="value">${count("possible")}</span></div>
+        <div class="stat-item"><span class="label">Manuscript diagrams matched</span> <span class="value">${Object.keys(printsOfIll).length}</span></div>
+      </div>
+      <div class="overview-grid">
+        <div class="overview-box">
+          <h4>Manuscripts with the most print parallels (strong + probable)</h4>
+          ${barRows(top, top.length ? top[0][1] : 1, true)}
+        </div>
+        <div class="overview-box">
+          <h4>How to read the scores</h4>
+          <p class="clusters-note">Each print cluster is represented by one image from the printed-editions corpus.
+            Print and manuscript crops are compared with the same models as the Clusters tab (${escapeHtml(printData.method)}).
+            Because most diagrams are "circles and lines", the score is corrected for crops that resemble everything:
+            a pair scores high only if the two are closer to each other than to the rest of the other corpus.</p>
+          <p class="clusters-note"><span class="tier-badge tier-strong">strong</span> ≥ ${t.strong}: almost always the same diagram.
+            <span class="tier-badge tier-probable">probable</span> ≥ ${t.probable}: mostly right.
+            <span class="tier-badge tier-possible">possible</span> ≥ ${t.possible}: about half are true parallels.
+            These are candidates to check by eye, not proof of copying.</p>
+        </div>
+      </div>`;
+  }
+
+  function renderPrint() {
+    const list = document.getElementById("print-list");
+    if (!printData) { list.innerHTML = ""; return; }
+    const minRank = tierRank[printFilterTier.value];
+    const msFilter = printFilterMs.value;
+    let rows = printClusters.map(p => ({
+      print: p,
+      matches: p.matches.filter(m => tierRank[m.tier] >= minRank &&
+        (!msFilter || (codexOfIllId(m.illustration_id) || {}).codex_id === msFilter))
+    })).filter(r => r.matches.length);
+    const nMss = r => new Set(r.matches.map(m => (codexOfIllId(m.illustration_id) || {}).codex_id)).size;
+    if (printSort.value === "mss") rows.sort((a, b) => nMss(b) - nMss(a) || b.matches[0].score - a.matches[0].score);
+    else if (printSort.value === "id") rows.sort((a, b) => a.print.print_id.localeCompare(b.print.print_id));
+    else rows.sort((a, b) => b.matches[0].score - a.matches[0].score);
+    document.getElementById("print-count").textContent = rows.length;
+    list.innerHTML = rows.length ? rows.map(r => `
+      <div class="print-row">
+        <div class="print-source">
+          <div class="ill-thumb"><img src="../${escapeHtml(r.print.print_file)}" alt="Print cluster ${escapeHtml(r.print.print_id)}" loading="lazy"></div>
+          <div class="print-source-caption">
+            <div class="print-source-label">Printed editions</div>
+            <div class="ill-shelfmark">${escapeHtml(r.print.print_id)}</div>
+            <div class="ill-meta">${r.matches.length} match${r.matches.length === 1 ? "" : "es"} · ${nMss(r)} manuscript${nMss(r) === 1 ? "" : "s"}</div>
+          </div>
+        </div>
+        <div class="print-arrow" aria-hidden="true">↔</div>
+        <div class="ill-grid compact print-matches">${r.matches.map(printMatchCard).join("")}</div>
+      </div>`).join("")
+      : `<p class="empty-note">No print clusters match these filters.</p>`;
+    attachIllustrationClicks(list);
+    list.querySelectorAll(".print-grp").forEach(b => b.addEventListener("click", e => {
+      e.stopPropagation();
+      openClusterDetail(b.dataset.cluster);
+    }));
+  }
+
+  printFilterTier.addEventListener("change", renderPrint);
+  printFilterMs.addEventListener("change", renderPrint);
+  printSort.addEventListener("change", renderPrint);
+
   // Utility: HTML Escaping
   function escapeHtml(str) {
     if (!str) return "";
@@ -1766,8 +2188,14 @@ ${illsPerCodex[c.codex_id] || 0} illustrations${fam === undefined ? "" : ` · Fa
   renderIllustrations();
   renderClusters();
   renderTextsSummary();
+  renderSubjects();
   renderTexts();
   renderFamilies();
+  renderPrintSummary();
+  renderPrint();
+
+  // used by network.js (the Network tab)
+  window.SPHAERA_APP = { switchTab, openManuscriptInReader, openIllustrationPage, illById, clusterOf, escapeHtml };
 
   // Pre-load first downloaded manuscript into reader
   if (downloadedManuscripts.length > 0) {

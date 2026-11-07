@@ -3,7 +3,9 @@
 """
 STEP 5 - Find repeating illustrations by visual similarity.
 
-Input:  data/illustrations/illustrations.csv (+ the crop files it points to)
+Input:  data/illustrations/illustrations_reviewed.csv (step 4b; else illustrations.csv) + the crop files
+        data/review/clusters_review.json   groups you reviewed in code/review_tool (kept exactly as you left them)
+Cache:  data/clusters/embeddings.npz       one embedding per illustration id; only new crops are embedded
 Output: data/clusters/clusters.csv    one row per illustration: illustration_id, cluster_id, distance
         data/clusters/clusters.json   {"method": ..., "similarity_threshold": ...,
                                        "clusters": [{"cluster_id", "label", "n_manuscripts", "illustration_ids"}]}
@@ -30,6 +32,13 @@ cluster_id N+1...  = Initials, Decorations and Tables: one fixed group per class
 
 CorDeep false positives (microfilm target cards, the ruler) end up in their own small groups or in "other".
 
+Manual review (data/review/clusters_review.json, written by the review tool):
+  groups  {key: {members, label, confirmed}}  each reviewed group is kept exactly, and its members are left
+                                             out of the automatic clustering
+  unique  {illustration_id: ...}             diagrams you marked as having no partner: always "other"
+Only the remaining diagrams are clustered automatically. Every group in clusters.json says where it came from
+("review_key" and "confirmed" for reviewed groups).
+
 The earlier whole-page pHash attempt, which put 882 of 951 pages in single-page clusters,
 is in git history, commit ce3442a.
 
@@ -37,6 +46,7 @@ Usage:  python code/05_cluster_illustrations.py
 """
 import csv
 import json
+import time
 from typing import Dict, List
 
 import numpy as np
@@ -47,9 +57,7 @@ from sklearn.cluster import AgglomerativeClustering
 from sklearn.preprocessing import normalize
 from transformers import AutoImageProcessor, AutoModel, CLIPModel, CLIPProcessor
 
-from paths import PROJECT_ROOT, ILLUSTRATIONS_DIR, CLUSTERS_DIR
-
-ILLUSTRATIONS_CSV = ILLUSTRATIONS_DIR / "illustrations.csv"
+from paths import PROJECT_ROOT, CLUSTERS_DIR, CLUSTERS_REVIEW_JSON, EMBEDDINGS_NPZ, illustrations_csv
 CLUSTERS_CSV = CLUSTERS_DIR / "clusters.csv"
 CLUSTERS_JSON = CLUSTERS_DIR / "clusters.json"
 
@@ -73,16 +81,24 @@ def _prepare(path: str, size: int = 224) -> Image.Image:
     return square.resize((size, size), Image.BICUBIC).convert("RGB")
 
 
+def _load(cls, name):
+    """Load a model from the local Hugging Face cache (works offline); download only if it is not there yet."""
+    try:
+        return cls.from_pretrained(name, local_files_only=True)
+    except OSError:
+        return cls.from_pretrained(name)
+
+
 def embed(crop_paths: List[str]) -> np.ndarray:
     """Return one vector per crop: CLIP and DINOv2 embeddings side by side.
 
     Rows are scaled so that the dot product of two rows is the average of the two models' cosine similarities.
     """
     device = "mps" if torch.backends.mps.is_available() else "cpu"
-    clip = CLIPModel.from_pretrained(CLIP_MODEL).to(device).eval()
-    clip_processor = CLIPProcessor.from_pretrained(CLIP_MODEL)
-    dino = AutoModel.from_pretrained(DINO_MODEL).to(device).eval()
-    dino_processor = AutoImageProcessor.from_pretrained(DINO_MODEL)
+    clip = _load(CLIPModel, CLIP_MODEL).to(device).eval()
+    clip_processor = _load(CLIPProcessor, CLIP_MODEL)
+    dino = _load(AutoModel, DINO_MODEL).to(device).eval()
+    dino_processor = _load(AutoImageProcessor, DINO_MODEL)
     clip_features, dino_features = [], []
     with torch.no_grad():
         for start in range(0, len(crop_paths), 32):
@@ -120,13 +136,75 @@ def cluster(features: np.ndarray) -> List[Dict]:
             for l, d in zip(labels, distances)]
 
 
+def embeddings_for(ids: List[str], crop_paths: List[str]) -> np.ndarray:
+    """Embeddings for these illustration ids, from data/clusters/embeddings.npz; embeds only the missing ones."""
+    cache = {}
+    if EMBEDDINGS_NPZ.exists():
+        z = np.load(EMBEDDINGS_NPZ, allow_pickle=False)
+        cache = dict(zip(z["ids"].tolist(), z["vectors"]))
+    missing = [(i, p) for i, p in zip(ids, crop_paths) if i not in cache]
+    if missing:
+        print(f"embedding {len(missing)} new crops ...")
+        for (i, _), v in zip(missing, embed([p for _, p in missing])):
+            cache[i] = v
+        EMBEDDINGS_NPZ.parent.mkdir(parents=True, exist_ok=True)
+        keys = sorted(cache)
+        np.savez(EMBEDDINGS_NPZ, ids=np.array(keys), vectors=np.stack([cache[k] for k in keys]))
+    return np.stack([cache[i] for i in ids])
+
+
+def load_cluster_review():
+    review = json.loads(CLUSTERS_REVIEW_JSON.read_text(encoding="utf-8")) if CLUSTERS_REVIEW_JSON.exists() else {}
+    review.setdefault("groups", {})
+    review.setdefault("unique", {})
+    return review
+
+
 def main():
-    ill = pd.read_csv(ILLUSTRATIONS_CSV, dtype=str)
+    ill = pd.read_csv(illustrations_csv(), dtype=str)
     is_diagram = ill["class"] == CLUSTERED_CLASS
-    diagrams = ill[is_diagram]
-    features = embed([str(PROJECT_ROOT / p) for p in diagrams["crop_file"]])
-    assignments = dict(zip(diagrams["illustration_id"], cluster(features)))
-    n_groups = max(a["cluster_id"] for a in assignments.values())
+    diagrams = ill[is_diagram].reset_index(drop=True)
+    ids = diagrams["illustration_id"].tolist()
+    features = embeddings_for(ids, [str(PROJECT_ROOT / p) for p in diagrams["crop_file"]])
+    row_of = {i: n for n, i in enumerate(ids)}
+
+    # reviewed groups are kept as they are; unique diagrams go to "other"; the rest is clustered automatically
+    review = load_cluster_review()
+    fixed = []
+    for key, g in review["groups"].items():
+        members = [i for i in g.get("members", []) if i in row_of]
+        if len(members) >= 2:
+            fixed.append((key, g, members))
+    taken = {i for _, _, m in fixed for i in m}
+    unique = {i for i in review["unique"] if i in row_of} - taken
+    pool = [i for i in ids if i not in taken and i not in unique]
+    pool_rows = [row_of[i] for i in pool]
+    auto = dict(zip(pool, cluster(features[pool_rows]))) if len(pool) > 1 else {}
+
+    similarity = features @ features.T
+    np.fill_diagonal(similarity, -1)
+    groups = []          # (members, review_key, review entry)
+    for key, g, members in fixed:
+        groups.append((members, key, g))
+    auto_groups = {}
+    for i, a in auto.items():
+        if a["cluster_id"] != OTHER_ID:
+            auto_groups.setdefault(a["cluster_id"], []).append(i)
+    groups += [(m, None, None) for m in auto_groups.values()]
+    groups.sort(key=lambda t: (-len(t[0]), t[0][0]))
+
+    assignments, meta = {}, {}
+    for n, (members, key, g) in enumerate(groups, start=1):
+        rows = [row_of[i] for i in members]
+        centre = normalize(features[rows].mean(axis=0, keepdims=True))[0]
+        for i, d in zip(members, 1 - normalize(features[rows]) @ centre):
+            assignments[i] = {"cluster_id": n, "distance": round(float(d), 4)}
+        meta[n] = {"review_key": key, "confirmed": bool(g and g.get("confirmed")),
+                   "note": (g or {}).get("label", "")}
+    for i in ids:
+        if i not in assignments:      # automatic singles and diagrams marked unique
+            assignments[i] = {"cluster_id": OTHER_ID, "distance": round(float(1 - similarity[row_of[i]].max()), 4)}
+    n_groups = len(groups)
     labels = {OTHER_ID: "other (no close match)"}
     labels.update({i: f"repeating group {i}" for i in range(1, n_groups + 1)})
 
@@ -144,21 +222,25 @@ def main():
         w.writerows(rows)
 
     manuscript = dict(zip(ill["illustration_id"], ill["manuscript_folder"]))
-    groups: Dict[int, List[str]] = {}
+    members_of: Dict[int, List[str]] = {}
     for r in rows:
-        groups.setdefault(r["cluster_id"], []).append(r["illustration_id"])
+        members_of.setdefault(r["cluster_id"], []).append(r["illustration_id"])
     with CLUSTERS_JSON.open("w", encoding="utf-8") as f:
         json.dump({"method": METHOD,
+                   "run_id": time.strftime("%Y%m%d-%H%M%S"),
                    "similarity_threshold": SIMILARITY_THRESHOLD,
+                   "n_reviewed_groups": len(fixed), "n_marked_unique": len(unique),
                    "clusters": [{"cluster_id": k, "label": labels[k],
                                  "n_manuscripts": len({manuscript[i] for i in v}),
+                                 **meta.get(k, {"review_key": None, "confirmed": False, "note": ""}),
                                  "illustration_ids": v}
-                                for k, v in sorted(groups.items())]},
+                                for k, v in sorted(members_of.items())]},
                   f, ensure_ascii=False, indent=2)
-    n_other = len(groups.get(OTHER_ID, []))
-    n_cross = sum(1 for k in range(1, n_groups + 1) if len({manuscript[i] for i in groups[k]}) > 1)
-    print(f"{len(diagrams)} diagrams: {n_groups} repeating groups ({n_cross} spanning several manuscripts), "
-          f"{n_other} other; {len(rows)} illustrations in total -> {CLUSTERS_DIR.relative_to(PROJECT_ROOT)}")
+    n_other = len(members_of.get(OTHER_ID, []))
+    n_cross = sum(1 for k in range(1, n_groups + 1) if len({manuscript[i] for i in members_of[k]}) > 1)
+    print(f"{len(diagrams)} diagrams: {n_groups} repeating groups ({len(fixed)} reviewed, {n_cross} spanning several "
+          f"manuscripts), {n_other} other ({len(unique)} marked unique); {len(rows)} illustrations in total "
+          f"-> {CLUSTERS_DIR.relative_to(PROJECT_ROOT)}")
 
 
 if __name__ == "__main__":

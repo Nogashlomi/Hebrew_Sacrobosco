@@ -35,6 +35,8 @@
       <button class="nav-tab" data-tab="tab-texts">Included Texts</button>
       <button class="nav-tab" data-tab="tab-clusters">Clusters</button>
       <button class="nav-tab" data-tab="tab-families">Visual Families</button>
+      <button class="nav-tab" data-tab="tab-print">Print Parallels</button>
+      <button class="nav-tab" data-tab="tab-network">Network</button>
     </nav>
   </header>
 
@@ -44,14 +46,16 @@
   <section id="tab-home" class="tab-pane active">
   <div class="home-dashboard">
     <h2 class="center-title">Hebrew Manuscripts of Sacrobosco</h2>
-    <div class="center-stats">
-      <div class="stat-item"><span class="label">Catalogued Manuscripts</span> <span class="value" id="stat-total-ms">235</span></div>
-      <div class="stat-item"><span class="label">Local Facsimiles</span> <span class="value" id="stat-downloaded-ms">0</span></div>
-      <div class="stat-item"><span class="label">Open in Ktiv IIIF</span> <span class="value" id="stat-open-catalog">0</span></div>
-      <div class="stat-item"><span class="label">Total Persons</span> <span class="value" id="stat-persons">0</span></div>
-      <div class="stat-item"><span class="label">Total Places</span> <span class="value" id="stat-places">0</span></div>
-      <div class="stat-item"><span class="label">Extracted Illustrations</span> <span class="value" id="stat-illustrations">0</span></div>
-      <div class="stat-item"><span class="label">Illustration Clusters</span> <span class="value" id="stat-clusters">0</span></div>
+    <!-- From the catalogue searches to the page images, counted per physical manuscript (step 3 "funnel") -->
+    <div id="home-funnel" class="home-funnel"></div>
+
+    <h3 class="home-subtitle">What has been analysed</h3>
+    <div class="home-analysis">
+      <div class="home-stat"><span class="label">Illustrations detected</span><span class="value" id="stat-illustrations">0</span></div>
+      <div class="home-stat"><span class="label">Repeating illustration groups</span><span class="value" id="stat-clusters">0</span></div>
+      <div class="home-stat"><span class="label">Parallels in printed editions</span><span class="value" id="stat-print">0</span></div>
+      <div class="home-stat"><span class="label">Persons</span><span class="value" id="stat-persons">0</span></div>
+      <div class="home-stat"><span class="label">Places on the map</span><span class="value" id="stat-places">0</span></div>
     </div>
   </div>
 </section>
@@ -208,6 +212,38 @@
         </div>
       </div>
 
+      <!-- When and where: life dates + dated manuscripts (timeline), places of the manuscripts / curated places (map) -->
+      <div class="families-card persons-viz">
+        <div class="families-card-head">
+          <h3 class="clusters-section-title" style="margin: 0;">When and where</h3>
+          <div class="persons-viz-controls">
+            <label class="rip-toggle">Years
+              <input type="number" id="pv-from" class="net-year" step="50" value="1100">–
+              <input type="number" id="pv-to" class="net-year" step="50" value="1950"></label>
+            <label class="rip-toggle">Show
+              <select id="pv-limit" class="filter-select" style="padding: 0.2rem 0.4rem;">
+                <option value="40" selected>top 40</option><option value="80">top 80</option><option value="9999">all</option>
+              </select> persons</label>
+          </div>
+        </div>
+        <p class="clusters-section-note">Uses the search and role filter below. <strong>Bars</strong> = life dates from the catalogue
+          (solid: born–died; light: "active in the Nth century"); <strong>dots</strong> = this person's manuscripts, placed at the
+          manuscript's date (filled: dated; hollow: only the century is known). The catalogue gives no place of residence, so the
+          map shows where their manuscripts were written, or hand-curated places of activity (<code>data/metadata/person_places.csv</code>).</p>
+        <div id="persons-timeline" class="persons-timeline"></div>
+        <div class="families-card-head" style="margin-top: 1rem;">
+          <div class="net-seg" id="pv-map-mode">
+            <button class="chip-btn active" data-mode="ms">Where their manuscripts were written</button>
+            <button class="chip-btn" data-mode="known">Known places of activity (curated)</button>
+          </div>
+          <span id="pv-map-note" class="clusters-section-note" style="margin: 0;"></span>
+        </div>
+        <div class="persons-map-wrap">
+          <div id="persons-map"></div>
+          <div id="persons-map-list" class="persons-map-list"></div>
+        </div>
+      </div>
+
       <!-- Persons Table (click a heading to sort, a row to list the manuscripts) -->
       <div class="data-table-wrap">
         <table id="persons-table" class="data-table">
@@ -340,6 +376,21 @@
     <!-- ==================================================== -->
     <section id="tab-texts" class="tab-pane">
       <div id="texts-summary" class="clusters-summary"></div>
+
+      <!-- Subject tags from the Ktiv record (500 "נושא נוסף") and LC subjects (650), counted per manuscript -->
+      <div class="families-card subjects-card">
+        <div class="families-card-head">
+          <h3 class="clusters-section-title" style="margin: 0;">Subject tags</h3>
+          <div class="net-seg" id="subjects-source">
+            <button class="chip-btn active" data-source="Ktiv">Ktiv subjects</button>
+            <button class="chip-btn" data-source="LC">LC subjects</button>
+          </div>
+        </div>
+        <p class="clusters-section-note" id="subjects-note"></p>
+        <div id="subjects-list" class="subjects-list"></div>
+        <div id="subjects-detail"></div>
+      </div>
+
       <div class="filter-card">
         <div class="filter-row">
           <input type="text" id="texts-search" class="filter-select" placeholder="Search texts (Hebrew)..." style="min-width: 260px;">
@@ -406,6 +457,98 @@
       </div>
     </section>
 
+    <!-- ==================================================== -->
+    <!-- TAB: PRINT PARALLELS (print clusters x ms, step 7)   -->
+    <!-- ==================================================== -->
+    <section id="tab-print" class="tab-pane">
+      <div id="print-summary" class="clusters-summary"></div>
+      <div class="filter-card">
+        <div class="filter-row">
+          <select id="print-filter-tier" class="filter-select">
+            <option value="strong">Strong matches only</option>
+            <option value="probable" selected>Strong + probable</option>
+            <option value="possible">All candidates (incl. possible)</option>
+          </select>
+          <select id="print-filter-ms" class="filter-select">
+            <option value="">All manuscripts</option>
+          </select>
+          <select id="print-sort" class="filter-select">
+            <option value="score">Sort: best match first</option>
+            <option value="mss">Sort: most manuscripts first</option>
+            <option value="id">Sort: print cluster ID</option>
+          </select>
+          <div style="font-size: 0.9rem; color: var(--ink-secondary);">
+            Showing <strong id="print-count" style="color: var(--accent-crimson); font-family: var(--font-mono);">0</strong> print clusters.
+            Click a manuscript illustration to open its page.
+          </div>
+        </div>
+      </div>
+      <div id="print-list"></div>
+    </section>
+
+    <!-- ==================================================== -->
+    <!-- TAB: NETWORK (prints + manuscripts sharing images)   -->
+    <!-- built by network.js from data/network (step 8)       -->
+    <!-- ==================================================== -->
+    <section id="tab-network" class="tab-pane">
+      <div class="filter-card net-controls">
+        <div class="filter-row">
+          <div class="net-seg" id="net-view">
+            <button class="chip-btn active" data-view="graph">Network</button>
+            <button class="chip-btn" data-view="map">Map</button>
+          </div>
+          <label class="rip-toggle"><input type="checkbox" id="net-show-print" checked> Printed editions</label>
+          <label class="rip-toggle"><input type="checkbox" id="net-show-ms" checked> Manuscripts</label>
+          <label class="rip-toggle">Years
+            <input type="number" id="net-year-from" class="net-year" min="1300" max="1900" step="10" value="1300">–
+            <input type="number" id="net-year-to" class="net-year" min="1300" max="1900" step="10" value="1900">
+          </label>
+          <label class="rip-toggle"><input type="checkbox" id="net-undated" checked> incl. undated</label>
+        </div>
+        <div class="filter-row">
+          <select id="net-place" class="filter-select"><option value="">All places</option></select>
+          <select id="net-place-cat" class="filter-select">
+            <option value="">All print centres</option>
+            <option>Large Center</option><option>Medium Center</option><option>Small Center</option><option>One Book Center</option>
+          </select>
+          <select id="net-place-mode" class="filter-select" title="What to show when a place is chosen">
+            <option value="links">Place + books linked to it</option>
+            <option value="only">Only books from the place</option>
+          </select>
+        </div>
+        <div class="filter-row">
+          <span class="net-label">Links:</span>
+          <label class="rip-toggle"><input type="checkbox" id="net-e-pp" checked> print–print, min
+            <input type="number" id="net-min-pp" class="net-year" min="1" max="200" value="20"> shared clusters</label>
+          <label class="rip-toggle"><input type="checkbox" id="net-e-pm" checked> print–manuscript</label>
+          <label class="rip-toggle"><input type="checkbox" id="net-e-mm" checked> manuscript–manuscript</label>
+          <select id="net-tier" class="filter-select" title="Which manuscript-to-print matches count (step 7)">
+            <option value="3">Matches: strong</option>
+            <option value="2" selected>Matches: strong + probable</option>
+            <option value="1">Matches: all candidates</option>
+          </select>
+          <label class="rip-toggle"><input type="checkbox" id="net-hide-isolated" checked> hide unlinked</label>
+          <select id="net-colour" class="filter-select">
+            <option value="kind">Colour: print / manuscript</option>
+            <option value="period">Colour: period</option>
+          </select>
+        </div>
+      </div>
+      <div id="net-status" class="net-status"></div>
+      <div class="net-layout">
+        <div class="net-stage">
+          <canvas id="net-canvas"></canvas>
+          <div id="net-map" hidden></div>
+          <div id="net-legend" class="net-legend"></div>
+          <div id="net-tooltip" class="net-tooltip" hidden></div>
+        </div>
+        <aside id="net-detail" class="net-detail">
+          <p class="clusters-section-note">Click a book to see its links. Node size = number of illustrations;
+            line width = number of shared image clusters. Drag to move a node, scroll to zoom.</p>
+        </aside>
+      </div>
+    </section>
+
   </main>
 
   <!-- ==================================================== -->
@@ -426,5 +569,8 @@
   <script src="data.js?v=2"></script>
   <!-- Application Logic -->
   <script src="app.js?v=3"></script>
+  <!-- Network tab -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+  <script src="network.js?v=3"></script>
 </body>
 </html>

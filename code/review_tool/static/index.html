@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Illustration Review</title>
+  <link rel="stylesheet" href="/static/review.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">Illustration Review <span class="muted">· Hebrew Sacrobosco</span></div>
+    <nav class="tabs">
+      <button class="tab active" data-view="extraction">1 · Extraction</button>
+      <button class="tab" data-view="clusters">2 · Clusters</button>
+    </nav>
+    <div class="actions">
+      <span id="saved" class="saved"></span>
+      <button id="btn-undo" class="btn" title="Undo the last change (Ctrl/Cmd+Z)">Undo</button>
+      <button id="btn-rebuild" class="btn primary" title="Run steps 4b, 5, 7, 8 and 6 with your review">Apply &amp; rebuild visualizer</button>
+      <a class="btn" href="/visualizer/index.html" target="_blank" rel="noopener">Open visualizer ↗</a>
+    </div>
+  </header>
+
+  <div id="view-extraction" class="view">
+    <aside class="side">
+      <div class="side-head">
+        <input id="ms-search" type="search" placeholder="Search shelfmark…">
+        <select id="ms-filter">
+          <option value="">All manuscripts</option>
+          <option value="todo">Not done yet</option>
+          <option value="done">Done</option>
+        </select>
+      </div>
+      <div id="ms-progress" class="side-progress"></div>
+      <div id="ms-list" class="side-list"></div>
+    </aside>
+    <main id="ms-main" class="main"><p class="empty">Choose a manuscript on the left.</p></main>
+  </div>
+
+  <div id="view-clusters" class="view" hidden>
+    <aside class="side">
+      <div class="side-head">
+        <input id="grp-search" type="search" placeholder="Group number or R-key…">
+        <select id="grp-filter">
+          <option value="todo">To review</option>
+          <option value="reviewed">Reviewed</option>
+          <option value="all">All groups</option>
+        </select>
+        <select id="grp-sort">
+          <option value="size">Largest first</option>
+          <option value="mss">Most manuscripts first</option>
+        </select>
+      </div>
+      <div id="grp-progress" class="side-progress"></div>
+      <div id="grp-list" class="side-list"></div>
+    </aside>
+    <main id="grp-main" class="main"><p class="empty">Choose a group on the left.</p></main>
+  </div>
+
+  <!-- Page editor: one page with its boxes -->
+  <div id="editor" class="editor" hidden>
+    <div class="editor-bar">
+      <strong id="ed-title"></strong>
+      <button class="btn" id="ed-prev" title="Previous page (←)">← Previous</button>
+      <button class="btn big" id="ed-next" title="Next page (→)">Next page →</button>
+      <button class="btn" id="ed-next-unchecked" title="Next page not checked yet (U)">Next unchecked ⇥</button>
+      <button class="btn" id="ed-check" title="Mark this page as checked (C); N = check and go to the next page">Page checked</button>
+      <button class="btn" id="ed-zoom" title="Whole page / fit width / 2× (Z)">Zoom</button>
+      <button class="btn primary" id="ed-add" title="Draw a box around an illustration the detector missed (B)">＋ Add missing illustration (B)</button>
+      <label class="ed-cls">New boxes as
+        <select id="ed-new-class"></select></label>
+      <span id="ed-sel" class="ed-sel"></span>
+      <span class="ed-help">Keys: →/← page · N mark checked + next page · U next unchecked · B add illustration · click a box, then drag it or its corners · X wrong/restore · 1–5 class · Z zoom · Esc cancel</span>
+    </div>
+    <div class="editor-stage" id="ed-stage">
+      <div class="ed-canvas" id="ed-canvas">
+        <img id="ed-img" alt="page" draggable="false">
+        <div id="ed-boxes"></div>
+        <div id="ed-rubber" class="rubber" hidden></div>
+        <div id="ed-hint" class="ed-hint" hidden>Drag a rectangle around the illustration</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rebuild log -->
+  <div id="rebuild" class="modal" hidden>
+    <div class="modal-box">
+      <h3>Applying your review</h3>
+      <pre id="rebuild-log"></pre>
+      <div class="modal-actions">
+        <a class="btn" href="/visualizer/index.html" target="_blank" rel="noopener" id="rebuild-open" hidden>Open visualizer ↗</a>
+        <button class="btn" id="rebuild-close">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" hidden></div>
+  <script src="/static/review.js"></script>
+</body>
+</html>

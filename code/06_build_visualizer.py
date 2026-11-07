@@ -5,8 +5,10 @@ STEP 6 - Build the visualizer HTML tool from the manuscripts, metadata and image
 
 Input:  code/visualizer_template/ (index.html, app.js, style.css)
         data/metadata/clean/visualizer_data.json     (step 3)
-        data/illustrations/illustrations.csv         (step 4, optional)
+        data/illustrations/illustrations[_reviewed].csv  (step 4 / 4b, optional)
         data/clusters/clusters.json                  (step 5, optional)
+        data/print_matches/print_matches.json        (step 7, optional)
+        data/network/network.json                    (step 8, optional)
 Output: visualizer/  - open visualizer/index.html in a browser.
         Page images are linked from data/manuscripts/ (not copied), so keep visualizer/ next to data/.
 
@@ -22,14 +24,14 @@ import time
 
 import pandas as pd
 
-from paths import PROJECT_ROOT, CLEAN_METADATA_DIR, ILLUSTRATIONS_DIR, CLUSTERS_DIR, \
+from paths import illustrations_csv, PROJECT_ROOT, CLEAN_METADATA_DIR, ILLUSTRATIONS_DIR, CLUSTERS_DIR, PRINT_MATCHES_DIR, NETWORK_DIR, \
     VISUALIZER_TEMPLATE_DIR, VISUALIZER_DIR
 
 
 def main():
     data = json.loads((CLEAN_METADATA_DIR / "visualizer_data.json").read_text(encoding="utf-8"))
 
-    ill_csv = ILLUSTRATIONS_DIR / "illustrations.csv"
+    ill_csv = illustrations_csv()
     data["illustrations"] = pd.read_csv(ill_csv, dtype=str).fillna("").to_dict("records") if ill_csv.exists() else []
 
     clusters_json = CLUSTERS_DIR / "clusters.json"
@@ -42,6 +44,14 @@ def main():
         for c in data["clusters"]["clusters"]:
             ids = [i for i in c["illustration_ids"] if i in distance.index]
             c["example_id"] = min(ids, key=lambda i: distance[i]) if ids else (c["illustration_ids"] or [""])[0]
+
+    # step 7: print clusters that resemble manuscript illustrations (images linked from images_ck_flat/)
+    print_json = PRINT_MATCHES_DIR / "print_matches.json"
+    data["print_matches"] = json.loads(print_json.read_text(encoding="utf-8")) if print_json.exists() else None
+
+    # step 8: printed editions + manuscripts as one network of shared illustrations
+    network_json = NETWORK_DIR / "network.json"
+    data["network"] = json.loads(network_json.read_text(encoding="utf-8")) if network_json.exists() else None
 
     VISUALIZER_DIR.mkdir(parents=True, exist_ok=True)
     for f in VISUALIZER_TEMPLATE_DIR.iterdir():
@@ -63,7 +73,8 @@ def main():
 
     print(f"Built {VISUALIZER_DIR.relative_to(PROJECT_ROOT)}/index.html "
           f"({len(data['manuscripts'])} manuscripts, {len(data['illustrations'])} illustrations, "
-          f"{'with' if data['clusters'] else 'no'} clusters)")
+          f"{'with' if data['clusters'] else 'no'} clusters, "
+          f"{len(data['print_matches']['print_clusters']) if data['print_matches'] else 'no'} matched print clusters)")
 
 
 if __name__ == "__main__":

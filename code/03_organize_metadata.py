@@ -10,6 +10,7 @@ Input:  data/metadata/raw/MANUSCRIPTS_ONLY.csv, PAGE_LEVEL_METADATA.csv, ALL_OPE
         MANUSCRIPTS_IMAGES_INDEX.csv (same_codex_as: records that share a downloaded codex)
         data/manuscripts/
 Output: data/metadata/clean/visualizer_data.json
+        (incl. subject_tags: Ktiv subjects from the 500 "נושא נוסף" note and LC subjects, counted per codex)
 """
 
 import json
@@ -18,7 +19,12 @@ import sys
 from pathlib import Path
 import pandas as pd
 
-from paths import PROJECT_ROOT, RAW_METADATA_DIR as CSV_DIR, MANUSCRIPTS_DIR as IMAGES_DIR, CLEAN_METADATA_DIR
+from paths import PROJECT_ROOT, RAW_METADATA_DIR as CSV_DIR, MANUSCRIPTS_DIR as IMAGES_DIR, CLEAN_METADATA_DIR, \
+    MARCXML_DIR, METADATA_DIR
+import xml.etree.ElementTree as ET
+
+# hand-curated places where a person lived or worked (the catalogue does not record them); edit freely
+PERSON_PLACES_CSV = METADATA_DIR / "person_places.csv"
 
 OUTPUT_JSON = CLEAN_METADATA_DIR / "visualizer_data.json"
 
@@ -41,6 +47,14 @@ COORDINATES = {
     "Constantinople": {"lat": 41.0082, "lon": 28.9784, "label": "Constantinople / Istanbul (קושטא)"},
     "Rome (Italy)": {"lat": 41.9028, "lon": 12.4964, "label": "Rome, Italy (רומא)"},
     "Paris (France)": {"lat": 48.8566, "lon": 2.3522, "label": "Paris, France (פריז)"},
+    "Città di Castello (Italy)": {"lat": 43.4575, "lon": 12.2404, "label": "Città di Castello, Italy"},
+    "Livorno (Italy)": {"lat": 43.5485, "lon": 10.3106, "label": "Livorno, Italy (ליוורנו)"},
+    "Montagnana (Italy)": {"lat": 45.2323, "lon": 11.4658, "label": "Montagnana, Italy (מונטניאנה)"},
+    "Casale Monferrato (Italy)": {"lat": 45.1336, "lon": 8.4520, "label": "Casale Monferrato, Italy"},
+    "Urbino (Italy)": {"lat": 43.7262, "lon": 12.6365, "label": "Urbino, Italy (אורבינו)"},
+    "Lʹviv (Ukraine)": {"lat": 49.8397, "lon": 24.0297, "label": "Lviv, Ukraine (למברג)"},
+    "Porcia (Italy)": {"lat": 45.9636, "lon": 12.6169, "label": "Porcia, Italy"},
+    "Tunisia": {"lat": 36.8065, "lon": 10.1815, "label": "Tunisia (Tunis)"},
     
     # Holding library locations
     "Oxford": {"lat": 51.7520, "lon": -1.2577, "label": "Oxford, UK (Bodleian Library)"},
@@ -53,6 +67,7 @@ COORDINATES = {
     "Munich": {"lat": 48.1351, "lon": 11.5820, "label": "Munich, Germany (Bayerische Staatsbibliothek)"},
     "Parma": {"lat": 44.8015, "lon": 10.3279, "label": "Parma, Italy (Biblioteca Palatina)"},
     "Berlin": {"lat": 52.5200, "lon": 13.4050, "label": "Berlin, Germany (Staatsbibliothek zu Berlin)"},
+    "Cambridge, MA": {"lat": 42.3736, "lon": -71.1097, "label": "Cambridge, MA (Harvard)"},
     "Cambridge": {"lat": 52.2053, "lon": 0.1218, "label": "Cambridge, UK (Cambridge University Library)"},
     "Vatican City": {"lat": 41.9029, "lon": 12.4534, "label": "Vatican City (Biblioteca Apostolica Vaticana)"},
     "St. Petersburg": {"lat": 59.9343, "lon": 30.3351, "label": "St. Petersburg, Russia (IOM / NLR)"},
@@ -64,6 +79,19 @@ COORDINATES = {
     "Philadelphia, PA": {"lat": 39.9526, "lon": -75.1652, "label": "Philadelphia, PA (Katz Center / UPenn)"},
     "Amsterdam": {"lat": 52.3676, "lon": 4.9041, "label": "Amsterdam, Netherlands (Ets Haim)"},
 }
+
+
+def coord_for(name: str):
+    """Coordinates for a place name: exact key, or the same city with/without "(Country)".
+    No loose substring matching, so a region ("Italy") is not placed on a city."""
+    name = (name or "").strip()
+    if name in COORDINATES:
+        return COORDINATES[name]
+    city = name.split(" (")[0].strip()
+    for k, v in COORDINATES.items():
+        if "," not in name and k.split(" (")[0].strip() == city:
+            return v
+    return None
 
 
 def parse_century(date_str: str) -> str:
@@ -205,6 +233,215 @@ def build_codices_and_texts(manuscripts, index_csv):
         t["count"] = len(t["codices"])
     codices.sort(key=lambda c: (c["year"] or 9999, c["shelfmark"]))
     return codices, text_list
+
+
+def _ktiv_levels(heading: str):
+    """Ktiv heading 'A. B. C' -> ['A', 'A. B']: the full two-level heading and its top level."""
+    heading = heading.strip().rstrip(".").strip()
+    dated = re.match(r"^(\D+?)\s+\d{4}$", heading)      # "צנזורה 1618" -> also "צנזורה"
+    if dated:
+        return [dated.group(1), heading]
+    parts = [x.strip() for x in heading.split(". ") if x.strip()]
+    return [". ".join(parts[:i]) for i in range(1, min(2, len(parts)) + 1)]
+
+
+def build_subject_tags(manuscripts, codices):
+    """Subject tags per physical manuscript, as in the manuscript_context project.
+
+    Ktiv subjects come from the 500 note "נושא נוסף: A. B; C" (each heading and its top level, so
+    "מדעים. אסטרונומיה" also counts under "מדעים"); LC subjects from MARC 650 (the "subjects" field).
+    A codex carries a tag when any of its catalogue records does. Adds ktiv_subjects / lc_subjects to
+    each codex and returns [{tag, source, top, parent, codices, records, count}] sorted by count.
+    """
+    tags = {}
+    by_codex = {}
+    for m in manuscripts:
+        found = []
+        for note in (m["notes"] or "").split("||"):
+            note = note.strip()
+            if note.startswith("נושא נוסף"):
+                for heading in note.split(":", 1)[-1].split(";"):
+                    found += [("Ktiv", level) for level in _ktiv_levels(heading)]
+        for subject in (m["subjects"] or "").split("|"):
+            if subject.strip():
+                found.append(("LC", subject.strip()))
+        for source, tag in found:
+            parent = ""
+            if source == "Ktiv":
+                levels = _ktiv_levels(tag)
+                parent = levels[0] if len(levels) > 1 else ""
+            t = tags.setdefault((source, tag), {"tag": tag, "source": source, "top": not parent, "parent": parent,
+                                                "codices": [], "records": []})
+            if m["mms_id"] not in t["records"]:
+                t["records"].append(m["mms_id"])
+            if m["codex_id"] not in t["codices"]:
+                t["codices"].append(m["codex_id"])
+            by_codex.setdefault(m["codex_id"], set()).add((source, tag))
+    for c in codices:
+        own = by_codex.get(c["codex_id"], set())
+        c["ktiv_subjects"] = sorted(t for s, t in own if s == "Ktiv")
+        c["lc_subjects"] = sorted(t for s, t in own if s == "LC")
+    out = sorted(tags.values(), key=lambda t: (t["source"], -len(t["codices"]), t["tag"]))
+    for t in out:
+        t["count"] = len(t["codices"])
+    return out
+
+
+def build_funnel(codices, n_records, queries_map, index_csv):
+    """Home-page counts, from the searches down to what is on disk, counted per physical manuscript.
+
+    Each catalogue record has an image status from step 2 (MANUSCRIPTS_IMAGES_INDEX.csv):
+    complete = open IIIF images, downloaded here; restricted = digitized, but Ktiv does not serve the images
+    openly; no_pages_in_manifest = no images. A codex takes the best status of its records; it also gets
+    image_status ("open" | "restricted" | "none") and image_pages (pages of its digitized copy).
+    """
+    found = CSV_DIR / "ALL__deduped.csv"
+    n_found = len(pd.read_csv(found, usecols=[0])) if found.exists() else None
+    status, pages = {}, {}
+    if index_csv.exists():
+        idx = pd.read_csv(index_csv, dtype=str).fillna("")
+        rank = {"complete": 3, "restricted": 2, "no_pages_in_manifest": 1}
+        codex_of = {r: c["codex_id"] for c in codices for r in c["records"]}
+        for r in idx.itertuples():
+            cid = codex_of.get(r.mms_id)
+            if not cid:
+                continue
+            if rank.get(r.status, 0) > rank.get(status.get(cid, ""), 0):
+                status[cid] = r.status
+            n = pd.to_numeric(r.downloaded_pages if r.status == "complete" else r.total_canvases, errors="coerce")
+            if r.status in ("complete", "restricted") and not r.same_codex_as and n == n:
+                pages[cid] = pages.get(cid, 0) + int(n)
+    name = {"complete": "open", "restricted": "restricted"}
+    for c in codices:
+        c["image_status"] = name.get(status.get(c["codex_id"], ""), "none")
+        c["image_pages"] = pages.get(c["codex_id"], 0)
+    count = lambda st: sum(c["image_status"] == st for c in codices)
+    pages_of = lambda st: sum(c["image_pages"] for c in codices if c["image_status"] == st)
+    return {
+        "search_terms": len(queries_map),
+        "records_found": n_found,                      # every record the searches returned (incl. printed books)
+        "manuscript_records": n_records,
+        "physical_manuscripts": len(codices),
+        "digitized": count("open") + count("restricted"),
+        "open": count("open"), "open_pages": pages_of("open"),
+        "restricted": count("restricted"), "restricted_pages": pages_of("restricted"),
+        "not_digitized": count("none"),
+        "downloaded": sum(c["has_images"] for c in codices),
+    }
+
+
+# MARC $e (relator) -> role; 100 without $e = author, 600 = person as subject
+ROLE_OF = {"מחבר": "Author", "מחבר משוער": "Author", "מיוחס לו": "Author (attributed)",
+           "מתרגם": "Translator", "מעתיק": "Scribe", "מעתיק משוער": "Scribe",
+           "בעלים קודמים": "Former owner", "former owner": "Former owner", "censor": "Censor",
+           "ממנו": "Excerpts by", "ממנו?": "Excerpts by", "מוזכר": "Mentioned", "מעיר": "Annotator",
+           "חותם": "Signatory", "מלקט": "Compiler", "אליו": "Addressee"}
+ROLE_ORDER = ["Author", "Author (attributed)", "Translator", "Scribe", "Annotator", "Compiler", "Former owner",
+              "Censor", "Signatory", "Addressee", "Author of an included text", "Excerpts by", "Mentioned",
+              "Subject", "Other"]
+MARC = "{http://www.loc.gov/MARC21/slim}"
+
+
+def parse_life_dates(d: str):
+    """MARC $d -> (born, died, floruit_from, floruit_to); BCE years negative, None where unknown."""
+    d = (d or "").strip().rstrip(".")
+    bce = 'לפנה"ס' in d or "B.C" in d
+    sign = -1 if bce else 1
+    cent = re.search(r"(\d{1,2})(?:th|st|nd|rd) cent|במאה ה-?(\d{1,2})", d)
+    if cent:
+        c = int(cent.group(1) or cent.group(2))
+        return None, None, (c - 1) * 100, (c - 1) * 100 + 99
+    died = re.search(r"נפטר\D*(\d{3,4})|d\.\s*(\d{3,4})", d)
+    if died:
+        return None, sign * int(died.group(1) or died.group(2)), None, None
+    years = re.findall(r"\d{3,4}", d)
+    if len(years) >= 2:
+        return sign * int(years[0]), sign * int(years[1]), None, None
+    if len(years) == 1 and "-" in d:
+        return (sign * int(years[0]), None, None, None) if d.find(years[0]) < d.find("-") else (None, sign * int(years[0]), None, None)
+    return None, None, None, None
+
+
+def build_persons(manuscripts, codices):
+    """Persons from the MARC name fields (100/700/600) of the manuscript records.
+
+    Name = $a (+ $c), dates = $d, role = $e (see ROLE_OF); a 700 with a title ($t) and no role is the author
+    of a text inside the codex. Holding libraries (710 "current owner") are skipped. For every person:
+    life dates (born/died, or a floruit century), their roles, their codices with each codex's date and
+    place of writing, and any hand-curated place of activity from person_places.csv.
+    """
+    ids = {m["mms_id"] for m in manuscripts}
+    codex_of = {r: c for c in codices for r in c["records"]}
+    curated = pd.read_csv(PERSON_PLACES_CSV, dtype=str).fillna("") if PERSON_PLACES_CSV.exists() else pd.DataFrame()
+    people, seen = {}, set()
+    for f in sorted(MARCXML_DIR.glob("*.xml")):
+        for rec in ET.parse(f).iter(MARC + "record"):
+            mms = next((c.text for c in rec.iter(MARC + "controlfield") if c.get("tag") == "001"), None)
+            if mms not in ids or mms in seen:
+                continue
+            seen.add(mms)
+            for df in rec.iter(MARC + "datafield"):
+                tag = df.get("tag")
+                if tag not in ("100", "700", "600"):
+                    continue
+                sub = {}
+                for sf in df.findall(MARC + "subfield"):
+                    sub.setdefault(sf.get("code"), []).append((sf.text or "").strip())
+                name = " ".join(x.strip(" ,.;:") for x in sub.get("a", [])[:1] + sub.get("c", [])[:1] if x).strip()
+                if not name:
+                    continue
+                relator = (sub.get("e") or [""])[0].strip(" .,()")
+                if tag == "600":
+                    role = "Subject"
+                elif relator:
+                    role = ROLE_OF.get(relator, "Other")
+                elif tag == "100":
+                    role = "Author"
+                elif sub.get("t"):
+                    role = "Author of an included text"
+                else:
+                    role = "Other"
+                dates = (sub.get("d") or [""])[0].strip(" .,")
+                key = (name, dates)
+                p = people.setdefault(key, {"name": name, "dates": dates, "roles": {}, "records": []})
+                p["roles"].setdefault(role, [])
+                if mms not in p["roles"][role]:
+                    p["roles"][role].append(mms)
+                if mms not in p["records"]:
+                    p["records"].append(mms)
+
+    out = []
+    for p in people.values():
+        born, died, fl_from, fl_to = parse_life_dates(p["dates"])
+        role = min(p["roles"], key=lambda r: (ROLE_ORDER.index(r), -len(p["roles"][r])))
+        codex_ids = list(dict.fromkeys(codex_of[r]["codex_id"] for r in p["records"] if r in codex_of))
+        ms_items = []
+        for cid in codex_ids:
+            c = next(c for c in codices if c["codex_id"] == cid)
+            year, approx = c.get("year"), False
+            if not year:
+                span = re.search(r"\((\d{4})\D+(\d{4})\)", c.get("century") or "")
+                year, approx = (round((int(span[1]) + int(span[2])) / 2), True) if span else (None, False)
+            places = [x.strip() for x in (c.get("place_writing") or "").split("|") if x.strip()]
+            place = next((x for x in places if coord_for(x)), places[0] if places else "")
+            coord = coord_for(place) if place else None
+            ms_items.append({"codex_id": cid, "shelfmark": c["shelfmark"], "year": year, "year_approx": approx,
+                             "place": re.sub(r"\s*\([^()]*\)$", "", place),
+                             "lat": coord["lat"] if coord else None, "lon": coord["lon"] if coord else None,
+                             "roles": sorted({r for r, recs in p["roles"].items() if any(codex_of.get(x, {}).get("codex_id") == cid for x in recs)})})
+        known = []
+        for row in curated.itertuples() if len(curated) else []:
+            if row.name_starts_with and p["name"].startswith(row.name_starts_with):
+                known.append({"place": row.place, "lat": float(row.lat), "lon": float(row.lon),
+                              "from": int(float(row._5)) if row._5 else None, "to": int(float(row.to)) if row.to else None,
+                              "kind": row.kind, "source": row.source, "note": row.note})
+        out.append({"name": p["name"], "dates": p["dates"], "born": born, "died": died,
+                    "floruit_from": fl_from, "floruit_to": fl_to, "role": role,
+                    "roles": {r: len(v) for r, v in p["roles"].items()},
+                    "manuscripts": p["records"], "codices": codex_ids, "count": len(codex_ids),
+                    "ms": ms_items, "known_places": known})
+    out.sort(key=lambda x: (-x["count"], x["name"]))
+    return out
 
 
 def build_data():
@@ -423,11 +660,7 @@ def build_data():
     
     # 1. Places of writing
     for place_name, ms_ids in places_writing_map.items():
-        coord = None
-        for k, v in COORDINATES.items():
-            if k.lower() in place_name.lower() or place_name.lower() in k.lower():
-                coord = v
-                break
+        coord = coord_for(place_name)
         if coord:
             map_places.append({
                 "type": "writing",
@@ -441,11 +674,7 @@ def build_data():
             
     # 2. Holding library cities
     for city_name, ms_ids in places_holding_map.items():
-        coord = None
-        for k, v in COORDINATES.items():
-            if k.lower() in city_name.lower() or city_name.lower() in k.lower():
-                coord = v
-                break
+        coord = coord_for(city_name)
         if coord:
             map_places.append({
                 "type": "holding",
@@ -467,6 +696,9 @@ def build_data():
         p["count"] = len(p["manuscripts"])
 
     codices, texts = build_codices_and_texts(manuscripts, CSV_DIR / "MANUSCRIPTS_IMAGES_INDEX.csv")
+    subject_tags = build_subject_tags(manuscripts, codices)
+    persons = build_persons(manuscripts, codices)
+    funnel = build_funnel(codices, len(manuscripts), queries_map, index_csv)
 
     output_data = {
         "stats": {
@@ -482,14 +714,16 @@ def build_data():
             "downloaded_books": len(downloaded_books),
             "downloaded_book_pages": book_pages(downloaded_books, "downloaded_pages")
         },
+        "funnel": funnel,
         "query_terms": {k: len(v) for k, v in queries_map.items()},
         "centuries": {k: len(v) for k, v in century_map.items()},
         "scripts": {k: len(v) for k, v in script_map.items()},
         "places": map_places,
-        "persons": sorted_persons,
+        "persons": persons,
         "manuscripts": manuscripts,
         "codices": codices,
-        "texts": texts
+        "texts": texts,
+        "subject_tags": subject_tags
     }
 
     CLEAN_METADATA_DIR.mkdir(parents=True, exist_ok=True)
@@ -501,8 +735,10 @@ def build_data():
     print(f"  Manuscripts with images: {output_data['stats']['downloaded_manuscripts']}")
     print(f"  Pages indexed: {output_data['stats']['total_downloaded_pages']}")
     print(f"  Map locations: {len(map_places)}")
-    print(f"  Persons indexed: {len(sorted_persons)}")
-    print(f"  Physical manuscripts: {len(codices)} | distinct texts: {len(texts)}")
+    print(f"  Persons: {len(persons)} ({sum(1 for p in persons if p['born'] or p['died'] or p['floruit_from'] is not None)} with life dates, "
+          f"{sum(1 for p in persons if p['known_places'])} with a curated place)")
+    print(f"  Physical manuscripts: {len(codices)} | distinct texts: {len(texts)} | subject tags: "
+          f"{sum(t['source'] == 'Ktiv' for t in subject_tags)} Ktiv, {sum(t['source'] == 'LC' for t in subject_tags)} LC")
 
 
 if __name__ == "__main__":
