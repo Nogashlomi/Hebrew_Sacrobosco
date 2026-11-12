@@ -12,6 +12,7 @@
     <nav class="tabs">
       <button class="tab active" data-view="extraction">1 · Extraction</button>
       <button class="tab" data-view="clusters">2 · Clusters</button>
+      <button class="tab" data-view="board">3 · Board (drag &amp; merge)</button>
     </nav>
     <div class="actions">
       <span id="saved" class="saved"></span>
@@ -40,7 +41,7 @@
   <div id="view-clusters" class="view" hidden>
     <aside class="side">
       <div class="side-head">
-        <input id="grp-search" type="search" placeholder="Group number or R-key…">
+        <input id="grp-search" type="search" placeholder="Group name, number or R-key…">
         <select id="grp-filter">
           <option value="todo">To review</option>
           <option value="reviewed">Reviewed</option>
@@ -49,12 +50,54 @@
         <select id="grp-sort">
           <option value="size">Largest first</option>
           <option value="mss">Most manuscripts first</option>
+          <option value="named">Named first (A–Z)</option>
         </select>
       </div>
       <div id="grp-progress" class="side-progress"></div>
       <div id="grp-list" class="side-list"></div>
     </aside>
     <main id="grp-main" class="main"><p class="empty">Choose a group on the left.</p></main>
+  </div>
+
+  <div id="view-board" class="board-view" hidden>
+    <div class="board-bar">
+      <input id="bd-search" type="search" placeholder="Group name, number or shelfmark…">
+      <select id="bd-filter">
+        <option value="all">All groups</option>
+        <option value="todo">Not reviewed</option>
+        <option value="reviewed">Reviewed</option>
+        <option value="unconfirmed">Not confirmed</option>
+      </select>
+      <select id="bd-sort">
+        <option value="size">Largest first</option>
+        <option value="mss">Most manuscripts first</option>
+        <option value="small">Smallest first</option>
+        <option value="named">Named first (A–Z)</option>
+      </select>
+      <label class="lbl">Size <input id="bd-size" type="range" min="70" max="200" value="110"></label>
+      <span id="bd-count" class="lbl"></span>
+      <span id="bd-focus" class="focus-note" hidden></span>
+      <span class="bd-help">Drag a <b>group</b> onto another group to merge them · open a group (▾) and drag
+        single <b>diagrams</b> to another group or to the drop zones · click diagrams to select several, then drag them together ·
+        ≈ shows the most similar groups · ⤢ (or double-click) opens one diagram with suggestions · ✎ names a group · ⇢ merges into a group chosen by name · Cmd+Z undoes</span>
+    </div>
+    <div class="board-body">
+      <div id="bd-grid" class="board-grid"></div>
+      <aside class="board-side">
+        <div class="dz" data-zone="new"><b>＋ New group</b><span>drop diagrams here</span></div>
+        <div class="dz" data-zone="pool"><b>Unassigned</b><span>take out of their group</span></div>
+        <div class="dz" data-zone="unique"><b>Unique</b><span>no partner anywhere</span></div>
+        <div id="bd-selbox" class="selbox" hidden>
+          <b id="bd-seln"></b>
+          <span class="muted small">drag one of them, or move them to:</span>
+          <input id="bd-move-to" type="text" list="bd-names" placeholder="group name or number">
+          <div class="row"><button class="btn primary" id="bd-move">Move</button><button class="btn" id="bd-clear">Clear selection</button></div>
+        </div>
+        <div class="pool-head"><b>Unassigned diagrams</b> <span id="bd-pool-n" class="muted"></span>
+          <span class="muted small">drag onto a group</span></div>
+        <div id="bd-pool" class="pool-grid"></div>
+      </aside>
+    </div>
   </div>
 
   <!-- Page editor: one page with its boxes -->
@@ -94,7 +137,12 @@
     </div>
   </div>
 
+  <datalist id="bd-names"></datalist>
+  <!-- Inspector: one diagram, its possible groups and similar diagrams -->
+  <div id="inspect" class="modal inspect" hidden><div id="inspect-box" class="inspect-box"></div></div>
   <div id="toast" class="toast" hidden></div>
   <script src="/static/review.js"></script>
+  <script src="/static/board.js"></script>
+  <script src="/static/inspect.js"></script>
 </body>
 </html>

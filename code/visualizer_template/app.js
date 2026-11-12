@@ -657,7 +657,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (c.label.startsWith("repeating")) {
         const across = c.n_manuscripts > 1;
         return `<button class="rip-group ${across ? "across" : "within"}" data-cluster="${c.cluster_id}"
-                  title="Show this group in the Clusters tab">Group ${c.cluster_id} · ${across ? `${c.n_manuscripts} mss` : "this ms only"}</button>`;
+                  title="Show this group in the Clusters tab">Group ${c.cluster_id}${c.note ? ` (${escapeHtml(c.note)})` : ""} · ${across ? `${c.n_manuscripts} mss` : "this ms only"}</button>`;
       }
       return `<span class="rip-group">${c.cluster_id === 0 ? "no close match" : "not compared"}</span>`;
     };
@@ -1511,7 +1511,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function clusterTile(c) {
     const ex = exampleOf(c);
     const mss = (groupCodices[c.cluster_id] || []).map(id => codexLabel(codexById[id] || codexOfMms(id)));
-    const name = c.label.startsWith("repeating") ? `Group ${c.cluster_id}` : c.label.replace(" (not compared)", "");
+    const name = c.label.startsWith("repeating") ? `Group ${c.cluster_id}${c.note ? ` · ${c.note}` : ""}` : c.label.replace(" (not compared)", "");
     return `
       <div class="cluster-tile" data-cluster="${c.cluster_id}" title="Open this group">
         <div class="ill-thumb">${ex ? `<img src="../${escapeHtml(ex.crop_file)}" alt="${escapeHtml(name)}" loading="lazy">` : ""}</div>
@@ -1542,7 +1542,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const detail = document.getElementById("cluster-detail");
     const mss = (groupCodices[c.cluster_id] || []).map(id => codexById[id] || codexOfMms(id))
       .sort((a, b) => (codexYear(a) || 9999) - (codexYear(b) || 9999));
-    const name = c.label.startsWith("repeating") ? `Group ${c.cluster_id}` : c.label;
+    const name = c.label.startsWith("repeating") ? `Group ${c.cluster_id}${c.note ? ` · ${c.note}` : ""}` : c.label;
     detail.innerHTML = `
       <div class="cluster-detail-head">
         <span class="cluster-detail-title">${escapeHtml(name)}</span>

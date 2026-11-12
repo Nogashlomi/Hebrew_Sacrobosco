@@ -325,6 +325,8 @@ def current_groups():
     adopted |= {m["number"] for g in rev["groups"].values() for m in g.get("merged", []) if m.get("run") == run_id}
     for key, g in rev["groups"].items():
         members = [i for i in g["members"] if i in alive]
+        if len(members) < 2:          # a group of one is no group: step 5 treats its diagram as unassigned too
+            continue
         taken |= set(members)
         groups.append({"gid": f"R:{key}", "key": key, "number": None, "reviewed": True,
                        "confirmed": bool(g.get("confirmed")), "note": g.get("label", ""), "members": members})
@@ -363,8 +365,9 @@ def unit(v):
     return v / n if n else v
 
 
-def suggestions(gid, ids=None):
-    """Groups and unassigned diagrams closest to a group's centre (or to a set of selected ids)."""
+def suggestions(gid, ids=None, all_items=False):
+    """Groups and unassigned diagrams closest to a group's centre (or to a set of selected ids).
+    all_items: also suggest diagrams that are already in another group (each with the group it is in)."""
     groups, pool, unique, alive = current_groups()
     emb = embeddings()
     g = next((x for x in groups if x["gid"] == gid), None)
@@ -381,12 +384,16 @@ def suggestions(gid, ids=None):
         if ov:
             near_groups.append((float(unit(np.mean(ov, axis=0)) @ centre), o))
     near_groups.sort(key=lambda t: -t[0])
-    cand = [(float(unit(emb[i]) @ centre), i) for i in pool + unique if i in emb and i not in members]
+    group_of = {i: o["gid"] for o in groups for i in o["members"]}
+    others = list(alive) if all_items else pool + unique
+    cand = [(float(unit(emb[i]) @ centre), i) for i in others if i in emb and i not in members]
     cand.sort(key=lambda t: -t[0])
     return {"groups": [{"gid": o["gid"], "similarity": round(s, 3), "size": o["size"], "number": o["number"],
-                        "key": o["key"], "reviewed": o["reviewed"], "members": o["members"][:4]}
+                        "key": o["key"], "reviewed": o["reviewed"], "note": o["note"], "n_manuscripts": o["n_manuscripts"],
+                        "members": o["members"][:4]}
                        for s, o in near_groups[:8]],
-            "items": [{"id": i, "similarity": round(s, 3)} for s, i in cand[:24]]}
+            "items": [{"id": i, "similarity": round(s, 3), "gid": group_of.get(i), "unique": i in unique}
+                      for s, i in cand[:60 if all_items else 24]]}
 
 
 def clusters_op(body):
@@ -464,7 +471,7 @@ def clusters_op(body):
         rev["groups"].pop(body["gid"][2:], None)
     else:
         raise ValueError(f"unknown op {op}")
-    rev["groups"] = {k: g for k, g in rev["groups"].items() if g["members"]}
+    rev["groups"] = {k: g for k, g in rev["groups"].items() if len(g["members"]) >= 2}
     write_json(CLUSTERS_REVIEW_JSON, rev)
     return result
 
@@ -566,7 +573,7 @@ class Handler(BaseHTTPRequestHandler):
                 return self.send_json(clusters_payload())
             if url.path == "/api/suggestions":
                 ids = q["ids"].split(",") if q.get("ids") else None
-                return self.send_json(suggestions(q.get("gid", ""), ids))
+                return self.send_json(suggestions(q.get("gid", ""), ids, q.get("all") == "1"))
             if url.path == "/api/rebuild":
                 return self.send_json(REBUILD)
             # the built visualizer and the files it links (read only)

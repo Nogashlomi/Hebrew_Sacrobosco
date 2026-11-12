@@ -30,7 +30,8 @@ function setView(v) {
   document.querySelectorAll(".tab").forEach(b => b.classList.toggle("active", b.dataset.view === v));
   $("view-extraction").hidden = v !== "extraction";
   $("view-clusters").hidden = v !== "clusters";
-  if (v === "clusters") loadClusters(); else loadManuscripts();
+  $("view-board").hidden = v !== "board";
+  if (v === "clusters") loadClusters(true); else if (v === "board") loadBoard(); else loadManuscripts();
 }
 
 // ---------------------------------------------------------------- catalogue record (date, place, script, texts)
@@ -407,19 +408,25 @@ const C = { data: null, gid: null, special: null, selected: new Set(), sugg: nul
 async function loadClusters(keep) {
   C.data = await api("/api/clusters");
   renderGroupList();
+  $("bd-names").innerHTML = groupOptions(C.data.groups);
   if (keep && (C.gid || C.special)) renderGroup(); else if (!C.gid && !C.special) $("grp-main").innerHTML = `<p class="empty">Choose a group on the left.</p>`;
 }
 const groupName = g => g.reviewed ? `Reviewed ${g.key}${g.number || g.was ? ` (group ${g.number || g.was})` : ""}` : `Group ${g.number}`;
-const groupByRef = ref => {
+// a group by its name (as you typed it), its R-key or its number
+function findGroup(groups, ref) {
   ref = String(ref).trim().toUpperCase();
-  return C.data.groups.find(g => (g.key && g.key.toUpperCase() === ref) || String(g.number) === ref.replace(/^#/, ""));
-};
+  if (!ref) return null;
+  return groups.find(g => g.note && g.note.trim().toUpperCase() === ref)
+    || groups.find(g => (g.key && g.key.toUpperCase() === ref) || String(g.number) === ref.replace(/^#/, ""));
+}
+const groupByRef = ref => findGroup(C.data.groups, ref);
 
 function renderGroupList() {
   const d = C.data, q = $("grp-search").value.trim().toUpperCase(), f = $("grp-filter").value;
   let gs = d.groups.filter(g => f === "all" || (f === "reviewed" ? g.reviewed : !g.reviewed));
-  if (q) gs = gs.filter(g => (g.key || "").toUpperCase().includes(q) || String(g.number) === q);
+  if (q) gs = gs.filter(g => (g.key || "").toUpperCase().includes(q) || String(g.number) === q || (g.note || "").toUpperCase().includes(q));
   if ($("grp-sort").value === "mss") gs = gs.slice().sort((a, b) => b.n_manuscripts - a.n_manuscripts || b.size - a.size);
+  if ($("grp-sort").value === "named") gs = namedFirst(gs);
   const reviewed = d.groups.filter(g => g.reviewed).length, confirmed = d.groups.filter(g => g.confirmed).length;
   $("grp-progress").innerHTML = `${reviewed} of ${d.groups.length} groups reviewed (${confirmed} confirmed) ·
     ${d.pool.length} unassigned · ${d.unique.length} unique
@@ -448,6 +455,7 @@ function memberCard(id, opts = {}) {
   const c = C.data.cards[id];
   if (!c) return "";
   return `<div class="card ${C.selected.has(id) || (opts.sugg && C.suggSel.has(id)) ? "selected" : ""}" data-id="${esc(id)}" ${opts.sugg ? 'data-sugg="1"' : ""}>
+    ${zoomBtn(id)}
     ${opts.add ? `<button class="btn add" title="Add to this group" data-add="${esc(id)}">+</button>` : ""}
     <div class="img"><img loading="lazy" src="${cardImg(c)}"></div>
     <div class="cap"><div class="row"><strong>${esc(c.shelfmark)}</strong></div>
@@ -465,7 +473,7 @@ function selectionBar(inGroup) {
     ${C.special === "unique" ? `<button class="btn" data-act="ununique" ${n ? "" : "disabled"}>Back to unassigned</button>` : ""}
     ${C.special === "pool" ? `<button class="btn" data-act="unique" ${n ? "" : "disabled"}>Mark unique</button>` : ""}
     <button class="btn" data-act="new" ${n >= 2 ? "" : "disabled"}>New group from selected</button>
-    <span class="lbl">Move to group</span><input type="text" id="move-to" placeholder="12 or R3">
+    <span class="lbl">Move to group</span><input type="text" id="move-to" list="bd-names" placeholder="name, 12 or R3">
     <button class="btn" data-act="move" ${n ? "" : "disabled"}>Move</button>
     ${!inGroup ? `<button class="btn" data-act="similar" ${n ? "" : "disabled"}>Find similar</button>` : ""}
   </div>`;
@@ -494,14 +502,15 @@ async function renderGroup() {
       ${g.reviewed ? `<button class="btn" id="g-dissolve" title="Forget your edits: step 5 clusters these again">Undo my edits to this group</button>` : ""}
     </div>
     <div class="stats">${g.size} diagrams · ${g.n_manuscripts} manuscripts ·
-      <input type="text" id="g-note" placeholder="Name / note for this group" value="${esc(g.note)}" style="width:260px"></div>
+      <input type="text" id="g-note" placeholder="Name for this group" value="${esc(g.note)}" style="width:260px"></div>
     <p class="note">Click diagrams to select them. <strong>Confirm</strong> when the group is right: it is then kept exactly as it is.
       Any edit also fixes the group. Merge a whole group with "Merge" in the suggestions below, or type its number.</p>
     ${selectionBar(true)}
     <div class="grid">${g.members.map(id => memberCard(id)).join("")}</div>
     <div class="toolbar" style="position:static;border:none">
-      <span class="lbl">Merge with group</span><input type="text" id="merge-with" placeholder="12 or R3"><button class="btn" id="g-merge">Merge into this group</button></div>
-    <div id="sugg"><p class="note">Looking for similar groups…</p></div>`;
+      <span class="lbl">Merge with group</span><input type="text" id="merge-with" list="bd-names" placeholder="name, 12 or R3" style="width:220px"><button class="btn" id="g-merge">Merge into this group</button></div>
+    <details id="sugg-wrap" class="sugg-wrap"><summary>Suggestions: similar groups and unassigned diagrams</summary>
+      <div id="sugg"><p class="note">Looking for similar groups…</p></div></details>`;
   wireSelection(main, g, g.members);
   $("g-confirm").addEventListener("click", () => groupOp({ op: "confirm", gid: g.gid, members: g.members, value: !g.confirmed }));
   if ($("g-dissolve")) $("g-dissolve").addEventListener("click", () => {
@@ -513,8 +522,12 @@ async function renderGroup() {
     if (!o || o.gid === g.gid) return toast("No such group", true);
     groupOp({ op: "merge", gid: g.gid, members: g.members, other_gid: o.gid, other_members: o.members });
   });
-  C.sugg = await api(`/api/suggestions?gid=${encodeURIComponent(g.gid)}`);
-  if (C.gid === g.gid) renderSuggestions(g);
+  $("sugg-wrap").addEventListener("toggle", async e => {      // closed by default; loaded when opened
+    if (!e.target.open || e.target.dataset.loaded) return;
+    e.target.dataset.loaded = "1";
+    C.sugg = await api(`/api/suggestions?gid=${encodeURIComponent(g.gid)}`);
+    if (C.gid === g.gid) renderSuggestions(g);
+  });
 }
 
 function renderSuggestions(g) {
@@ -597,7 +610,7 @@ $("btn-undo").addEventListener("click", doUndo);
 async function doUndo() {
   const r = await api("/api/undo", {});
   toast(r.undone ? `Undid the last change (${r.undone})` : "Nothing to undo");
-  if (view === "clusters") loadClusters(true); else if (X.ms) refreshMs(); else loadManuscripts();
+  if (view === "clusters") loadClusters(true); else if (view === "board") loadBoard(); else if (X.ms) refreshMs(); else loadManuscripts();
 }
 
 $("btn-rebuild").addEventListener("click", async () => {
@@ -607,7 +620,7 @@ $("btn-rebuild").addEventListener("click", async () => {
     const r = await api("/api/rebuild");
     $("rebuild-log").textContent = r.log.join("\n") + (r.running ? "\n…" : r.ok ? "\n\nDone: the visualizer is up to date." : "\n\nStopped with an error.");
     if (r.running) setTimeout(poll, 1200);
-    else { $("rebuild-open").hidden = !r.ok; if (view === "clusters") loadClusters(true); }
+    else { $("rebuild-open").hidden = !r.ok; if (view === "clusters") loadClusters(true); if (view === "board") loadBoard(); }
   };
   poll();
 });
