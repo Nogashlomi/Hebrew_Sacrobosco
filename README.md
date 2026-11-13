@@ -21,9 +21,11 @@ hebrew_sacrobosco_project/
 │   ├── 06_build_visualizer.py        build the HTML tool → visualizer/
 │   ├── 07_match_print_illustrations.py  compare ms diagrams with the print cluster images → data/print_matches/
 │   ├── 08_build_network.py           prints + manuscripts sharing illustrations → data/network/
-│   ├── review_tool/                  local app to correct extraction and clusters (server.py + static/)
 │   ├── visualizer_template/          index.html, app.js, style.css (edit these, not visualizer/)
 │   └── notebooks/                    01_explore_harvest.ipynb, 02_view_images.ipynb
+├── review_tool/                      separate local app to correct extraction and clusters by hand
+│   ├── server.py                     python review_tool/server.py → http://localhost:8766 (uses code/paths.py, runs steps 4b–8)
+│   └── static/                       index.html, review.js, board.js, inspect.js, review.css
 ├── data/
 │   ├── metadata/
 │   │   ├── raw/                      as harvested/downloaded: marcxml/, ALL__deduped.csv, MANUSCRIPTS_ONLY.csv,
@@ -121,7 +123,7 @@ The rows there are marked "please verify"; add a row per person (matched by the 
 ## Reviewing extraction and clusters by hand
 
 ```bash
-.venv/bin/python code/review_tool/server.py      # then open http://localhost:8766
+.venv/bin/python review_tool/server.py           # then open http://localhost:8766
 ```
 
 **1 · Extraction**, one manuscript at a time. The screen opens on the first unchecked page, shown large with its

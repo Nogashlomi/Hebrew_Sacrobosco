@@ -3,7 +3,7 @@
 """
 Review tool: check the illustration extraction and the clustering by hand, then rebuild the visualizer.
 
-Run:   python code/review_tool/server.py        then open http://localhost:8766
+Run:   python review_tool/server.py             then open http://localhost:8766
        (standard library only, plus Pillow/numpy/pandas from requirements.txt)
 
 1. Extraction - go through the manuscripts one by one: mark wrong detections, correct a class, draw boxes the
@@ -31,7 +31,7 @@ import numpy as np
 import pandas as pd
 from PIL import Image
 
-CODE_DIR = Path(__file__).resolve().parent.parent
+CODE_DIR = Path(__file__).resolve().parent.parent / "code"
 sys.path.insert(0, str(CODE_DIR))
 from paths import (PROJECT_ROOT, DATA_DIR, MANUSCRIPTS_DIR, CLUSTERS_DIR, CLEAN_METADATA_DIR, REVIEW_DIR,  # noqa: E402
                    EXTRACTION_REVIEW_JSON, CLUSTERS_REVIEW_JSON, EMBEDDINGS_NPZ, ILLUSTRATIONS_DETECTED_CSV)

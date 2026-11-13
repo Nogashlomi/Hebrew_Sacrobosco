@@ -1550,6 +1550,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <button class="btn-quiet" id="cluster-detail-close">Close ✕</button>
       </div>
       <div class="cluster-ms-list">${mss.map(msChip).join("")}</div>
+      ${clusterTimeAndPlace(mss)}
       <div class="ill-grid compact">${c.illustration_ids.map(id => illById[id]).filter(Boolean).map(illustrationCard).join("")}</div>
     `;
     detail.hidden = false;
@@ -1617,8 +1618,6 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="overview-box">
           <h4>Manuscripts in the most shared groups</h4>
           ${barRows(topCodices, topCodices.length ? topCodices[0][1] : 1)}
-          <p class="clusters-note" style="margin-top: 0.5rem;">Which manuscripts share with which, over time and place:
-            <button class="link-btn" id="goto-families">open Visual Families →</button></p>
         </div>
       </div>
       <p class="clusters-note">
@@ -1627,7 +1626,6 @@ document.addEventListener("DOMContentLoaded", () => {
         (${escapeHtml(data.clusters.method)}). Each tile shows the group's most typical illustration; click it to see the whole group.
       </p>
     `;
-    document.getElementById("goto-families").addEventListener("click", () => switchTab("tab-families"));
 
     const section = (title, note, inner) => `
       <h3 class="clusters-section-title">${title}</h3>
@@ -1819,214 +1817,55 @@ document.addEventListener("DOMContentLoaded", () => {
   textsMultiOnly.addEventListener("change", renderTexts);
 
   // -----------------------------------------------------------
-  // 11. Tab: Visual Families (which manuscripts share illustration groups, over time and place)
+  // 11. Inside each cluster's detail: its manuscripts over time and by place
   // -----------------------------------------------------------
-  // pairs of codices -> shared repeating groups
-  const pairGroups = {};
-  repGroups.forEach(c => {
-    const ids = (groupCodices[c.cluster_id] || []).slice().sort();
-    for (let i = 0; i < ids.length; i++) {
-      for (let j = i + 1; j < ids.length; j++) {
-        (pairGroups[`${ids[i]}|${ids[j]}`] = pairGroups[`${ids[i]}|${ids[j]}`] || []).push(c);
-      }
-    }
-  });
-  const sharedCount = (a, b) => (pairGroups[a < b ? `${a}|${b}` : `${b}|${a}`] || []).length;
-  const illsPerCodex = {};
-  illustrations.forEach(il => { const id = codexOfIll(il).codex_id; illsPerCodex[id] = (illsPerCodex[id] || 0) + 1; });
-  const familiesThreshold = document.getElementById("families-threshold");
+  // century of a manuscript: from the catalogue year, else from the recorded century
+  const centuryOf = c => { const y = codexYear(c); return y ? Math.floor((y - 1) / 100) + 1 : null; };
+  const ordinal = n => n + (n % 100 >= 11 && n % 100 <= 13 ? "th" : ({ 1: "st", 2: "nd", 3: "rd" }[n % 10] || "th"));
+  // the same century axis for every cluster (all illustrated manuscripts), so clusters can be compared
+  const corpusCenturies = (() => {
+    const cs = illustrations.map(il => centuryOf(codexOfIll(il))).filter(Boolean);
+    const out = [];
+    for (let k = Math.min(...cs); k <= Math.max(...cs); k++) out.push(k);
+    return out;
+  })();
 
-  // groups shared with other manuscripts, per codex
-  const sharedGroupsOf = {};
-  repGroups.forEach(c => {
-    const ids = groupCodices[c.cluster_id] || [];
-    if (ids.length > 1) ids.forEach(id => (sharedGroupsOf[id] = sharedGroupsOf[id] || new Set()).add(c.cluster_id));
-  });
-  // overlap of two manuscripts: shared groups / groups found in either (Jaccard)
-  function overlap(a, b) {
-    const A = sharedGroupsOf[a], B = sharedGroupsOf[b];
-    if (!A || !B) return 0;
-    let n = 0;
-    A.forEach(g => { if (B.has(g)) n++; });
-    return n / (A.size + B.size - n);
-  }
-  // average-linkage clustering: join the two most similar families while their average overlap >= t
-  const familiesCache = {};
-  function computeFamilies(t) {
-    if (familiesCache[t]) return familiesCache[t];
-    let fams = Object.keys(sharedGroupsOf).map(id => [id]);
-    const sim = (A, B) => { let s = 0; A.forEach(a => B.forEach(b => { s += overlap(a, b); })); return s / (A.length * B.length); };
-    for (;;) {
-      let best = -1, bi = -1, bj = -1;
-      for (let i = 0; i < fams.length; i++) {
-        for (let j = i + 1; j < fams.length; j++) {
-          const s = sim(fams[i], fams[j]);
-          if (s > best) { best = s; bi = i; bj = j; }
-        }
-      }
-      if (best < t) break;
-      fams[bi] = fams[bi].concat(fams[bj]);
-      fams.splice(bj, 1);
-    }
-    return (familiesCache[t] = fams.filter(f => f.length > 1).sort((a, b) => b.length - a.length));
-  }
-  const FAMILY_COLOURS = ["#8e283b", "#1d6fa5", "#b07d2b", "#2b7042", "#6b3fa0", "#c2571a", "#0f7c7c", "#a8326e",
-                          "#4a5d23", "#5b6ee1", "#8a5a44", "#d4a017"];
-  const familiesRows = document.getElementById("families-rows");
-
-  function renderFamilies() {
-    const t = parseFloat(familiesThreshold.value);
-    const famList = computeFamilies(t);
-    const familyOf = {};
-    famList.forEach((f, i) => f.forEach(id => { familyOf[id] = i; }));
-    const withIlls = Object.keys(illsPerCodex);
-    const sharing = Object.keys(sharedGroupsOf);
-    const strongest = Object.entries(pairGroups).sort((a, b) => b[1].length - a[1].length)[0];
-
-    document.getElementById("families-summary").innerHTML = `
-      <div class="clusters-headline">
-        <span class="clusters-big">${sharing.length}</span> of ${withIlls.length} illustrated manuscripts share at least one illustration group with another manuscript
-      </div>
-      <div class="clusters-stats">
-        <div class="stat-item"><span class="label">Families at ${Math.round(t * 100)}% overlap</span> <span class="value">${famList.length} (${famList.reduce((n, f) => n + f.length, 0)} manuscripts)</span></div>
-        ${strongest ? `<div class="stat-item"><span class="label">Most shared groups</span> <span class="value">${escapeHtml(strongest[0].split("|").map(id => codexLabel(codexById[id] || codexOfMms(id))).join(" & "))}: ${strongest[1].length}</span></div>` : ""}
+  function clusterTimeAndPlace(mss) {
+    const perCentury = {};
+    let undated = 0;
+    mss.forEach(c => { const k = centuryOf(c); if (k) perCentury[k] = (perCentury[k] || 0) + 1; else undated++; });
+    const max = Math.max(1, ...Object.values(perCentury));
+    const cols = corpusCenturies.map(k => {
+      const n = perCentury[k] || 0;
+      const names = mss.filter(c => centuryOf(c) === k).map(codexLabel).join(", ");
+      return `<div class="cl-col" title="${escapeHtml(`${ordinal(k)} century: ${n} manuscript${n === 1 ? "" : "s"}${names ? " (" + names + ")" : ""}`)}">
+        <span class="cl-col-n">${n || ""}</span>
+        <span class="cl-col-bar" style="height: ${n ? Math.max(4, 100 * n / max) : 0}%"></span>
+        <span class="cl-col-label">${ordinal(k)}</span>
       </div>`;
+    }).join("");
 
-    document.getElementById("families-list").innerHTML = famList.length ? famList.map((members, i) => {
-      const set = new Set(members);
-      const groups = repGroups.filter(c => (groupCodices[c.cluster_id] || []).filter(id => set.has(id)).length >= 2)
-        .sort((a, b) => (groupCodices[b.cluster_id] || []).filter(id => set.has(id)).length
-                      - (groupCodices[a.cluster_id] || []).filter(id => set.has(id)).length);
-      const cs = members.map(id => codexById[id] || codexOfMms(id)).sort((a, b) => (codexYear(a) || 9999) - (codexYear(b) || 9999));
-      let pairs = 0, sum = 0;
-      members.forEach((a, x) => members.slice(x + 1).forEach(b => { pairs++; sum += overlap(a, b); }));
-      const colour = FAMILY_COLOURS[i % FAMILY_COLOURS.length];
-      return `
-        <div class="family-item" style="border-left: 4px solid ${colour};">
-          <div class="family-head">Family ${i + 1}: ${members.length} manuscripts
-            <span class="muted">· ${groups.length} illustration groups shared inside the family · average overlap ${Math.round(100 * sum / pairs)}%</span></div>
-          <div class="cluster-ms-list" style="margin: 0;">${cs.map(msChip).join("")}</div>
-          <div class="family-examples">${groups.slice(0, 14).map(c => {
-            const ex = exampleOf(c);
-            return ex ? `<img src="../${escapeHtml(ex.crop_file)}" data-cluster="${c.cluster_id}" title="Group ${c.cluster_id}: open it" loading="lazy">` : "";
-          }).join("")}</div>
-        </div>`;
-    }).join("") : `<p class="empty-note">No families at this level. Choose a lower percentage above.</p>`;
-    document.querySelectorAll("#families-list .family-examples img").forEach(img => {
-      img.addEventListener("click", () => openClusterDetail(img.dataset.cluster));
-    });
+    const perPlace = {};
+    let unplaced = 0;
+    mss.forEach(c => { const p = codexPlace(c); if (p) perPlace[p] = (perPlace[p] || 0) + 1; else unplaced++; });
+    const places = Object.entries(perPlace).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+      .map(([p, n]) => [p, n, `${p}: ${mss.filter(c => codexPlace(c) === p).map(codexLabel).join(", ")}`]);
 
-    renderFamiliesTimeline(famList, familyOf);
-    renderFamiliesMatrix(sharing);
+    return `
+      <div class="cl-stats">
+        <div class="overview-box">
+          <h4>Manuscripts over time</h4>
+          <div class="cl-timeline">${cols}</div>
+          <p class="cl-stats-note">${undated ? `<strong>${undated}</strong> undated manuscript${undated === 1 ? "" : "s"} not shown` : "All manuscripts are dated"}
+            · by catalogue year, else the recorded century</p>
+        </div>
+        <div class="overview-box">
+          <h4>Manuscripts by place of writing</h4>
+          ${places.length ? barRows(places, places[0][1], true) : `<p class="cl-stats-note">No place recorded for any of them.</p>`}
+          ${places.length ? `<p class="cl-stats-note">${unplaced ? `<strong>${unplaced}</strong> manuscript${unplaced === 1 ? "" : "s"} with no place recorded` : "All manuscripts have a place"}</p>` : ""}
+        </div>
+      </div>`;
   }
-
-  function renderFamiliesTimeline(famList, familyOf) {
-    const ids = Object.keys(illsPerCodex);
-    const cs = ids.map(id => codexById[id] || codexOfMms(id));
-    const byScript = familiesRows.value === "script";
-    const unknown = byScript ? "Script not recorded" : "Place not recorded";
-    const rowOf = c => (byScript ? (c.script || "").split("|")[0].trim() : codexPlace(c)) || unknown;
-    const rowCount = {};
-    cs.forEach(c => { rowCount[rowOf(c)] = (rowCount[rowOf(c)] || 0) + 1; });
-    const rows = Object.keys(rowCount).sort((a, b) =>
-      (a === unknown) - (b === unknown) || rowCount[b] - rowCount[a] || a.localeCompare(b));
-    const years = cs.map(codexYear).filter(Boolean);
-    const minY = Math.floor((Math.min(...years) - 20) / 50) * 50, maxY = Math.ceil((Math.max(...years) + 20) / 50) * 50;
-    const W = 980, left = 190, right = 90, top = 20, rowH = byScript ? 40 : 26, H = top + rows.length * rowH + 40;
-    const plotW = W - left - right;
-    const x = y => y ? left + plotW * (y - minY) / (maxY - minY) : W - right / 2;
-    const yPos = {};
-    rows.forEach((r, i) => { yPos[r] = top + i * rowH + rowH / 2; });
-    // spread manuscripts that land on the same spot
-    const seen = {}, pos = {};
-    cs.forEach(c => {
-      const px = x(codexYear(c)), py = yPos[rowOf(c)];
-      const key = `${Math.round(px / 8)}|${py}`;
-      const n = seen[key] = (seen[key] || 0) + 1;
-      pos[c.codex_id] = [px + ((n - 1) % 4) * 7, py + (Math.floor((n - 1) / 4) % 3 - 1) * (byScript ? 9 : 0)];
-    });
-    let svg = `<svg viewBox="0 0 ${W} ${H}" width="${W}" role="img" aria-label="Manuscripts by date and ${byScript ? "script" : "place"}">`;
-    rows.forEach(r => {
-      const y = yPos[r];
-      svg += `<line x1="${left}" x2="${W - 10}" y1="${y}" y2="${y}" stroke="var(--border-light)"/>
-        <text x="${left - 8}" y="${y + 4}" text-anchor="end" font-size="11" fill="var(--ink-secondary)">${escapeHtml(r.length > 28 ? r.slice(0, 27) + "…" : r)} (${rowCount[r]})</text>`;
-    });
-    for (let yr = minY; yr <= maxY; yr += 50) {
-      svg += `<line x1="${x(yr)}" x2="${x(yr)}" y1="${top - 6}" y2="${H - 30}" stroke="var(--border-light)" stroke-dasharray="${yr % 100 ? "2 3" : ""}"/>
-        <text x="${x(yr)}" y="${H - 14}" text-anchor="middle" font-size="11" fill="var(--ink-muted)">${yr}</text>`;
-    }
-    svg += `<text x="${W - right / 2}" y="${H - 14}" text-anchor="middle" font-size="11" fill="var(--ink-muted)">undated</text>`;
-    // lines join members of a family, in date order
-    famList.forEach((members, i) => {
-      const colour = FAMILY_COLOURS[i % FAMILY_COLOURS.length];
-      const ordered = members.filter(id => pos[id]).sort((a, b) => pos[a][0] - pos[b][0]);
-      for (let k = 1; k < ordered.length; k++) {
-        const [a, b] = [ordered[k - 1], ordered[k]];
-        svg += `<line x1="${pos[a][0]}" y1="${pos[a][1]}" x2="${pos[b][0]}" y2="${pos[b][1]}" stroke="${colour}" stroke-opacity="0.55" stroke-width="2"/>`;
-      }
-    });
-    cs.forEach(c => {
-      const [px, py] = pos[c.codex_id];
-      const r = Math.max(3, Math.min(11, Math.sqrt(illsPerCodex[c.codex_id] || 1) * 1.3));
-      const fam = familyOf[c.codex_id];
-      const colour = fam === undefined ? "#9aa3ae" : FAMILY_COLOURS[fam % FAMILY_COLOURS.length];
-      svg += `<circle class="fam-dot" data-mms="${escapeHtml(c.image_record || c.codex_id)}" cx="${px}" cy="${py}" r="${r}"
-        fill="${colour}" fill-opacity="0.85" stroke="#fff" stroke-width="1"><title>${escapeHtml(codexLabel(c))}, ${escapeHtml(c.library)}
-${escapeHtml(shortCentury(c))}${codexPlace(c) ? ", " + escapeHtml(codexPlace(c)) : ""}${c.script ? ", script: " + escapeHtml(c.script) : ""}
-${illsPerCodex[c.codex_id] || 0} illustrations${fam === undefined ? "" : ` · Family ${fam + 1}`}</title></circle>`;
-    });
-    svg += `</svg>`;
-    const box = document.getElementById("families-timeline");
-    box.innerHTML = svg;
-    box.querySelectorAll(".fam-dot").forEach(dot => {
-      dot.addEventListener("click", () => {
-        if (downloadedManuscripts.some(m => m.mms_id === dot.dataset.mms)) openManuscriptInReader(dot.dataset.mms);
-      });
-    });
-  }
-
-  function renderFamiliesMatrix(ids) {
-    const cs = ids.map(id => codexById[id] || codexOfMms(id))
-      .sort((a, b) => (codexYear(a) || 9999) - (codexYear(b) || 9999) || codexLabel(a).localeCompare(codexLabel(b)));
-    const n = cs.length;
-    const box = document.getElementById("families-matrix");
-    if (!n) { box.innerHTML = ""; return; }
-    const cell = Math.max(7, Math.min(14, Math.floor(760 / n)));
-    const label = 170, size = label + n * cell + 10;
-    let max = 1;
-    cs.forEach(a => cs.forEach(b => { if (a !== b) max = Math.max(max, sharedCount(a.codex_id, b.codex_id)); }));
-    let svg = `<svg viewBox="0 0 ${size} ${size}" width="${size}" role="img" aria-label="Shared groups between manuscripts">`;
-    cs.forEach((c, i) => {
-      const t = `${codexLabel(c)} · ${shortCentury(c)}`;
-      svg += `<text x="${label - 6}" y="${label + i * cell + cell * 0.75}" text-anchor="end" font-size="${Math.min(10, cell)}" fill="var(--ink-secondary)">${escapeHtml(t.length > 30 ? t.slice(0, 29) + "…" : t)}</text>`;
-      svg += `<text transform="translate(${label + i * cell + cell * 0.75},${label - 6}) rotate(-60)" font-size="${Math.min(10, cell)}" fill="var(--ink-secondary)">${escapeHtml(codexLabel(c).slice(0, 22))}</text>`;
-    });
-    cs.forEach((a, i) => cs.forEach((b, j) => {
-      const v = i === j ? 0 : sharedCount(a.codex_id, b.codex_id);
-      const fill = i === j ? "var(--border-color)" : v ? "var(--accent-crimson)" : "var(--bg-subtle)";
-      const op = i === j || !v ? 1 : 0.18 + 0.82 * v / max;
-      svg += `<rect class="${v ? "fam-cell" : ""}" data-a="${escapeHtml(a.codex_id)}" data-b="${escapeHtml(b.codex_id)}" x="${label + j * cell}" y="${label + i * cell}"
-        width="${cell - 1}" height="${cell - 1}" fill="${fill}" fill-opacity="${op}">${v ? `<title>${escapeHtml(codexLabel(a))} & ${escapeHtml(codexLabel(b))}: ${v} shared groups</title>` : ""}</rect>`;
-    }));
-    svg += `</svg>`;
-    box.innerHTML = svg;
-    box.querySelectorAll(".fam-cell").forEach(r => r.addEventListener("click", () => renderPair(r.dataset.a, r.dataset.b)));
-  }
-
-  function renderPair(a, b) {
-    const gs = (pairGroups[a < b ? `${a}|${b}` : `${b}|${a}`] || []).slice().sort((x, y) => nCodices(y) - nCodices(x));
-    const ca = codexById[a] || codexOfMms(a), cb = codexById[b] || codexOfMms(b);
-    const box = document.getElementById("families-pair");
-    box.innerHTML = `
-      <h4 class="clusters-section-title" style="font-size: 1rem;">${escapeHtml(codexLabel(ca))} & ${escapeHtml(codexLabel(cb))}: ${gs.length} shared groups</h4>
-      <div class="cluster-ms-list">${msChip(ca)}${msChip(cb)}</div>
-      <div class="cluster-tiles">${gs.map(clusterTile).join("")}</div>`;
-    attachTileClicks(box);
-    box.scrollIntoView({ block: "nearest" });
-  }
-
-  familiesThreshold.addEventListener("change", renderFamilies);
-  familiesRows.addEventListener("change", renderFamilies);
 
   // -----------------------------------------------------------
   // Tab: Print Parallels (step 7: print illustration clusters x manuscript illustrations)
@@ -2190,7 +2029,6 @@ ${illsPerCodex[c.codex_id] || 0} illustrations${fam === undefined ? "" : ` · Fa
   renderTextsSummary();
   renderSubjects();
   renderTexts();
-  renderFamilies();
   renderPrintSummary();
   renderPrint();
 

@@ -1939,95 +1939,61 @@ button.rip-group:hover {
 }
 
 /* ========================================================== */
-/* VISUAL FAMILIES                                             */
+/* CLUSTER DETAIL: MANUSCRIPTS OVER TIME AND BY PLACE          */
 /* ========================================================== */
-.families-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-xs);
-  padding: 1.1rem 1.3rem 1.3rem;
-  margin-bottom: 1.25rem;
-}
-
-.families-card-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.cl-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1rem;
-  flex-wrap: wrap;
+  margin: 0.8rem 0 1rem;
 }
 
-.family-item {
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  padding: 0.7rem 0.9rem;
-  margin-bottom: 0.7rem;
-  background: var(--bg-surface-alt);
-}
-
-.family-head {
-  font-weight: 600;
-  margin-bottom: 0.4rem;
-  color: var(--ink-primary);
-}
-
-.family-head .muted {
-  font-weight: 400;
-  color: var(--ink-muted);
-  font-size: 0.85rem;
-}
-
-.family-examples {
+.cl-timeline {
   display: flex;
-  gap: 0.4rem;
-  margin-top: 0.6rem;
-  overflow-x: auto;
+  align-items: stretch;
+  gap: 6px;
+  height: 150px;
+  padding-top: 0.3rem;
 }
 
-.family-examples img {
-  height: 70px;
-  width: auto;
-  border: 1px solid var(--border-color);
-  border-radius: 3px;
-  background: var(--bg-subtle);
-  cursor: pointer;
+.cl-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  min-width: 0;
 }
 
-.families-timeline svg,
-.families-matrix svg {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  font-family: var(--font-sans);
+.cl-col-bar {
+  width: 100%;
+  max-width: 46px;
+  background: var(--accent-gold);
+  border-radius: 3px 3px 0 0;
 }
 
-.families-matrix {
-  overflow-x: auto;
+.cl-col-n {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ink-primary);
+  margin-bottom: 2px;
 }
 
-.families-pair {
-  margin-top: 1rem;
+.cl-col-label {
+  font-size: 0.75rem;
+  color: var(--ink-muted);
+  border-top: 1px solid var(--border-dark);
+  width: 100%;
+  text-align: center;
+  padding-top: 3px;
 }
 
-.fam-dot {
-  cursor: pointer;
+.cl-stats-note {
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+  margin: 0.5rem 0 0;
 }
-
-.fam-dot:hover {
-  stroke: var(--ink-primary);
-  stroke-width: 2;
-}
-
-.fam-cell {
-  cursor: pointer;
-}
-
-.fam-cell:hover {
-  stroke: var(--accent-crimson);
-  stroke-width: 1.5;
-}
-
 
 /* ========================================================== */
 /* PRINT PARALLELS (step 7)                                   */

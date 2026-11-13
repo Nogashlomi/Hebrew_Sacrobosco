@@ -4,7 +4,7 @@
 STEP 5 - Find repeating illustrations by visual similarity.
 
 Input:  data/illustrations/illustrations_reviewed.csv (step 4b; else illustrations.csv) + the crop files
-        data/review/clusters_review.json   groups you reviewed in code/review_tool (kept exactly as you left them)
+        data/review/clusters_review.json   groups you reviewed in review_tool/ (kept exactly as you left them)
 Cache:  data/clusters/embeddings.npz       one embedding per illustration id; only new crops are embedded
 Output: data/clusters/clusters.csv    one row per illustration: illustration_id, cluster_id, distance
         data/clusters/clusters.json   {"method": ..., "similarity_threshold": ...,

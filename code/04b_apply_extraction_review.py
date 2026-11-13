@@ -4,7 +4,7 @@
 STEP 4b - Apply the manual extraction review to the detector's output.
 
 Input:  data/illustrations/illustrations.csv      the detector's crops (step 4), never changed here
-        data/review/extraction_review.json         your decisions, written by the review tool (code/review_tool):
+        data/review/extraction_review.json         your decisions, written by the review tool (review_tool/):
             deleted          {illustration_id: {...}}          wrong detections (crop files are kept, rows dropped)
             class_changes    {illustration_id: class}          detections with a corrected class
             added            {illustration_id: {page, box ...}}  boxes you drew; id <mms_id>_<page>_manual_NN

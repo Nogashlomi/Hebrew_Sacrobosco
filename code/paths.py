@@ -48,7 +48,7 @@ PRINT_CORPUS_DIR = DATA_DIR / "print_corpus"
 # network of printed editions and manuscripts that share illustrations
 NETWORK_DIR = DATA_DIR / "network"
 
-# manual review (code/review_tool): your decisions, kept apart from the automatic output so re-runs keep them
+# manual review (review_tool/): your decisions, kept apart from the automatic output so re-runs keep them
 REVIEW_DIR = DATA_DIR / "review"
 EXTRACTION_REVIEW_JSON = REVIEW_DIR / "extraction_review.json"   # wrong boxes, class changes, drawn boxes, checked pages
 CLUSTERS_REVIEW_JSON = REVIEW_DIR / "clusters_review.json"       # fixed (reviewed) groups, items marked unique
