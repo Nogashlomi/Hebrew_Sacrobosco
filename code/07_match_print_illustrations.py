@@ -3,7 +3,7 @@
 """
 STEP 7 - Match the manuscript illustrations against the printed-editions corpus.
 
-Input:  images_ck_flat/SAC_SIL_NNNNN.jpg          one representative crop per print illustration cluster
+Input:  data/print_corpus/images/SAC_SIL_NNNNN.jpg      one representative crop per print illustration cluster
         data/illustrations/illustrations[_reviewed].csv  (step 4/4b; only "Content Illustration" crops are compared)
 Output: data/print_matches/print_matches.csv      one row per (print cluster, manuscript illustration) match
         data/print_matches/print_matches.json     the same, grouped by print cluster, for the visualizer
@@ -95,7 +95,7 @@ def main():
         hits = np.where(score[i] >= MIN_SCORE)[0]
         hits = hits[np.argsort(-score[i, hits])][:MAX_PER_PRINT]
         for j in hits:
-            rows.append({"print_id": name.rsplit(".", 1)[0], "print_file": f"{PRINT_CLUSTERS_DIR.name}/{name}",
+            rows.append({"print_id": name.rsplit(".", 1)[0], "print_file": f"{PRINT_CLUSTERS_DIR.relative_to(PROJECT_ROOT).as_posix()}/{name}",
                          "illustration_id": ms.at[j, "illustration_id"],
                          "score": round(float(score[i, j]), 4), "cosine": round(float(cos[i, j]), 4),
                          "tier": tier(score[i, j])})

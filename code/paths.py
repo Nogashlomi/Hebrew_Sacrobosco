@@ -35,7 +35,7 @@ VISUALIZER_TEMPLATE_DIR = CODE_DIR / "visualizer_template"
 VISUALIZER_DIR = PROJECT_ROOT / "visualizer"
 
 # printed-editions corpus: one representative crop per print illustration cluster (SAC_SIL_NNNNN.jpg)
-PRINT_CLUSTERS_DIR = PROJECT_ROOT / "images_ck_flat"
+PRINT_CLUSTERS_DIR = DATA_DIR / "print_corpus" / "images"
 
 # matches between the print representatives and the manuscript illustrations
 PRINT_MATCHES_DIR = DATA_DIR / "print_matches"

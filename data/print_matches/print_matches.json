@@ -11,7 +11,7 @@
   "print_clusters": [
     {
       "print_id": "SAC_SIL_03190",
-      "print_file": "images_ck_flat/SAC_SIL_03190.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03190.jpg",
       "matches": [
         {
           "illustration_id": "990000863440205171_0127_Table_01",
@@ -23,7 +23,7 @@
     },
     {
       "print_id": "SAC_SIL_03516",
-      "print_file": "images_ck_flat/SAC_SIL_03516.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03516.jpg",
       "matches": [
         {
           "illustration_id": "990001767020205171_0280_manual_01",
@@ -41,7 +41,7 @@
     },
     {
       "print_id": "SAC_SIL_02650",
-      "print_file": "images_ck_flat/SAC_SIL_02650.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02650.jpg",
       "matches": [
         {
           "illustration_id": "990001919190205171_0143_manual_02",
@@ -53,7 +53,7 @@
     },
     {
       "print_id": "SAC_SIL_01942",
-      "print_file": "images_ck_flat/SAC_SIL_01942.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01942.jpg",
       "matches": [
         {
           "illustration_id": "990001253770205171_0006_Content_Illustration_02",
@@ -71,7 +71,7 @@
     },
     {
       "print_id": "SAC_SIL_02419",
-      "print_file": "images_ck_flat/SAC_SIL_02419.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02419.jpg",
       "matches": [
         {
           "illustration_id": "990001767020205171_0375_manual_01",
@@ -113,7 +113,7 @@
     },
     {
       "print_id": "SAC_SIL_00240",
-      "print_file": "images_ck_flat/SAC_SIL_00240.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00240.jpg",
       "matches": [
         {
           "illustration_id": "990001762860205171_0060_Content_Illustration_04",
@@ -125,7 +125,7 @@
     },
     {
       "print_id": "SAC_SIL_03198",
-      "print_file": "images_ck_flat/SAC_SIL_03198.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03198.jpg",
       "matches": [
         {
           "illustration_id": "990001253770205171_0004_Content_Illustration_01",
@@ -137,7 +137,7 @@
     },
     {
       "print_id": "SAC_SIL_03114",
-      "print_file": "images_ck_flat/SAC_SIL_03114.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03114.jpg",
       "matches": [
         {
           "illustration_id": "990001919190205171_0146_manual_03",
@@ -155,7 +155,7 @@
     },
     {
       "print_id": "SAC_SIL_01339",
-      "print_file": "images_ck_flat/SAC_SIL_01339.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01339.jpg",
       "matches": [
         {
           "illustration_id": "990000914920205171_0183_Content_Illustration_01",
@@ -167,7 +167,7 @@
     },
     {
       "print_id": "SAC_SIL_00835",
-      "print_file": "images_ck_flat/SAC_SIL_00835.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00835.jpg",
       "matches": [
         {
           "illustration_id": "990000951480205171_0006_Content_Illustration_01",
@@ -185,7 +185,7 @@
     },
     {
       "print_id": "SAC_SIL_01207",
-      "print_file": "images_ck_flat/SAC_SIL_01207.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01207.jpg",
       "matches": [
         {
           "illustration_id": "990001949390205171_0076_manual_01",
@@ -197,7 +197,7 @@
     },
     {
       "print_id": "SAC_SIL_01140",
-      "print_file": "images_ck_flat/SAC_SIL_01140.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01140.jpg",
       "matches": [
         {
           "illustration_id": "990000692350205171_0013_Content_Illustration_01",
@@ -209,7 +209,7 @@
     },
     {
       "print_id": "SAC_SIL_01133",
-      "print_file": "images_ck_flat/SAC_SIL_01133.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01133.jpg",
       "matches": [
         {
           "illustration_id": "990000914920205171_0216_Content_Illustration_01",
@@ -221,7 +221,7 @@
     },
     {
       "print_id": "SAC_SIL_01592",
-      "print_file": "images_ck_flat/SAC_SIL_01592.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01592.jpg",
       "matches": [
         {
           "illustration_id": "990000463080205171_0025_Content_Illustration_01",
@@ -233,7 +233,7 @@
     },
     {
       "print_id": "SAC_SIL_03583",
-      "print_file": "images_ck_flat/SAC_SIL_03583.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03583.jpg",
       "matches": [
         {
           "illustration_id": "990000863410205171_0153_Content_Illustration_01",
@@ -251,7 +251,7 @@
     },
     {
       "print_id": "SAC_SIL_00025",
-      "print_file": "images_ck_flat/SAC_SIL_00025.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00025.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0025_Content_Illustration_01",
@@ -269,7 +269,7 @@
     },
     {
       "print_id": "SAC_SIL_01171",
-      "print_file": "images_ck_flat/SAC_SIL_01171.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01171.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0061_Content_Illustration_02",
@@ -281,7 +281,7 @@
     },
     {
       "print_id": "SAC_SIL_03637",
-      "print_file": "images_ck_flat/SAC_SIL_03637.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03637.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0072_Content_Illustration_02",
@@ -299,7 +299,7 @@
     },
     {
       "print_id": "SAC_SIL_01262",
-      "print_file": "images_ck_flat/SAC_SIL_01262.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01262.jpg",
       "matches": [
         {
           "illustration_id": "990001253770205171_0020_Content_Illustration_02",
@@ -317,7 +317,7 @@
     },
     {
       "print_id": "SAC_SIL_02281",
-      "print_file": "images_ck_flat/SAC_SIL_02281.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02281.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0045_Content_Illustration_03",
@@ -329,7 +329,7 @@
     },
     {
       "print_id": "SAC_SIL_03062",
-      "print_file": "images_ck_flat/SAC_SIL_03062.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03062.jpg",
       "matches": [
         {
           "illustration_id": "990001283830205171_0038_Content_Illustration_01",
@@ -341,7 +341,7 @@
     },
     {
       "print_id": "SAC_SIL_00119",
-      "print_file": "images_ck_flat/SAC_SIL_00119.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00119.jpg",
       "matches": [
         {
           "illustration_id": "990001905650205171_0217_Content_Illustration_01",
@@ -353,7 +353,7 @@
     },
     {
       "print_id": "SAC_SIL_02347",
-      "print_file": "images_ck_flat/SAC_SIL_02347.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02347.jpg",
       "matches": [
         {
           "illustration_id": "990001314740205171_0042_manual_01",
@@ -395,7 +395,7 @@
     },
     {
       "print_id": "SAC_SIL_00398",
-      "print_file": "images_ck_flat/SAC_SIL_00398.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00398.jpg",
       "matches": [
         {
           "illustration_id": "990000710110205171_0076_manual_01",
@@ -407,7 +407,7 @@
     },
     {
       "print_id": "SAC_SIL_02309",
-      "print_file": "images_ck_flat/SAC_SIL_02309.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02309.jpg",
       "matches": [
         {
           "illustration_id": "990000951480205171_0091_manual_04",
@@ -425,7 +425,7 @@
     },
     {
       "print_id": "SAC_SIL_00324",
-      "print_file": "images_ck_flat/SAC_SIL_00324.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00324.jpg",
       "matches": [
         {
           "illustration_id": "990000914920205171_0210_Content_Illustration_02",
@@ -437,7 +437,7 @@
     },
     {
       "print_id": "SAC_SIL_02925",
-      "print_file": "images_ck_flat/SAC_SIL_02925.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02925.jpg",
       "matches": [
         {
           "illustration_id": "990000863410205171_0152_Content_Illustration_01",
@@ -455,7 +455,7 @@
     },
     {
       "print_id": "SAC_SIL_01397",
-      "print_file": "images_ck_flat/SAC_SIL_01397.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01397.jpg",
       "matches": [
         {
           "illustration_id": "990001253770205171_0007_Content_Illustration_03",
@@ -467,7 +467,7 @@
     },
     {
       "print_id": "SAC_SIL_00105",
-      "print_file": "images_ck_flat/SAC_SIL_00105.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00105.jpg",
       "matches": [
         {
           "illustration_id": "990001820390205171_0071_Content_Illustration_01",
@@ -479,7 +479,7 @@
     },
     {
       "print_id": "SAC_SIL_03268",
-      "print_file": "images_ck_flat/SAC_SIL_03268.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03268.jpg",
       "matches": [
         {
           "illustration_id": "990000951480205171_0006_Content_Illustration_01",
@@ -491,7 +491,7 @@
     },
     {
       "print_id": "SAC_SIL_00275",
-      "print_file": "images_ck_flat/SAC_SIL_00275.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00275.jpg",
       "matches": [
         {
           "illustration_id": "990001905610205171_0023_Content_Illustration_06",
@@ -503,7 +503,7 @@
     },
     {
       "print_id": "SAC_SIL_01317",
-      "print_file": "images_ck_flat/SAC_SIL_01317.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01317.jpg",
       "matches": [
         {
           "illustration_id": "990000864290205171_0151_Content_Illustration_03",
@@ -515,7 +515,7 @@
     },
     {
       "print_id": "SAC_SIL_00252",
-      "print_file": "images_ck_flat/SAC_SIL_00252.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00252.jpg",
       "matches": [
         {
           "illustration_id": "990000914920205171_0216_Content_Illustration_01",
@@ -527,7 +527,7 @@
     },
     {
       "print_id": "SAC_SIL_01795",
-      "print_file": "images_ck_flat/SAC_SIL_01795.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01795.jpg",
       "matches": [
         {
           "illustration_id": "990001253770205171_0007_Content_Illustration_04",
@@ -545,7 +545,7 @@
     },
     {
       "print_id": "SAC_SIL_00342",
-      "print_file": "images_ck_flat/SAC_SIL_00342.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00342.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0025_Content_Illustration_01",
@@ -557,7 +557,7 @@
     },
     {
       "print_id": "SAC_SIL_02421",
-      "print_file": "images_ck_flat/SAC_SIL_02421.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02421.jpg",
       "matches": [
         {
           "illustration_id": "990001054090205171_0035_Content_Illustration_01",
@@ -569,7 +569,7 @@
     },
     {
       "print_id": "SAC_SIL_03653",
-      "print_file": "images_ck_flat/SAC_SIL_03653.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03653.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0069_Content_Illustration_01",
@@ -581,7 +581,7 @@
     },
     {
       "print_id": "SAC_SIL_03566",
-      "print_file": "images_ck_flat/SAC_SIL_03566.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03566.jpg",
       "matches": [
         {
           "illustration_id": "990000863410205171_0153_Content_Illustration_01",
@@ -593,7 +593,7 @@
     },
     {
       "print_id": "SAC_SIL_00115",
-      "print_file": "images_ck_flat/SAC_SIL_00115.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00115.jpg",
       "matches": [
         {
           "illustration_id": "990000863410205171_0152_Content_Illustration_01",
@@ -605,7 +605,7 @@
     },
     {
       "print_id": "SAC_SIL_02206",
-      "print_file": "images_ck_flat/SAC_SIL_02206.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02206.jpg",
       "matches": [
         {
           "illustration_id": "990000935540205171_0066_Content_Illustration_01",
@@ -623,7 +623,7 @@
     },
     {
       "print_id": "SAC_SIL_02026",
-      "print_file": "images_ck_flat/SAC_SIL_02026.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02026.jpg",
       "matches": [
         {
           "illustration_id": "990001253770205171_0004_Content_Illustration_01",
@@ -635,7 +635,7 @@
     },
     {
       "print_id": "SAC_SIL_03691",
-      "print_file": "images_ck_flat/SAC_SIL_03691.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03691.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0025_Content_Illustration_01",
@@ -647,7 +647,7 @@
     },
     {
       "print_id": "SAC_SIL_01183",
-      "print_file": "images_ck_flat/SAC_SIL_01183.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01183.jpg",
       "matches": [
         {
           "illustration_id": "990001054090205171_0035_Content_Illustration_03",
@@ -665,7 +665,7 @@
     },
     {
       "print_id": "SAC_SIL_02963",
-      "print_file": "images_ck_flat/SAC_SIL_02963.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02963.jpg",
       "matches": [
         {
           "illustration_id": "990001895310205171_0177_Content_Illustration_01",
@@ -677,7 +677,7 @@
     },
     {
       "print_id": "SAC_SIL_03225",
-      "print_file": "images_ck_flat/SAC_SIL_03225.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03225.jpg",
       "matches": [
         {
           "illustration_id": "990000957690205171_0031_Content_Illustration_02",
@@ -689,7 +689,7 @@
     },
     {
       "print_id": "SAC_SIL_01786",
-      "print_file": "images_ck_flat/SAC_SIL_01786.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01786.jpg",
       "matches": [
         {
           "illustration_id": "990001283830205171_0293_Content_Illustration_02",
@@ -701,7 +701,7 @@
     },
     {
       "print_id": "SAC_SIL_00147",
-      "print_file": "images_ck_flat/SAC_SIL_00147.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00147.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0061_Content_Illustration_04",
@@ -719,7 +719,7 @@
     },
     {
       "print_id": "SAC_SIL_00095",
-      "print_file": "images_ck_flat/SAC_SIL_00095.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00095.jpg",
       "matches": [
         {
           "illustration_id": "990001762860205171_0060_Content_Illustration_04",
@@ -731,7 +731,7 @@
     },
     {
       "print_id": "SAC_SIL_01038",
-      "print_file": "images_ck_flat/SAC_SIL_01038.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01038.jpg",
       "matches": [
         {
           "illustration_id": "990000863410205171_0150_Content_Illustration_02",
@@ -755,7 +755,7 @@
     },
     {
       "print_id": "SAC_SIL_02105",
-      "print_file": "images_ck_flat/SAC_SIL_02105.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02105.jpg",
       "matches": [
         {
           "illustration_id": "990000692350205171_0010_Content_Illustration_01",
@@ -767,7 +767,7 @@
     },
     {
       "print_id": "SAC_SIL_00671",
-      "print_file": "images_ck_flat/SAC_SIL_00671.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00671.jpg",
       "matches": [
         {
           "illustration_id": "990001283830205171_0038_Content_Illustration_01",
@@ -785,7 +785,7 @@
     },
     {
       "print_id": "SAC_SIL_02023",
-      "print_file": "images_ck_flat/SAC_SIL_02023.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02023.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0063_Content_Illustration_05",
@@ -797,7 +797,7 @@
     },
     {
       "print_id": "SAC_SIL_02978",
-      "print_file": "images_ck_flat/SAC_SIL_02978.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02978.jpg",
       "matches": [
         {
           "illustration_id": "990001310400205171_0098_Content_Illustration_01",
@@ -815,7 +815,7 @@
     },
     {
       "print_id": "SAC_SIL_03232",
-      "print_file": "images_ck_flat/SAC_SIL_03232.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03232.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0045_Content_Illustration_01",
@@ -827,7 +827,7 @@
     },
     {
       "print_id": "SAC_SIL_01504",
-      "print_file": "images_ck_flat/SAC_SIL_01504.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01504.jpg",
       "matches": [
         {
           "illustration_id": "990000914920205171_0195_Content_Illustration_01",
@@ -839,7 +839,7 @@
     },
     {
       "print_id": "SAC_SIL_03818",
-      "print_file": "images_ck_flat/SAC_SIL_03818.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03818.jpg",
       "matches": [
         {
           "illustration_id": "990000935540205171_0014_manual_01",
@@ -851,7 +851,7 @@
     },
     {
       "print_id": "SAC_SIL_01343",
-      "print_file": "images_ck_flat/SAC_SIL_01343.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01343.jpg",
       "matches": [
         {
           "illustration_id": "990001253770205171_0007_Content_Illustration_04",
@@ -863,7 +863,7 @@
     },
     {
       "print_id": "SAC_SIL_00609",
-      "print_file": "images_ck_flat/SAC_SIL_00609.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00609.jpg",
       "matches": [
         {
           "illustration_id": "990000692350205171_0010_Content_Illustration_01",
@@ -875,7 +875,7 @@
     },
     {
       "print_id": "SAC_SIL_03125",
-      "print_file": "images_ck_flat/SAC_SIL_03125.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03125.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0043_Content_Illustration_02",
@@ -887,7 +887,7 @@
     },
     {
       "print_id": "SAC_SIL_02300",
-      "print_file": "images_ck_flat/SAC_SIL_02300.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02300.jpg",
       "matches": [
         {
           "illustration_id": "990001466830205171_0040_Content_Illustration_04",
@@ -899,7 +899,7 @@
     },
     {
       "print_id": "SAC_SIL_00143",
-      "print_file": "images_ck_flat/SAC_SIL_00143.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00143.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0039_Content_Illustration_01",
@@ -911,7 +911,7 @@
     },
     {
       "print_id": "SAC_SIL_01567",
-      "print_file": "images_ck_flat/SAC_SIL_01567.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01567.jpg",
       "matches": [
         {
           "illustration_id": "990001762860205171_0060_Content_Illustration_04",
@@ -923,7 +923,7 @@
     },
     {
       "print_id": "SAC_SIL_02388",
-      "print_file": "images_ck_flat/SAC_SIL_02388.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02388.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0054_Content_Illustration_01",
@@ -935,7 +935,7 @@
     },
     {
       "print_id": "SAC_SIL_00873",
-      "print_file": "images_ck_flat/SAC_SIL_00873.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00873.jpg",
       "matches": [
         {
           "illustration_id": "990000710110205171_0136_Content_Illustration_01",
@@ -947,7 +947,7 @@
     },
     {
       "print_id": "SAC_SIL_02931",
-      "print_file": "images_ck_flat/SAC_SIL_02931.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02931.jpg",
       "matches": [
         {
           "illustration_id": "990001279400205171_0038_manual_01",
@@ -971,7 +971,7 @@
     },
     {
       "print_id": "SAC_SIL_01315",
-      "print_file": "images_ck_flat/SAC_SIL_01315.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01315.jpg",
       "matches": [
         {
           "illustration_id": "990001895310205171_0035_manual_02",
@@ -983,7 +983,7 @@
     },
     {
       "print_id": "SAC_SIL_02733",
-      "print_file": "images_ck_flat/SAC_SIL_02733.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02733.jpg",
       "matches": [
         {
           "illustration_id": "990000400830205171_0003_manual_01",
@@ -995,7 +995,7 @@
     },
     {
       "print_id": "SAC_SIL_03765",
-      "print_file": "images_ck_flat/SAC_SIL_03765.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03765.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0056_Content_Illustration_01",
@@ -1013,7 +1013,7 @@
     },
     {
       "print_id": "SAC_SIL_03133",
-      "print_file": "images_ck_flat/SAC_SIL_03133.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03133.jpg",
       "matches": [
         {
           "illustration_id": "990001919190205171_0144_manual_02",
@@ -1025,7 +1025,7 @@
     },
     {
       "print_id": "SAC_SIL_01250",
-      "print_file": "images_ck_flat/SAC_SIL_01250.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01250.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0058_Content_Illustration_01",
@@ -1037,7 +1037,7 @@
     },
     {
       "print_id": "SAC_SIL_03152",
-      "print_file": "images_ck_flat/SAC_SIL_03152.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03152.jpg",
       "matches": [
         {
           "illustration_id": "990001919190205171_0144_manual_01",
@@ -1055,7 +1055,7 @@
     },
     {
       "print_id": "SAC_SIL_02598",
-      "print_file": "images_ck_flat/SAC_SIL_02598.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02598.jpg",
       "matches": [
         {
           "illustration_id": "990001918500205171_0011_Content_Illustration_04",
@@ -1067,7 +1067,7 @@
     },
     {
       "print_id": "SAC_SIL_01199",
-      "print_file": "images_ck_flat/SAC_SIL_01199.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01199.jpg",
       "matches": [
         {
           "illustration_id": "990001754200205171_0111_Content_Illustration_03",
@@ -1091,7 +1091,7 @@
     },
     {
       "print_id": "SAC_SIL_00654",
-      "print_file": "images_ck_flat/SAC_SIL_00654.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00654.jpg",
       "matches": [
         {
           "illustration_id": "990000957690205171_0037_Content_Illustration_03",
@@ -1109,7 +1109,7 @@
     },
     {
       "print_id": "SAC_SIL_02726",
-      "print_file": "images_ck_flat/SAC_SIL_02726.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02726.jpg",
       "matches": [
         {
           "illustration_id": "990001820390205171_0062_manual_01",
@@ -1121,7 +1121,7 @@
     },
     {
       "print_id": "SAC_SIL_01405",
-      "print_file": "images_ck_flat/SAC_SIL_01405.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01405.jpg",
       "matches": [
         {
           "illustration_id": "990000863410205171_0153_Content_Illustration_01",
@@ -1139,7 +1139,7 @@
     },
     {
       "print_id": "SAC_SIL_02932",
-      "print_file": "images_ck_flat/SAC_SIL_02932.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02932.jpg",
       "matches": [
         {
           "illustration_id": "990001253770205171_0003_Content_Illustration_01",
@@ -1151,7 +1151,7 @@
     },
     {
       "print_id": "SAC_SIL_00757",
-      "print_file": "images_ck_flat/SAC_SIL_00757.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00757.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0056_Content_Illustration_05",
@@ -1163,7 +1163,7 @@
     },
     {
       "print_id": "SAC_SIL_00630",
-      "print_file": "images_ck_flat/SAC_SIL_00630.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00630.jpg",
       "matches": [
         {
           "illustration_id": "990001253770205171_0007_Content_Illustration_03",
@@ -1175,7 +1175,7 @@
     },
     {
       "print_id": "SAC_SIL_00770",
-      "print_file": "images_ck_flat/SAC_SIL_00770.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00770.jpg",
       "matches": [
         {
           "illustration_id": "990001895310205171_0116_Content_Illustration_02",
@@ -1193,7 +1193,7 @@
     },
     {
       "print_id": "SAC_SIL_03591",
-      "print_file": "images_ck_flat/SAC_SIL_03591.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03591.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0025_Content_Illustration_01",
@@ -1205,7 +1205,7 @@
     },
     {
       "print_id": "SAC_SIL_01419",
-      "print_file": "images_ck_flat/SAC_SIL_01419.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01419.jpg",
       "matches": [
         {
           "illustration_id": "990000834140205171_0049_Content_Illustration_01",
@@ -1217,7 +1217,7 @@
     },
     {
       "print_id": "SAC_SIL_03760",
-      "print_file": "images_ck_flat/SAC_SIL_03760.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03760.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0205_Content_Illustration_01",
@@ -1247,7 +1247,7 @@
     },
     {
       "print_id": "SAC_SIL_01511",
-      "print_file": "images_ck_flat/SAC_SIL_01511.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01511.jpg",
       "matches": [
         {
           "illustration_id": "990000692350205171_0013_Content_Illustration_01",
@@ -1265,7 +1265,7 @@
     },
     {
       "print_id": "SAC_SIL_03122",
-      "print_file": "images_ck_flat/SAC_SIL_03122.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03122.jpg",
       "matches": [
         {
           "illustration_id": "990001919190205171_0143_manual_02",
@@ -1277,7 +1277,7 @@
     },
     {
       "print_id": "SAC_SIL_02976",
-      "print_file": "images_ck_flat/SAC_SIL_02976.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02976.jpg",
       "matches": [
         {
           "illustration_id": "990001895310205171_0177_Content_Illustration_01",
@@ -1289,7 +1289,7 @@
     },
     {
       "print_id": "SAC_SIL_01527",
-      "print_file": "images_ck_flat/SAC_SIL_01527.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01527.jpg",
       "matches": [
         {
           "illustration_id": "990000957690205171_0037_Content_Illustration_01",
@@ -1313,7 +1313,7 @@
     },
     {
       "print_id": "SAC_SIL_00536",
-      "print_file": "images_ck_flat/SAC_SIL_00536.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00536.jpg",
       "matches": [
         {
           "illustration_id": "990000692350205171_0013_Content_Illustration_01",
@@ -1325,7 +1325,7 @@
     },
     {
       "print_id": "SAC_SIL_03520",
-      "print_file": "images_ck_flat/SAC_SIL_03520.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03520.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0017_manual_02",
@@ -1337,7 +1337,7 @@
     },
     {
       "print_id": "SAC_SIL_03092",
-      "print_file": "images_ck_flat/SAC_SIL_03092.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03092.jpg",
       "matches": [
         {
           "illustration_id": "990000692350205171_0036_Content_Illustration_03",
@@ -1361,7 +1361,7 @@
     },
     {
       "print_id": "SAC_SIL_03046",
-      "print_file": "images_ck_flat/SAC_SIL_03046.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03046.jpg",
       "matches": [
         {
           "illustration_id": "990001279400205171_0128_Content_Illustration_01",
@@ -1379,7 +1379,7 @@
     },
     {
       "print_id": "SAC_SIL_02630",
-      "print_file": "images_ck_flat/SAC_SIL_02630.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02630.jpg",
       "matches": [
         {
           "illustration_id": "990001895310205171_0177_Content_Illustration_01",
@@ -1391,7 +1391,7 @@
     },
     {
       "print_id": "SAC_SIL_03624",
-      "print_file": "images_ck_flat/SAC_SIL_03624.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03624.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0017_manual_03",
@@ -1409,7 +1409,7 @@
     },
     {
       "print_id": "SAC_SIL_00462",
-      "print_file": "images_ck_flat/SAC_SIL_00462.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00462.jpg",
       "matches": [
         {
           "illustration_id": "990001752420205171_0104_Content_Illustration_01",
@@ -1427,7 +1427,7 @@
     },
     {
       "print_id": "SAC_SIL_03327",
-      "print_file": "images_ck_flat/SAC_SIL_03327.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03327.jpg",
       "matches": [
         {
           "illustration_id": "990001918420205171_0047_manual_01",
@@ -1439,7 +1439,7 @@
     },
     {
       "print_id": "SAC_SIL_02230",
-      "print_file": "images_ck_flat/SAC_SIL_02230.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02230.jpg",
       "matches": [
         {
           "illustration_id": "990001253770205171_0010_Content_Illustration_03",
@@ -1451,7 +1451,7 @@
     },
     {
       "print_id": "SAC_SIL_00404",
-      "print_file": "images_ck_flat/SAC_SIL_00404.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00404.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0044_Content_Illustration_01",
@@ -1463,7 +1463,7 @@
     },
     {
       "print_id": "SAC_SIL_00788",
-      "print_file": "images_ck_flat/SAC_SIL_00788.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00788.jpg",
       "matches": [
         {
           "illustration_id": "990001895310205171_0179_Content_Illustration_02",
@@ -1475,7 +1475,7 @@
     },
     {
       "print_id": "SAC_SIL_03226",
-      "print_file": "images_ck_flat/SAC_SIL_03226.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03226.jpg",
       "matches": [
         {
           "illustration_id": "990001466830205171_0069_Initial_01",
@@ -1487,7 +1487,7 @@
     },
     {
       "print_id": "SAC_SIL_00603",
-      "print_file": "images_ck_flat/SAC_SIL_00603.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00603.jpg",
       "matches": [
         {
           "illustration_id": "990000710110205171_0134_manual_01",
@@ -1499,7 +1499,7 @@
     },
     {
       "print_id": "SAC_SIL_01547",
-      "print_file": "images_ck_flat/SAC_SIL_01547.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01547.jpg",
       "matches": [
         {
           "illustration_id": "990000914920205171_0041_Content_Illustration_01",
@@ -1517,7 +1517,7 @@
     },
     {
       "print_id": "SAC_SIL_03740",
-      "print_file": "images_ck_flat/SAC_SIL_03740.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03740.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0061_Content_Illustration_01",
@@ -1529,7 +1529,7 @@
     },
     {
       "print_id": "SAC_SIL_01349",
-      "print_file": "images_ck_flat/SAC_SIL_01349.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01349.jpg",
       "matches": [
         {
           "illustration_id": "990000692350205171_0026_Content_Illustration_01",
@@ -1541,7 +1541,7 @@
     },
     {
       "print_id": "SAC_SIL_01266",
-      "print_file": "images_ck_flat/SAC_SIL_01266.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01266.jpg",
       "matches": [
         {
           "illustration_id": "990001310400205171_0002_Content_Illustration_02",
@@ -1553,7 +1553,7 @@
     },
     {
       "print_id": "SAC_SIL_01179",
-      "print_file": "images_ck_flat/SAC_SIL_01179.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01179.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0059_Initial_02",
@@ -1583,7 +1583,7 @@
     },
     {
       "print_id": "SAC_SIL_01937",
-      "print_file": "images_ck_flat/SAC_SIL_01937.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01937.jpg",
       "matches": [
         {
           "illustration_id": "990001754200205171_0111_Content_Illustration_03",
@@ -1595,7 +1595,7 @@
     },
     {
       "print_id": "SAC_SIL_02537",
-      "print_file": "images_ck_flat/SAC_SIL_02537.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02537.jpg",
       "matches": [
         {
           "illustration_id": "990001905610205171_0023_Content_Illustration_05",
@@ -1607,7 +1607,7 @@
     },
     {
       "print_id": "SAC_SIL_01871",
-      "print_file": "images_ck_flat/SAC_SIL_01871.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01871.jpg",
       "matches": [
         {
           "illustration_id": "990001253770205171_0006_Content_Illustration_03",
@@ -1619,7 +1619,7 @@
     },
     {
       "print_id": "SAC_SIL_02768",
-      "print_file": "images_ck_flat/SAC_SIL_02768.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02768.jpg",
       "matches": [
         {
           "illustration_id": "990000692350205171_0155_Content_Illustration_01",
@@ -1631,7 +1631,7 @@
     },
     {
       "print_id": "SAC_SIL_01350",
-      "print_file": "images_ck_flat/SAC_SIL_01350.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01350.jpg",
       "matches": [
         {
           "illustration_id": "990000863410205171_0152_manual_01",
@@ -1649,7 +1649,7 @@
     },
     {
       "print_id": "SAC_SIL_02472",
-      "print_file": "images_ck_flat/SAC_SIL_02472.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02472.jpg",
       "matches": [
         {
           "illustration_id": "990001253770205171_0009_Content_Illustration_01",
@@ -1661,7 +1661,7 @@
     },
     {
       "print_id": "SAC_SIL_03798",
-      "print_file": "images_ck_flat/SAC_SIL_03798.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03798.jpg",
       "matches": [
         {
           "illustration_id": "990001466830205171_0082_Content_Illustration_01",
@@ -1673,7 +1673,7 @@
     },
     {
       "print_id": "SAC_SIL_02035",
-      "print_file": "images_ck_flat/SAC_SIL_02035.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02035.jpg",
       "matches": [
         {
           "illustration_id": "990000692350205171_0011_Content_Illustration_02",
@@ -1685,7 +1685,7 @@
     },
     {
       "print_id": "SAC_SIL_02199",
-      "print_file": "images_ck_flat/SAC_SIL_02199.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02199.jpg",
       "matches": [
         {
           "illustration_id": "990000692350205171_0011_Content_Illustration_02",
@@ -1697,7 +1697,7 @@
     },
     {
       "print_id": "SAC_SIL_03687",
-      "print_file": "images_ck_flat/SAC_SIL_03687.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03687.jpg",
       "matches": [
         {
           "illustration_id": "990001253770205171_0004_Content_Illustration_02",
@@ -1715,7 +1715,7 @@
     },
     {
       "print_id": "SAC_SIL_03752",
-      "print_file": "images_ck_flat/SAC_SIL_03752.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03752.jpg",
       "matches": [
         {
           "illustration_id": "990001895310205171_0035_manual_02",
@@ -1727,7 +1727,7 @@
     },
     {
       "print_id": "SAC_SIL_01879",
-      "print_file": "images_ck_flat/SAC_SIL_01879.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01879.jpg",
       "matches": [
         {
           "illustration_id": "990001279400205171_0115_Content_Illustration_02",
@@ -1739,7 +1739,7 @@
     },
     {
       "print_id": "SAC_SIL_03078",
-      "print_file": "images_ck_flat/SAC_SIL_03078.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03078.jpg",
       "matches": [
         {
           "illustration_id": "990000986440205171_0076_manual_01",
@@ -1751,7 +1751,7 @@
     },
     {
       "print_id": "SAC_SIL_03017",
-      "print_file": "images_ck_flat/SAC_SIL_03017.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03017.jpg",
       "matches": [
         {
           "illustration_id": "990001283830205171_0244_Content_Illustration_01",
@@ -1763,7 +1763,7 @@
     },
     {
       "print_id": "SAC_SIL_00201",
-      "print_file": "images_ck_flat/SAC_SIL_00201.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00201.jpg",
       "matches": [
         {
           "illustration_id": "990000692350205171_0036_Content_Illustration_02",
@@ -1775,7 +1775,7 @@
     },
     {
       "print_id": "SAC_SIL_01765",
-      "print_file": "images_ck_flat/SAC_SIL_01765.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01765.jpg",
       "matches": [
         {
           "illustration_id": "990000957690205171_0037_Content_Illustration_01",
@@ -1799,7 +1799,7 @@
     },
     {
       "print_id": "SAC_SIL_02551",
-      "print_file": "images_ck_flat/SAC_SIL_02551.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02551.jpg",
       "matches": [
         {
           "illustration_id": "990001767020205171_0238_manual_01",
@@ -1817,7 +1817,7 @@
     },
     {
       "print_id": "SAC_SIL_01517",
-      "print_file": "images_ck_flat/SAC_SIL_01517.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01517.jpg",
       "matches": [
         {
           "illustration_id": "990001895310205171_0019_Content_Illustration_02",
@@ -1835,7 +1835,7 @@
     },
     {
       "print_id": "SAC_SIL_01437",
-      "print_file": "images_ck_flat/SAC_SIL_01437.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01437.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0055_Content_Illustration_02",
@@ -1847,7 +1847,7 @@
     },
     {
       "print_id": "SAC_SIL_01435",
-      "print_file": "images_ck_flat/SAC_SIL_01435.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01435.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0068_Content_Illustration_02",
@@ -1859,7 +1859,7 @@
     },
     {
       "print_id": "SAC_SIL_02386",
-      "print_file": "images_ck_flat/SAC_SIL_02386.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02386.jpg",
       "matches": [
         {
           "illustration_id": "990001905610205171_0029_Content_Illustration_01",
@@ -1877,7 +1877,7 @@
     },
     {
       "print_id": "SAC_SIL_03729",
-      "print_file": "images_ck_flat/SAC_SIL_03729.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03729.jpg",
       "matches": [
         {
           "illustration_id": "990001314250205171_0199_Content_Illustration_01",
@@ -1889,7 +1889,7 @@
     },
     {
       "print_id": "SAC_SIL_02632",
-      "print_file": "images_ck_flat/SAC_SIL_02632.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02632.jpg",
       "matches": [
         {
           "illustration_id": "990001466830205171_0040_Content_Illustration_04",
@@ -1907,7 +1907,7 @@
     },
     {
       "print_id": "SAC_SIL_01368",
-      "print_file": "images_ck_flat/SAC_SIL_01368.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01368.jpg",
       "matches": [
         {
           "illustration_id": "990000689360205171_0005_Content_Illustration_01",
@@ -1919,7 +1919,7 @@
     },
     {
       "print_id": "SAC_SIL_03559",
-      "print_file": "images_ck_flat/SAC_SIL_03559.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03559.jpg",
       "matches": [
         {
           "illustration_id": "990000692350205171_0174_Content_Illustration_01",
@@ -1931,7 +1931,7 @@
     },
     {
       "print_id": "SAC_SIL_01839",
-      "print_file": "images_ck_flat/SAC_SIL_01839.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01839.jpg",
       "matches": [
         {
           "illustration_id": "990001379080205171_0027_Content_Illustration_01",
@@ -1943,7 +1943,7 @@
     },
     {
       "print_id": "SAC_SIL_01200",
-      "print_file": "images_ck_flat/SAC_SIL_01200.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01200.jpg",
       "matches": [
         {
           "illustration_id": "990000692350205171_0174_Content_Illustration_01",
@@ -1955,7 +1955,7 @@
     },
     {
       "print_id": "SAC_SIL_01816",
-      "print_file": "images_ck_flat/SAC_SIL_01816.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01816.jpg",
       "matches": [
         {
           "illustration_id": "990001283830205171_0083_manual_02",
@@ -1967,7 +1967,7 @@
     },
     {
       "print_id": "SAC_SIL_02873",
-      "print_file": "images_ck_flat/SAC_SIL_02873.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02873.jpg",
       "matches": [
         {
           "illustration_id": "990001895310205171_0186_manual_01",
@@ -1979,7 +1979,7 @@
     },
     {
       "print_id": "SAC_SIL_03043",
-      "print_file": "images_ck_flat/SAC_SIL_03043.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03043.jpg",
       "matches": [
         {
           "illustration_id": "990001279400205171_0116_Content_Illustration_02",
@@ -1991,7 +1991,7 @@
     },
     {
       "print_id": "SAC_SIL_00495",
-      "print_file": "images_ck_flat/SAC_SIL_00495.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00495.jpg",
       "matches": [
         {
           "illustration_id": "990001754200205171_0099_Content_Illustration_02",
@@ -2009,7 +2009,7 @@
     },
     {
       "print_id": "SAC_SIL_02095",
-      "print_file": "images_ck_flat/SAC_SIL_02095.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02095.jpg",
       "matches": [
         {
           "illustration_id": "990001949390205171_0102_manual_01",
@@ -2021,7 +2021,7 @@
     },
     {
       "print_id": "SAC_SIL_00553",
-      "print_file": "images_ck_flat/SAC_SIL_00553.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00553.jpg",
       "matches": [
         {
           "illustration_id": "990001753350205171_0112_Content_Illustration_01",
@@ -2033,7 +2033,7 @@
     },
     {
       "print_id": "SAC_SIL_00942",
-      "print_file": "images_ck_flat/SAC_SIL_00942.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00942.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0045_Content_Illustration_03",
@@ -2051,7 +2051,7 @@
     },
     {
       "print_id": "SAC_SIL_02977",
-      "print_file": "images_ck_flat/SAC_SIL_02977.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02977.jpg",
       "matches": [
         {
           "illustration_id": "990001310400205171_0100_Content_Illustration_01",
@@ -2075,7 +2075,7 @@
     },
     {
       "print_id": "SAC_SIL_03064",
-      "print_file": "images_ck_flat/SAC_SIL_03064.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03064.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0060_manual_03",
@@ -2087,7 +2087,7 @@
     },
     {
       "print_id": "SAC_SIL_03464",
-      "print_file": "images_ck_flat/SAC_SIL_03464.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03464.jpg",
       "matches": [
         {
           "illustration_id": "990001754200205171_0058_Content_Illustration_01",
@@ -2105,7 +2105,7 @@
     },
     {
       "print_id": "SAC_SIL_00099",
-      "print_file": "images_ck_flat/SAC_SIL_00099.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00099.jpg",
       "matches": [
         {
           "illustration_id": "990000951480205171_0106_Content_Illustration_01",
@@ -2129,7 +2129,7 @@
     },
     {
       "print_id": "SAC_SIL_02960",
-      "print_file": "images_ck_flat/SAC_SIL_02960.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02960.jpg",
       "matches": [
         {
           "illustration_id": "990001905650205171_0203_Content_Illustration_01",
@@ -2141,7 +2141,7 @@
     },
     {
       "print_id": "SAC_SIL_01275",
-      "print_file": "images_ck_flat/SAC_SIL_01275.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01275.jpg",
       "matches": [
         {
           "illustration_id": "990001754200205171_0112_Content_Illustration_02",
@@ -2159,7 +2159,7 @@
     },
     {
       "print_id": "SAC_SIL_02333",
-      "print_file": "images_ck_flat/SAC_SIL_02333.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02333.jpg",
       "matches": [
         {
           "illustration_id": "990000400830205171_0003_manual_02",
@@ -2171,7 +2171,7 @@
     },
     {
       "print_id": "SAC_SIL_02855",
-      "print_file": "images_ck_flat/SAC_SIL_02855.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02855.jpg",
       "matches": [
         {
           "illustration_id": "990001767020205171_0375_manual_01",
@@ -2195,7 +2195,7 @@
     },
     {
       "print_id": "SAC_SIL_02783",
-      "print_file": "images_ck_flat/SAC_SIL_02783.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02783.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0045_Content_Illustration_01",
@@ -2219,7 +2219,7 @@
     },
     {
       "print_id": "SAC_SIL_03331",
-      "print_file": "images_ck_flat/SAC_SIL_03331.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03331.jpg",
       "matches": [
         {
           "illustration_id": "990000935540205171_0111_Content_Illustration_01",
@@ -2237,7 +2237,7 @@
     },
     {
       "print_id": "SAC_SIL_00566",
-      "print_file": "images_ck_flat/SAC_SIL_00566.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00566.jpg",
       "matches": [
         {
           "illustration_id": "990001895310205171_0041_Content_Illustration_01",
@@ -2249,7 +2249,7 @@
     },
     {
       "print_id": "SAC_SIL_00719",
-      "print_file": "images_ck_flat/SAC_SIL_00719.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00719.jpg",
       "matches": [
         {
           "illustration_id": "990000914920205171_0191_Content_Illustration_01",
@@ -2261,7 +2261,7 @@
     },
     {
       "print_id": "SAC_SIL_01932",
-      "print_file": "images_ck_flat/SAC_SIL_01932.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01932.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0025_Content_Illustration_01",
@@ -2273,7 +2273,7 @@
     },
     {
       "print_id": "SAC_SIL_02881",
-      "print_file": "images_ck_flat/SAC_SIL_02881.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02881.jpg",
       "matches": [
         {
           "illustration_id": "990001310400205171_0136_manual_02",
@@ -2303,7 +2303,7 @@
     },
     {
       "print_id": "SAC_SIL_03722",
-      "print_file": "images_ck_flat/SAC_SIL_03722.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03722.jpg",
       "matches": [
         {
           "illustration_id": "990000863410205171_0150_Content_Illustration_02",
@@ -2333,7 +2333,7 @@
     },
     {
       "print_id": "SAC_SIL_00878",
-      "print_file": "images_ck_flat/SAC_SIL_00878.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00878.jpg",
       "matches": [
         {
           "illustration_id": "990001379080205171_0048_Content_Illustration_01",
@@ -2345,7 +2345,7 @@
     },
     {
       "print_id": "SAC_SIL_02187",
-      "print_file": "images_ck_flat/SAC_SIL_02187.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02187.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0051_Content_Illustration_02",
@@ -2357,7 +2357,7 @@
     },
     {
       "print_id": "SAC_SIL_03642",
-      "print_file": "images_ck_flat/SAC_SIL_03642.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03642.jpg",
       "matches": [
         {
           "illustration_id": "990000692350205171_0017_Content_Illustration_06",
@@ -2369,7 +2369,7 @@
     },
     {
       "print_id": "SAC_SIL_00973",
-      "print_file": "images_ck_flat/SAC_SIL_00973.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00973.jpg",
       "matches": [
         {
           "illustration_id": "990000710110205171_0134_Content_Illustration_01",
@@ -2381,7 +2381,7 @@
     },
     {
       "print_id": "SAC_SIL_02910",
-      "print_file": "images_ck_flat/SAC_SIL_02910.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02910.jpg",
       "matches": [
         {
           "illustration_id": "990001767020205171_0267_manual_01",
@@ -2411,7 +2411,7 @@
     },
     {
       "print_id": "SAC_SIL_02816",
-      "print_file": "images_ck_flat/SAC_SIL_02816.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02816.jpg",
       "matches": [
         {
           "illustration_id": "990001895310205171_0189_Content_Illustration_01",
@@ -2423,7 +2423,7 @@
     },
     {
       "print_id": "SAC_SIL_03042",
-      "print_file": "images_ck_flat/SAC_SIL_03042.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03042.jpg",
       "matches": [
         {
           "illustration_id": "990000692350205171_0155_Content_Illustration_01",
@@ -2435,7 +2435,7 @@
     },
     {
       "print_id": "SAC_SIL_00085",
-      "print_file": "images_ck_flat/SAC_SIL_00085.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00085.jpg",
       "matches": [
         {
           "illustration_id": "990001762860205171_0060_Content_Illustration_04",
@@ -2447,7 +2447,7 @@
     },
     {
       "print_id": "SAC_SIL_02174",
-      "print_file": "images_ck_flat/SAC_SIL_02174.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02174.jpg",
       "matches": [
         {
           "illustration_id": "990000914920205171_0041_Content_Illustration_01",
@@ -2459,7 +2459,7 @@
     },
     {
       "print_id": "SAC_SIL_02364",
-      "print_file": "images_ck_flat/SAC_SIL_02364.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02364.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0036_Content_Illustration_01",
@@ -2471,7 +2471,7 @@
     },
     {
       "print_id": "SAC_SIL_02939",
-      "print_file": "images_ck_flat/SAC_SIL_02939.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02939.jpg",
       "matches": [
         {
           "illustration_id": "990000951480205171_0093_manual_02",
@@ -2483,7 +2483,7 @@
     },
     {
       "print_id": "SAC_SIL_00652",
-      "print_file": "images_ck_flat/SAC_SIL_00652.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00652.jpg",
       "matches": [
         {
           "illustration_id": "990000834140205171_0044_Content_Illustration_01",
@@ -2501,7 +2501,7 @@
     },
     {
       "print_id": "SAC_SIL_03253",
-      "print_file": "images_ck_flat/SAC_SIL_03253.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03253.jpg",
       "matches": [
         {
           "illustration_id": "990001820390205171_0071_Content_Illustration_01",
@@ -2513,7 +2513,7 @@
     },
     {
       "print_id": "SAC_SIL_00425",
-      "print_file": "images_ck_flat/SAC_SIL_00425.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00425.jpg",
       "matches": [
         {
           "illustration_id": "990000834140205171_0036_Content_Illustration_02",
@@ -2525,7 +2525,7 @@
     },
     {
       "print_id": "SAC_SIL_00376",
-      "print_file": "images_ck_flat/SAC_SIL_00376.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00376.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0065_Content_Illustration_04",
@@ -2543,7 +2543,7 @@
     },
     {
       "print_id": "SAC_SIL_01732",
-      "print_file": "images_ck_flat/SAC_SIL_01732.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01732.jpg",
       "matches": [
         {
           "illustration_id": "990000914920205171_0041_Content_Illustration_01",
@@ -2555,7 +2555,7 @@
     },
     {
       "print_id": "SAC_SIL_00565",
-      "print_file": "images_ck_flat/SAC_SIL_00565.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00565.jpg",
       "matches": [
         {
           "illustration_id": "990000434560205171_0133_manual_02",
@@ -2573,7 +2573,7 @@
     },
     {
       "print_id": "SAC_SIL_00468",
-      "print_file": "images_ck_flat/SAC_SIL_00468.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00468.jpg",
       "matches": [
         {
           "illustration_id": "990000864290205171_0149_Content_Illustration_01",
@@ -2591,7 +2591,7 @@
     },
     {
       "print_id": "SAC_SIL_01642",
-      "print_file": "images_ck_flat/SAC_SIL_01642.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01642.jpg",
       "matches": [
         {
           "illustration_id": "990001253770205171_0019_Content_Illustration_02",
@@ -2609,7 +2609,7 @@
     },
     {
       "print_id": "SAC_SIL_03120",
-      "print_file": "images_ck_flat/SAC_SIL_03120.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03120.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0043_Content_Illustration_02",
@@ -2627,7 +2627,7 @@
     },
     {
       "print_id": "SAC_SIL_03828",
-      "print_file": "images_ck_flat/SAC_SIL_03828.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03828.jpg",
       "matches": [
         {
           "illustration_id": "990001754200205171_0063_Content_Illustration_01",
@@ -2639,7 +2639,7 @@
     },
     {
       "print_id": "SAC_SIL_00759",
-      "print_file": "images_ck_flat/SAC_SIL_00759.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00759.jpg",
       "matches": [
         {
           "illustration_id": "990001283830205171_0038_Content_Illustration_03",
@@ -2651,7 +2651,7 @@
     },
     {
       "print_id": "SAC_SIL_03156",
-      "print_file": "images_ck_flat/SAC_SIL_03156.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03156.jpg",
       "matches": [
         {
           "illustration_id": "990001753350205171_0132_Content_Illustration_01",
@@ -2663,7 +2663,7 @@
     },
     {
       "print_id": "SAC_SIL_02266",
-      "print_file": "images_ck_flat/SAC_SIL_02266.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02266.jpg",
       "matches": [
         {
           "illustration_id": "990001754200205171_0113_Content_Illustration_02",
@@ -2675,7 +2675,7 @@
     },
     {
       "print_id": "SAC_SIL_02470",
-      "print_file": "images_ck_flat/SAC_SIL_02470.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02470.jpg",
       "matches": [
         {
           "illustration_id": "990001314740205171_0042_manual_01",
@@ -2687,7 +2687,7 @@
     },
     {
       "print_id": "SAC_SIL_01510",
-      "print_file": "images_ck_flat/SAC_SIL_01510.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01510.jpg",
       "matches": [
         {
           "illustration_id": "990000692350205171_0174_Content_Illustration_04",
@@ -2699,7 +2699,7 @@
     },
     {
       "print_id": "SAC_SIL_03143",
-      "print_file": "images_ck_flat/SAC_SIL_03143.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03143.jpg",
       "matches": [
         {
           "illustration_id": "990001283830205171_0034_Content_Illustration_01",
@@ -2711,7 +2711,7 @@
     },
     {
       "print_id": "SAC_SIL_02430",
-      "print_file": "images_ck_flat/SAC_SIL_02430.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02430.jpg",
       "matches": [
         {
           "illustration_id": "990000434560205171_0122_Content_Illustration_01",
@@ -2723,7 +2723,7 @@
     },
     {
       "print_id": "SAC_SIL_02298",
-      "print_file": "images_ck_flat/SAC_SIL_02298.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02298.jpg",
       "matches": [
         {
           "illustration_id": "990001905610205171_0023_Content_Illustration_06",
@@ -2735,7 +2735,7 @@
     },
     {
       "print_id": "SAC_SIL_03458",
-      "print_file": "images_ck_flat/SAC_SIL_03458.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03458.jpg",
       "matches": [
         {
           "illustration_id": "990000926240205171_0028_Content_Illustration_02",
@@ -2747,7 +2747,7 @@
     },
     {
       "print_id": "SAC_SIL_00470",
-      "print_file": "images_ck_flat/SAC_SIL_00470.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00470.jpg",
       "matches": [
         {
           "illustration_id": "990000951480205171_0094_manual_01",
@@ -2765,7 +2765,7 @@
     },
     {
       "print_id": "SAC_SIL_00593",
-      "print_file": "images_ck_flat/SAC_SIL_00593.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00593.jpg",
       "matches": [
         {
           "illustration_id": "990001253770205171_0009_Content_Illustration_01",
@@ -2777,7 +2777,7 @@
     },
     {
       "print_id": "SAC_SIL_01577",
-      "print_file": "images_ck_flat/SAC_SIL_01577.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01577.jpg",
       "matches": [
         {
           "illustration_id": "990001905650205171_0116_Content_Illustration_01",
@@ -2789,7 +2789,7 @@
     },
     {
       "print_id": "SAC_SIL_02054",
-      "print_file": "images_ck_flat/SAC_SIL_02054.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02054.jpg",
       "matches": [
         {
           "illustration_id": "990000846580205171_0016_Content_Illustration_02",
@@ -2801,7 +2801,7 @@
     },
     {
       "print_id": "SAC_SIL_03106",
-      "print_file": "images_ck_flat/SAC_SIL_03106.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03106.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0069_Content_Illustration_01",
@@ -2813,7 +2813,7 @@
     },
     {
       "print_id": "SAC_SIL_03234",
-      "print_file": "images_ck_flat/SAC_SIL_03234.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03234.jpg",
       "matches": [
         {
           "illustration_id": "990000692350205171_0036_Content_Illustration_03",
@@ -2825,7 +2825,7 @@
     },
     {
       "print_id": "SAC_SIL_01131",
-      "print_file": "images_ck_flat/SAC_SIL_01131.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01131.jpg",
       "matches": [
         {
           "illustration_id": "990000926240205171_0019_Content_Illustration_03",
@@ -2843,7 +2843,7 @@
     },
     {
       "print_id": "SAC_SIL_03631",
-      "print_file": "images_ck_flat/SAC_SIL_03631.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03631.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0017_manual_03",
@@ -2855,7 +2855,7 @@
     },
     {
       "print_id": "SAC_SIL_00769",
-      "print_file": "images_ck_flat/SAC_SIL_00769.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00769.jpg",
       "matches": [
         {
           "illustration_id": "990001905610205171_0023_Content_Illustration_02",
@@ -2867,7 +2867,7 @@
     },
     {
       "print_id": "SAC_SIL_01278",
-      "print_file": "images_ck_flat/SAC_SIL_01278.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01278.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0045_Content_Illustration_03",
@@ -2879,7 +2879,7 @@
     },
     {
       "print_id": "SAC_SIL_03295",
-      "print_file": "images_ck_flat/SAC_SIL_03295.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03295.jpg",
       "matches": [
         {
           "illustration_id": "990000692350205171_0017_Content_Illustration_04",
@@ -2891,7 +2891,7 @@
     },
     {
       "print_id": "SAC_SIL_00329",
-      "print_file": "images_ck_flat/SAC_SIL_00329.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00329.jpg",
       "matches": [
         {
           "illustration_id": "990001466830205171_0034_Content_Illustration_01",
@@ -2903,7 +2903,7 @@
     },
     {
       "print_id": "SAC_SIL_01975",
-      "print_file": "images_ck_flat/SAC_SIL_01975.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01975.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0058_Content_Illustration_01",
@@ -2915,7 +2915,7 @@
     },
     {
       "print_id": "SAC_SIL_02374",
-      "print_file": "images_ck_flat/SAC_SIL_02374.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02374.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0060_Content_Illustration_04",
@@ -2927,7 +2927,7 @@
     },
     {
       "print_id": "SAC_SIL_01389",
-      "print_file": "images_ck_flat/SAC_SIL_01389.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01389.jpg",
       "matches": [
         {
           "illustration_id": "990001754200205171_0113_Content_Illustration_02",
@@ -2939,7 +2939,7 @@
     },
     {
       "print_id": "SAC_SIL_02858",
-      "print_file": "images_ck_flat/SAC_SIL_02858.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02858.jpg",
       "matches": [
         {
           "illustration_id": "990001283830205171_0048_Content_Illustration_01",
@@ -2951,7 +2951,7 @@
     },
     {
       "print_id": "SAC_SIL_00634",
-      "print_file": "images_ck_flat/SAC_SIL_00634.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00634.jpg",
       "matches": [
         {
           "illustration_id": "990000864290205171_0017_Content_Illustration_02",
@@ -2963,7 +2963,7 @@
     },
     {
       "print_id": "SAC_SIL_02086",
-      "print_file": "images_ck_flat/SAC_SIL_02086.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02086.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0069_Content_Illustration_01",
@@ -2975,7 +2975,7 @@
     },
     {
       "print_id": "SAC_SIL_03701",
-      "print_file": "images_ck_flat/SAC_SIL_03701.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03701.jpg",
       "matches": [
         {
           "illustration_id": "990000951480205171_0014_Content_Illustration_01",
@@ -2987,7 +2987,7 @@
     },
     {
       "print_id": "SAC_SIL_03132",
-      "print_file": "images_ck_flat/SAC_SIL_03132.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03132.jpg",
       "matches": [
         {
           "illustration_id": "990001919190205171_0144_manual_01",
@@ -3005,7 +3005,7 @@
     },
     {
       "print_id": "SAC_SIL_02878",
-      "print_file": "images_ck_flat/SAC_SIL_02878.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02878.jpg",
       "matches": [
         {
           "illustration_id": "990001754200205171_0059_Content_Illustration_01",
@@ -3023,7 +3023,7 @@
     },
     {
       "print_id": "SAC_SIL_02879",
-      "print_file": "images_ck_flat/SAC_SIL_02879.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02879.jpg",
       "matches": [
         {
           "illustration_id": "990001754200205171_0109_Content_Illustration_02",
@@ -3041,7 +3041,7 @@
     },
     {
       "print_id": "SAC_SIL_01336",
-      "print_file": "images_ck_flat/SAC_SIL_01336.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01336.jpg",
       "matches": [
         {
           "illustration_id": "990001379080205171_0050_manual_01",
@@ -3053,7 +3053,7 @@
     },
     {
       "print_id": "SAC_SIL_00674",
-      "print_file": "images_ck_flat/SAC_SIL_00674.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00674.jpg",
       "matches": [
         {
           "illustration_id": "990001895310205171_0140_Content_Illustration_01",
@@ -3065,7 +3065,7 @@
     },
     {
       "print_id": "SAC_SIL_01062",
-      "print_file": "images_ck_flat/SAC_SIL_01062.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01062.jpg",
       "matches": [
         {
           "illustration_id": "990001895310205171_0179_Content_Illustration_02",
@@ -3077,7 +3077,7 @@
     },
     {
       "print_id": "SAC_SIL_01775",
-      "print_file": "images_ck_flat/SAC_SIL_01775.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01775.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0025_Content_Illustration_01",
@@ -3089,7 +3089,7 @@
     },
     {
       "print_id": "SAC_SIL_00798",
-      "print_file": "images_ck_flat/SAC_SIL_00798.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00798.jpg",
       "matches": [
         {
           "illustration_id": "990000463080205171_0025_Content_Illustration_01",
@@ -3101,7 +3101,7 @@
     },
     {
       "print_id": "SAC_SIL_02986",
-      "print_file": "images_ck_flat/SAC_SIL_02986.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02986.jpg",
       "matches": [
         {
           "illustration_id": "990000951480205171_0093_manual_06",
@@ -3119,7 +3119,7 @@
     },
     {
       "print_id": "SAC_SIL_00914",
-      "print_file": "images_ck_flat/SAC_SIL_00914.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00914.jpg",
       "matches": [
         {
           "illustration_id": "990001905650205171_0110_Content_Illustration_01",
@@ -3131,7 +3131,7 @@
     },
     {
       "print_id": "SAC_SIL_00024",
-      "print_file": "images_ck_flat/SAC_SIL_00024.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00024.jpg",
       "matches": [
         {
           "illustration_id": "990000914920205171_0043_Content_Illustration_01",
@@ -3143,7 +3143,7 @@
     },
     {
       "print_id": "SAC_SIL_00407",
-      "print_file": "images_ck_flat/SAC_SIL_00407.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00407.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0070_Content_Illustration_02",
@@ -3155,7 +3155,7 @@
     },
     {
       "print_id": "SAC_SIL_00892",
-      "print_file": "images_ck_flat/SAC_SIL_00892.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00892.jpg",
       "matches": [
         {
           "illustration_id": "990001283830205171_0280_Content_Illustration_01",
@@ -3167,7 +3167,7 @@
     },
     {
       "print_id": "SAC_SIL_00584",
-      "print_file": "images_ck_flat/SAC_SIL_00584.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00584.jpg",
       "matches": [
         {
           "illustration_id": "990001466830205171_0032_manual_02",
@@ -3179,7 +3179,7 @@
     },
     {
       "print_id": "SAC_SIL_01082",
-      "print_file": "images_ck_flat/SAC_SIL_01082.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01082.jpg",
       "matches": [
         {
           "illustration_id": "990001754200205171_0113_Content_Illustration_03",
@@ -3197,7 +3197,7 @@
     },
     {
       "print_id": "SAC_SIL_02191",
-      "print_file": "images_ck_flat/SAC_SIL_02191.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02191.jpg",
       "matches": [
         {
           "illustration_id": "990001895310205171_0180_Content_Illustration_02",
@@ -3215,7 +3215,7 @@
     },
     {
       "print_id": "SAC_SIL_03670",
-      "print_file": "images_ck_flat/SAC_SIL_03670.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03670.jpg",
       "matches": [
         {
           "illustration_id": "990001895310205171_0182_Content_Illustration_01",
@@ -3227,7 +3227,7 @@
     },
     {
       "print_id": "SAC_SIL_03149",
-      "print_file": "images_ck_flat/SAC_SIL_03149.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03149.jpg",
       "matches": [
         {
           "illustration_id": "990001754200205171_0111_Content_Illustration_01",
@@ -3239,7 +3239,7 @@
     },
     {
       "print_id": "SAC_SIL_01268",
-      "print_file": "images_ck_flat/SAC_SIL_01268.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01268.jpg",
       "matches": [
         {
           "illustration_id": "990001788800205171_0121_Content_Illustration_01",
@@ -3251,7 +3251,7 @@
     },
     {
       "print_id": "SAC_SIL_02171",
-      "print_file": "images_ck_flat/SAC_SIL_02171.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02171.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0069_Content_Illustration_01",
@@ -3263,7 +3263,7 @@
     },
     {
       "print_id": "SAC_SIL_00514",
-      "print_file": "images_ck_flat/SAC_SIL_00514.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00514.jpg",
       "matches": [
         {
           "illustration_id": "990001310400205171_0002_Content_Illustration_02",
@@ -3293,7 +3293,7 @@
     },
     {
       "print_id": "SAC_SIL_01367",
-      "print_file": "images_ck_flat/SAC_SIL_01367.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01367.jpg",
       "matches": [
         {
           "illustration_id": "990001253770205171_0006_Content_Illustration_04",
@@ -3305,7 +3305,7 @@
     },
     {
       "print_id": "SAC_SIL_01415",
-      "print_file": "images_ck_flat/SAC_SIL_01415.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01415.jpg",
       "matches": [
         {
           "illustration_id": "990000692350205171_0174_Content_Illustration_01",
@@ -3317,7 +3317,7 @@
     },
     {
       "print_id": "SAC_SIL_02410",
-      "print_file": "images_ck_flat/SAC_SIL_02410.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02410.jpg",
       "matches": [
         {
           "illustration_id": "990000914920205171_0210_Content_Illustration_02",
@@ -3329,7 +3329,7 @@
     },
     {
       "print_id": "SAC_SIL_03170",
-      "print_file": "images_ck_flat/SAC_SIL_03170.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03170.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0061_Content_Illustration_02",
@@ -3341,7 +3341,7 @@
     },
     {
       "print_id": "SAC_SIL_02478",
-      "print_file": "images_ck_flat/SAC_SIL_02478.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02478.jpg",
       "matches": [
         {
           "illustration_id": "990001279400205171_0123_Content_Illustration_01",
@@ -3353,7 +3353,7 @@
     },
     {
       "print_id": "SAC_SIL_03235",
-      "print_file": "images_ck_flat/SAC_SIL_03235.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03235.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0058_Content_Illustration_04",
@@ -3365,7 +3365,7 @@
     },
     {
       "print_id": "SAC_SIL_00246",
-      "print_file": "images_ck_flat/SAC_SIL_00246.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00246.jpg",
       "matches": [
         {
           "illustration_id": "990001466830205171_0136_Content_Illustration_01",
@@ -3377,7 +3377,7 @@
     },
     {
       "print_id": "SAC_SIL_00054",
-      "print_file": "images_ck_flat/SAC_SIL_00054.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00054.jpg",
       "matches": [
         {
           "illustration_id": "990001905650205171_0262_manual_01",
@@ -3389,7 +3389,7 @@
     },
     {
       "print_id": "SAC_SIL_02669",
-      "print_file": "images_ck_flat/SAC_SIL_02669.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02669.jpg",
       "matches": [
         {
           "illustration_id": "990001767020205171_0153_Content_Illustration_02",
@@ -3401,7 +3401,7 @@
     },
     {
       "print_id": "SAC_SIL_00871",
-      "print_file": "images_ck_flat/SAC_SIL_00871.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00871.jpg",
       "matches": [
         {
           "illustration_id": "990001895310205171_0179_Content_Illustration_05",
@@ -3413,7 +3413,7 @@
     },
     {
       "print_id": "SAC_SIL_01289",
-      "print_file": "images_ck_flat/SAC_SIL_01289.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01289.jpg",
       "matches": [
         {
           "illustration_id": "990000914920205171_0206_Content_Illustration_01",
@@ -3431,7 +3431,7 @@
     },
     {
       "print_id": "SAC_SIL_00300",
-      "print_file": "images_ck_flat/SAC_SIL_00300.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00300.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0036_manual_01",
@@ -3443,7 +3443,7 @@
     },
     {
       "print_id": "SAC_SIL_00262",
-      "print_file": "images_ck_flat/SAC_SIL_00262.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00262.jpg",
       "matches": [
         {
           "illustration_id": "990001788800205171_0107_Content_Illustration_01",
@@ -3455,7 +3455,7 @@
     },
     {
       "print_id": "SAC_SIL_01943",
-      "print_file": "images_ck_flat/SAC_SIL_01943.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01943.jpg",
       "matches": [
         {
           "illustration_id": "990001762860205171_0049_Content_Illustration_01",
@@ -3467,7 +3467,7 @@
     },
     {
       "print_id": "SAC_SIL_01026",
-      "print_file": "images_ck_flat/SAC_SIL_01026.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01026.jpg",
       "matches": [
         {
           "illustration_id": "990000957690205171_0037_Content_Illustration_01",
@@ -3479,7 +3479,7 @@
     },
     {
       "print_id": "SAC_SIL_01388",
-      "print_file": "images_ck_flat/SAC_SIL_01388.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01388.jpg",
       "matches": [
         {
           "illustration_id": "990000692350205171_0160_Content_Illustration_01",
@@ -3491,7 +3491,7 @@
     },
     {
       "print_id": "SAC_SIL_02148",
-      "print_file": "images_ck_flat/SAC_SIL_02148.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02148.jpg",
       "matches": [
         {
           "illustration_id": "990000463080205171_0016_Content_Illustration_01",
@@ -3539,7 +3539,7 @@
     },
     {
       "print_id": "SAC_SIL_00251",
-      "print_file": "images_ck_flat/SAC_SIL_00251.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00251.jpg",
       "matches": [
         {
           "illustration_id": "990000679270205171_0065_Content_Illustration_01",
@@ -3551,7 +3551,7 @@
     },
     {
       "print_id": "SAC_SIL_00544",
-      "print_file": "images_ck_flat/SAC_SIL_00544.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00544.jpg",
       "matches": [
         {
           "illustration_id": "990000692350205171_0011_Content_Illustration_02",
@@ -3563,7 +3563,7 @@
     },
     {
       "print_id": "SAC_SIL_00114",
-      "print_file": "images_ck_flat/SAC_SIL_00114.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00114.jpg",
       "matches": [
         {
           "illustration_id": "990001253770205171_0020_Content_Illustration_02",
@@ -3575,7 +3575,7 @@
     },
     {
       "print_id": "SAC_SIL_00508",
-      "print_file": "images_ck_flat/SAC_SIL_00508.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00508.jpg",
       "matches": [
         {
           "illustration_id": "990001309470205171_0129_Content_Illustration_03",
@@ -3587,7 +3587,7 @@
     },
     {
       "print_id": "SAC_SIL_00216",
-      "print_file": "images_ck_flat/SAC_SIL_00216.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00216.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0063_Content_Illustration_01",
@@ -3605,7 +3605,7 @@
     },
     {
       "print_id": "SAC_SIL_01425",
-      "print_file": "images_ck_flat/SAC_SIL_01425.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01425.jpg",
       "matches": [
         {
           "illustration_id": "990001058510205171_0004_manual_01",
@@ -3617,7 +3617,7 @@
     },
     {
       "print_id": "SAC_SIL_00800",
-      "print_file": "images_ck_flat/SAC_SIL_00800.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00800.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0056_Content_Illustration_05",
@@ -3629,7 +3629,7 @@
     },
     {
       "print_id": "SAC_SIL_03581",
-      "print_file": "images_ck_flat/SAC_SIL_03581.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03581.jpg",
       "matches": [
         {
           "illustration_id": "990000846580205171_0018_Content_Illustration_03",
@@ -3641,7 +3641,7 @@
     },
     {
       "print_id": "SAC_SIL_00033",
-      "print_file": "images_ck_flat/SAC_SIL_00033.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00033.jpg",
       "matches": [
         {
           "illustration_id": "990001466830205171_0028_manual_01",
@@ -3653,7 +3653,7 @@
     },
     {
       "print_id": "SAC_SIL_03252",
-      "print_file": "images_ck_flat/SAC_SIL_03252.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03252.jpg",
       "matches": [
         {
           "illustration_id": "990001466830205171_0018_manual_01",
@@ -3665,7 +3665,7 @@
     },
     {
       "print_id": "SAC_SIL_01529",
-      "print_file": "images_ck_flat/SAC_SIL_01529.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01529.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0063_Content_Illustration_05",
@@ -3677,7 +3677,7 @@
     },
     {
       "print_id": "SAC_SIL_00264",
-      "print_file": "images_ck_flat/SAC_SIL_00264.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00264.jpg",
       "matches": [
         {
           "illustration_id": "990001466830205171_0034_Content_Illustration_01",
@@ -3689,7 +3689,7 @@
     },
     {
       "print_id": "SAC_SIL_01445",
-      "print_file": "images_ck_flat/SAC_SIL_01445.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01445.jpg",
       "matches": [
         {
           "illustration_id": "990000935540205171_0079_Content_Illustration_01",
@@ -3701,7 +3701,7 @@
     },
     {
       "print_id": "SAC_SIL_01453",
-      "print_file": "images_ck_flat/SAC_SIL_01453.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01453.jpg",
       "matches": [
         {
           "illustration_id": "990001895310205171_0031_manual_02",
@@ -3713,7 +3713,7 @@
     },
     {
       "print_id": "SAC_SIL_03141",
-      "print_file": "images_ck_flat/SAC_SIL_03141.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03141.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0043_Content_Illustration_02",
@@ -3737,7 +3737,7 @@
     },
     {
       "print_id": "SAC_SIL_01042",
-      "print_file": "images_ck_flat/SAC_SIL_01042.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01042.jpg",
       "matches": [
         {
           "illustration_id": "990000914920205171_0163_Content_Illustration_01",
@@ -3749,7 +3749,7 @@
     },
     {
       "print_id": "SAC_SIL_03035",
-      "print_file": "images_ck_flat/SAC_SIL_03035.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03035.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0065_Content_Illustration_04",
@@ -3767,7 +3767,7 @@
     },
     {
       "print_id": "SAC_SIL_03418",
-      "print_file": "images_ck_flat/SAC_SIL_03418.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03418.jpg",
       "matches": [
         {
           "illustration_id": "990000951480205171_0105_Content_Illustration_02",
@@ -3779,7 +3779,7 @@
     },
     {
       "print_id": "SAC_SIL_03072",
-      "print_file": "images_ck_flat/SAC_SIL_03072.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03072.jpg",
       "matches": [
         {
           "illustration_id": "990001054090205171_0035_Content_Illustration_03",
@@ -3791,7 +3791,7 @@
     },
     {
       "print_id": "SAC_SIL_00426",
-      "print_file": "images_ck_flat/SAC_SIL_00426.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00426.jpg",
       "matches": [
         {
           "illustration_id": "990001311850205171_0077_Content_Illustration_01",
@@ -3803,7 +3803,7 @@
     },
     {
       "print_id": "SAC_SIL_01931",
-      "print_file": "images_ck_flat/SAC_SIL_01931.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01931.jpg",
       "matches": [
         {
           "illustration_id": "990001253770205171_0004_Content_Illustration_02",
@@ -3815,7 +3815,7 @@
     },
     {
       "print_id": "SAC_SIL_03173",
-      "print_file": "images_ck_flat/SAC_SIL_03173.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03173.jpg",
       "matches": [
         {
           "illustration_id": "990000710110205171_0076_manual_01",
@@ -3827,7 +3827,7 @@
     },
     {
       "print_id": "SAC_SIL_00435",
-      "print_file": "images_ck_flat/SAC_SIL_00435.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00435.jpg",
       "matches": [
         {
           "illustration_id": "990000434560205171_0133_manual_02",
@@ -3839,7 +3839,7 @@
     },
     {
       "print_id": "SAC_SIL_02149",
-      "print_file": "images_ck_flat/SAC_SIL_02149.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02149.jpg",
       "matches": [
         {
           "illustration_id": "990001905650205171_0183_Content_Illustration_01",
@@ -3857,7 +3857,7 @@
     },
     {
       "print_id": "SAC_SIL_02363",
-      "print_file": "images_ck_flat/SAC_SIL_02363.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02363.jpg",
       "matches": [
         {
           "illustration_id": "990001466830205171_0136_Content_Illustration_01",
@@ -3869,7 +3869,7 @@
     },
     {
       "print_id": "SAC_SIL_03461",
-      "print_file": "images_ck_flat/SAC_SIL_03461.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03461.jpg",
       "matches": [
         {
           "illustration_id": "990001253770205171_0007_Content_Illustration_04",
@@ -3881,7 +3881,7 @@
     },
     {
       "print_id": "SAC_SIL_00268",
-      "print_file": "images_ck_flat/SAC_SIL_00268.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00268.jpg",
       "matches": [
         {
           "illustration_id": "990001253770205171_0007_Content_Illustration_04",
@@ -3893,7 +3893,7 @@
     },
     {
       "print_id": "SAC_SIL_03903",
-      "print_file": "images_ck_flat/SAC_SIL_03903.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03903.jpg",
       "matches": [
         {
           "illustration_id": "990001279400205171_0096_Content_Illustration_01",
@@ -3905,7 +3905,7 @@
     },
     {
       "print_id": "SAC_SIL_00148",
-      "print_file": "images_ck_flat/SAC_SIL_00148.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00148.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0060_Content_Illustration_04",
@@ -3917,7 +3917,7 @@
     },
     {
       "print_id": "SAC_SIL_02267",
-      "print_file": "images_ck_flat/SAC_SIL_02267.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02267.jpg",
       "matches": [
         {
           "illustration_id": "990000864290205171_0149_Content_Illustration_02",
@@ -3929,7 +3929,7 @@
     },
     {
       "print_id": "SAC_SIL_00629",
-      "print_file": "images_ck_flat/SAC_SIL_00629.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00629.jpg",
       "matches": [
         {
           "illustration_id": "990001767020205171_0270_manual_01",
@@ -3941,7 +3941,7 @@
     },
     {
       "print_id": "SAC_SIL_00748",
-      "print_file": "images_ck_flat/SAC_SIL_00748.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00748.jpg",
       "matches": [
         {
           "illustration_id": "990001767020205171_0285_manual_01",
@@ -3953,7 +3953,7 @@
     },
     {
       "print_id": "SAC_SIL_03081",
-      "print_file": "images_ck_flat/SAC_SIL_03081.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03081.jpg",
       "matches": [
         {
           "illustration_id": "990001279400205171_0190_Content_Illustration_01",
@@ -3965,7 +3965,7 @@
     },
     {
       "print_id": "SAC_SIL_03095",
-      "print_file": "images_ck_flat/SAC_SIL_03095.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03095.jpg",
       "matches": [
         {
           "illustration_id": "990000434560205171_0054_manual_01",
@@ -3977,7 +3977,7 @@
     },
     {
       "print_id": "SAC_SIL_03592",
-      "print_file": "images_ck_flat/SAC_SIL_03592.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03592.jpg",
       "matches": [
         {
           "illustration_id": "990000864290205171_0150_Content_Illustration_01",
@@ -3989,7 +3989,7 @@
     },
     {
       "print_id": "SAC_SIL_00529",
-      "print_file": "images_ck_flat/SAC_SIL_00529.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00529.jpg",
       "matches": [
         {
           "illustration_id": "990000951480205171_0103_Content_Illustration_04",
@@ -4001,7 +4001,7 @@
     },
     {
       "print_id": "SAC_SIL_02100",
-      "print_file": "images_ck_flat/SAC_SIL_02100.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02100.jpg",
       "matches": [
         {
           "illustration_id": "990001895310205171_0141_Content_Illustration_01",
@@ -4013,7 +4013,7 @@
     },
     {
       "print_id": "SAC_SIL_03006",
-      "print_file": "images_ck_flat/SAC_SIL_03006.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03006.jpg",
       "matches": [
         {
           "illustration_id": "990001767020205171_0278_manual_01",
@@ -4025,7 +4025,7 @@
     },
     {
       "print_id": "SAC_SIL_00130",
-      "print_file": "images_ck_flat/SAC_SIL_00130.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00130.jpg",
       "matches": [
         {
           "illustration_id": "990000692350205171_0174_Content_Illustration_01",
@@ -4037,7 +4037,7 @@
     },
     {
       "print_id": "SAC_SIL_02699",
-      "print_file": "images_ck_flat/SAC_SIL_02699.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02699.jpg",
       "matches": [
         {
           "illustration_id": "990001279400205171_0123_Content_Illustration_01",
@@ -4049,7 +4049,7 @@
     },
     {
       "print_id": "SAC_SIL_02269",
-      "print_file": "images_ck_flat/SAC_SIL_02269.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02269.jpg",
       "matches": [
         {
           "illustration_id": "990000951480205171_0099_Content_Illustration_01",
@@ -4061,7 +4061,7 @@
     },
     {
       "print_id": "SAC_SIL_00951",
-      "print_file": "images_ck_flat/SAC_SIL_00951.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00951.jpg",
       "matches": [
         {
           "illustration_id": "990001279400205171_0190_Content_Illustration_01",
@@ -4073,7 +4073,7 @@
     },
     {
       "print_id": "SAC_SIL_01447",
-      "print_file": "images_ck_flat/SAC_SIL_01447.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01447.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0061_Content_Illustration_01",
@@ -4085,7 +4085,7 @@
     },
     {
       "print_id": "SAC_SIL_03165",
-      "print_file": "images_ck_flat/SAC_SIL_03165.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03165.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0055_Content_Illustration_02",
@@ -4097,7 +4097,7 @@
     },
     {
       "print_id": "SAC_SIL_01872",
-      "print_file": "images_ck_flat/SAC_SIL_01872.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01872.jpg",
       "matches": [
         {
           "illustration_id": "990000957690205171_0031_Content_Illustration_03",
@@ -4109,7 +4109,7 @@
     },
     {
       "print_id": "SAC_SIL_03031",
-      "print_file": "images_ck_flat/SAC_SIL_03031.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03031.jpg",
       "matches": [
         {
           "illustration_id": "990001754200205171_0055_Content_Illustration_01",
@@ -4127,7 +4127,7 @@
     },
     {
       "print_id": "SAC_SIL_00138",
-      "print_file": "images_ck_flat/SAC_SIL_00138.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00138.jpg",
       "matches": [
         {
           "illustration_id": "990001279400205171_0128_Content_Illustration_01",
@@ -4139,7 +4139,7 @@
     },
     {
       "print_id": "SAC_SIL_02036",
-      "print_file": "images_ck_flat/SAC_SIL_02036.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02036.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0029_Content_Illustration_01",
@@ -4151,7 +4151,7 @@
     },
     {
       "print_id": "SAC_SIL_02519",
-      "print_file": "images_ck_flat/SAC_SIL_02519.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02519.jpg",
       "matches": [
         {
           "illustration_id": "990001767020205171_0233_manual_01",
@@ -4169,7 +4169,7 @@
     },
     {
       "print_id": "SAC_SIL_01593",
-      "print_file": "images_ck_flat/SAC_SIL_01593.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01593.jpg",
       "matches": [
         {
           "illustration_id": "990001767020205171_0126_Content_Illustration_01",
@@ -4181,7 +4181,7 @@
     },
     {
       "print_id": "SAC_SIL_02659",
-      "print_file": "images_ck_flat/SAC_SIL_02659.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02659.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0069_Content_Illustration_02",
@@ -4193,7 +4193,7 @@
     },
     {
       "print_id": "SAC_SIL_00546",
-      "print_file": "images_ck_flat/SAC_SIL_00546.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00546.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0063_Content_Illustration_05",
@@ -4205,7 +4205,7 @@
     },
     {
       "print_id": "SAC_SIL_01354",
-      "print_file": "images_ck_flat/SAC_SIL_01354.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01354.jpg",
       "matches": [
         {
           "illustration_id": "990001949390205171_0076_manual_01",
@@ -4217,7 +4217,7 @@
     },
     {
       "print_id": "SAC_SIL_02624",
-      "print_file": "images_ck_flat/SAC_SIL_02624.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02624.jpg",
       "matches": [
         {
           "illustration_id": "990001895310205171_0018_Content_Illustration_02",
@@ -4229,7 +4229,7 @@
     },
     {
       "print_id": "SAC_SIL_03287",
-      "print_file": "images_ck_flat/SAC_SIL_03287.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03287.jpg",
       "matches": [
         {
           "illustration_id": "990001310400205171_0099_Content_Illustration_02",
@@ -4241,7 +4241,7 @@
     },
     {
       "print_id": "SAC_SIL_03318",
-      "print_file": "images_ck_flat/SAC_SIL_03318.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03318.jpg",
       "matches": [
         {
           "illustration_id": "990001788800205171_0096_Content_Illustration_01",
@@ -4253,7 +4253,7 @@
     },
     {
       "print_id": "SAC_SIL_03564",
-      "print_file": "images_ck_flat/SAC_SIL_03564.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03564.jpg",
       "matches": [
         {
           "illustration_id": "990000692350205171_0026_Content_Illustration_01",
@@ -4265,7 +4265,7 @@
     },
     {
       "print_id": "SAC_SIL_02916",
-      "print_file": "images_ck_flat/SAC_SIL_02916.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02916.jpg",
       "matches": [
         {
           "illustration_id": "990001754200205171_0063_Content_Illustration_01",
@@ -4277,7 +4277,7 @@
     },
     {
       "print_id": "SAC_SIL_01054",
-      "print_file": "images_ck_flat/SAC_SIL_01054.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01054.jpg",
       "matches": [
         {
           "illustration_id": "990001309470205171_0128_Content_Illustration_03",
@@ -4295,7 +4295,7 @@
     },
     {
       "print_id": "SAC_SIL_03108",
-      "print_file": "images_ck_flat/SAC_SIL_03108.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03108.jpg",
       "matches": [
         {
           "illustration_id": "990000846580205171_0011_Content_Illustration_01",
@@ -4307,7 +4307,7 @@
     },
     {
       "print_id": "SAC_SIL_00621",
-      "print_file": "images_ck_flat/SAC_SIL_00621.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00621.jpg",
       "matches": [
         {
           "illustration_id": "990001949390205171_0064_manual_01",
@@ -4319,7 +4319,7 @@
     },
     {
       "print_id": "SAC_SIL_01980",
-      "print_file": "images_ck_flat/SAC_SIL_01980.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01980.jpg",
       "matches": [
         {
           "illustration_id": "990000951480205171_0109_Content_Illustration_01",
@@ -4331,7 +4331,7 @@
     },
     {
       "print_id": "SAC_SIL_02997",
-      "print_file": "images_ck_flat/SAC_SIL_02997.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02997.jpg",
       "matches": [
         {
           "illustration_id": "990001754200205171_0072_Content_Illustration_02",
@@ -4343,7 +4343,7 @@
     },
     {
       "print_id": "SAC_SIL_01217",
-      "print_file": "images_ck_flat/SAC_SIL_01217.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01217.jpg",
       "matches": [
         {
           "illustration_id": "990001905650205171_0097_Content_Illustration_01",
@@ -4355,7 +4355,7 @@
     },
     {
       "print_id": "SAC_SIL_02393",
-      "print_file": "images_ck_flat/SAC_SIL_02393.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02393.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0053_Content_Illustration_01",
@@ -4373,7 +4373,7 @@
     },
     {
       "print_id": "SAC_SIL_00637",
-      "print_file": "images_ck_flat/SAC_SIL_00637.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00637.jpg",
       "matches": [
         {
           "illustration_id": "990001283830205171_0038_Content_Illustration_03",
@@ -4385,7 +4385,7 @@
     },
     {
       "print_id": "SAC_SIL_03188",
-      "print_file": "images_ck_flat/SAC_SIL_03188.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03188.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0072_Content_Illustration_02",
@@ -4397,7 +4397,7 @@
     },
     {
       "print_id": "SAC_SIL_00356",
-      "print_file": "images_ck_flat/SAC_SIL_00356.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00356.jpg",
       "matches": [
         {
           "illustration_id": "990000710110205171_0153_manual_02",
@@ -4409,7 +4409,7 @@
     },
     {
       "print_id": "SAC_SIL_01909",
-      "print_file": "images_ck_flat/SAC_SIL_01909.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01909.jpg",
       "matches": [
         {
           "illustration_id": "990001310400205171_0002_Content_Illustration_02",
@@ -4421,7 +4421,7 @@
     },
     {
       "print_id": "SAC_SIL_03102",
-      "print_file": "images_ck_flat/SAC_SIL_03102.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03102.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0040_Content_Illustration_01",
@@ -4433,7 +4433,7 @@
     },
     {
       "print_id": "SAC_SIL_02192",
-      "print_file": "images_ck_flat/SAC_SIL_02192.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02192.jpg",
       "matches": [
         {
           "illustration_id": "990001895310205171_0117_Content_Illustration_01",
@@ -4445,7 +4445,7 @@
     },
     {
       "print_id": "SAC_SIL_00291",
-      "print_file": "images_ck_flat/SAC_SIL_00291.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00291.jpg",
       "matches": [
         {
           "illustration_id": "990000692350205171_0013_Content_Illustration_01",
@@ -4457,7 +4457,7 @@
     },
     {
       "print_id": "SAC_SIL_00738",
-      "print_file": "images_ck_flat/SAC_SIL_00738.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00738.jpg",
       "matches": [
         {
           "illustration_id": "990001895310205171_0035_Content_Illustration_01",
@@ -4469,7 +4469,7 @@
     },
     {
       "print_id": "SAC_SIL_03657",
-      "print_file": "images_ck_flat/SAC_SIL_03657.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03657.jpg",
       "matches": [
         {
           "illustration_id": "990000951480205171_0098_Content_Illustration_03",
@@ -4481,7 +4481,7 @@
     },
     {
       "print_id": "SAC_SIL_02183",
-      "print_file": "images_ck_flat/SAC_SIL_02183.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02183.jpg",
       "matches": [
         {
           "illustration_id": "990001905610205171_0028_Content_Illustration_01",
@@ -4493,7 +4493,7 @@
     },
     {
       "print_id": "SAC_SIL_02460",
-      "print_file": "images_ck_flat/SAC_SIL_02460.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02460.jpg",
       "matches": [
         {
           "illustration_id": "990001311850205171_0075_Content_Illustration_01",
@@ -4505,7 +4505,7 @@
     },
     {
       "print_id": "SAC_SIL_03119",
-      "print_file": "images_ck_flat/SAC_SIL_03119.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03119.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0043_Content_Illustration_02",
@@ -4523,7 +4523,7 @@
     },
     {
       "print_id": "SAC_SIL_01328",
-      "print_file": "images_ck_flat/SAC_SIL_01328.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01328.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0051_Content_Illustration_02",
@@ -4535,7 +4535,7 @@
     },
     {
       "print_id": "SAC_SIL_02443",
-      "print_file": "images_ck_flat/SAC_SIL_02443.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02443.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0025_Content_Illustration_02",
@@ -4547,7 +4547,7 @@
     },
     {
       "print_id": "SAC_SIL_02474",
-      "print_file": "images_ck_flat/SAC_SIL_02474.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02474.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0052_Content_Illustration_02",
@@ -4559,7 +4559,7 @@
     },
     {
       "print_id": "SAC_SIL_02025",
-      "print_file": "images_ck_flat/SAC_SIL_02025.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02025.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0060_Content_Illustration_04",
@@ -4571,7 +4571,7 @@
     },
     {
       "print_id": "SAC_SIL_00676",
-      "print_file": "images_ck_flat/SAC_SIL_00676.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00676.jpg",
       "matches": [
         {
           "illustration_id": "990000846580205171_0016_Content_Illustration_02",
@@ -4583,7 +4583,7 @@
     },
     {
       "print_id": "SAC_SIL_01869",
-      "print_file": "images_ck_flat/SAC_SIL_01869.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01869.jpg",
       "matches": [
         {
           "illustration_id": "990001895310205171_0178_Content_Illustration_03",
@@ -4595,7 +4595,7 @@
     },
     {
       "print_id": "SAC_SIL_03613",
-      "print_file": "images_ck_flat/SAC_SIL_03613.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03613.jpg",
       "matches": [
         {
           "illustration_id": "990001309470205171_0040_Content_Illustration_01",
@@ -4607,7 +4607,7 @@
     },
     {
       "print_id": "SAC_SIL_03310",
-      "print_file": "images_ck_flat/SAC_SIL_03310.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03310.jpg",
       "matches": [
         {
           "illustration_id": "990001919190205171_0162_manual_01",
@@ -4619,7 +4619,7 @@
     },
     {
       "print_id": "SAC_SIL_02327",
-      "print_file": "images_ck_flat/SAC_SIL_02327.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02327.jpg",
       "matches": [
         {
           "illustration_id": "990001767020205171_0252_manual_01",
@@ -4631,7 +4631,7 @@
     },
     {
       "print_id": "SAC_SIL_02712",
-      "print_file": "images_ck_flat/SAC_SIL_02712.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02712.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0056_Content_Illustration_05",
@@ -4643,7 +4643,7 @@
     },
     {
       "print_id": "SAC_SIL_00375",
-      "print_file": "images_ck_flat/SAC_SIL_00375.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00375.jpg",
       "matches": [
         {
           "illustration_id": "990000935540205171_0061_manual_01",
@@ -4655,7 +4655,7 @@
     },
     {
       "print_id": "SAC_SIL_03140",
-      "print_file": "images_ck_flat/SAC_SIL_03140.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03140.jpg",
       "matches": [
         {
           "illustration_id": "990001919190205171_0062_Content_Illustration_01",
@@ -4667,7 +4667,7 @@
     },
     {
       "print_id": "SAC_SIL_03529",
-      "print_file": "images_ck_flat/SAC_SIL_03529.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03529.jpg",
       "matches": [
         {
           "illustration_id": "990001895310205171_0016_manual_02",
@@ -4679,7 +4679,7 @@
     },
     {
       "print_id": "SAC_SIL_01522",
-      "print_file": "images_ck_flat/SAC_SIL_01522.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01522.jpg",
       "matches": [
         {
           "illustration_id": "990001283830205171_0287_Content_Illustration_01",
@@ -4691,7 +4691,7 @@
     },
     {
       "print_id": "SAC_SIL_01650",
-      "print_file": "images_ck_flat/SAC_SIL_01650.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01650.jpg",
       "matches": [
         {
           "illustration_id": "990001919190205171_0091_Content_Illustration_01",
@@ -4703,7 +4703,7 @@
     },
     {
       "print_id": "SAC_SIL_00498",
-      "print_file": "images_ck_flat/SAC_SIL_00498.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00498.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0055_Content_Illustration_01",
@@ -4715,7 +4715,7 @@
     },
     {
       "print_id": "SAC_SIL_00159",
-      "print_file": "images_ck_flat/SAC_SIL_00159.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00159.jpg",
       "matches": [
         {
           "illustration_id": "990001379080205171_0048_Content_Illustration_01",
@@ -4733,7 +4733,7 @@
     },
     {
       "print_id": "SAC_SIL_00613",
-      "print_file": "images_ck_flat/SAC_SIL_00613.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00613.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0208_Content_Illustration_01",
@@ -4745,7 +4745,7 @@
     },
     {
       "print_id": "SAC_SIL_00777",
-      "print_file": "images_ck_flat/SAC_SIL_00777.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00777.jpg",
       "matches": [
         {
           "illustration_id": "990001949390205171_0078_Content_Illustration_07",
@@ -4757,7 +4757,7 @@
     },
     {
       "print_id": "SAC_SIL_00907",
-      "print_file": "images_ck_flat/SAC_SIL_00907.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00907.jpg",
       "matches": [
         {
           "illustration_id": "990000935540205171_0057_Content_Illustration_01",
@@ -4769,7 +4769,7 @@
     },
     {
       "print_id": "SAC_SIL_00912",
-      "print_file": "images_ck_flat/SAC_SIL_00912.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00912.jpg",
       "matches": [
         {
           "illustration_id": "990001253770205171_0004_Content_Illustration_01",
@@ -4781,7 +4781,7 @@
     },
     {
       "print_id": "SAC_SIL_02207",
-      "print_file": "images_ck_flat/SAC_SIL_02207.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02207.jpg",
       "matches": [
         {
           "illustration_id": "990000863410205171_0151_Content_Illustration_02",
@@ -4793,7 +4793,7 @@
     },
     {
       "print_id": "SAC_SIL_02572",
-      "print_file": "images_ck_flat/SAC_SIL_02572.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02572.jpg",
       "matches": [
         {
           "illustration_id": "990000936450205171_0008_manual_03",
@@ -4805,7 +4805,7 @@
     },
     {
       "print_id": "SAC_SIL_03652",
-      "print_file": "images_ck_flat/SAC_SIL_03652.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03652.jpg",
       "matches": [
         {
           "illustration_id": "990000435210205171_0056_Content_Illustration_01",
@@ -4817,7 +4817,7 @@
     },
     {
       "print_id": "SAC_SIL_02899",
-      "print_file": "images_ck_flat/SAC_SIL_02899.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02899.jpg",
       "matches": [
         {
           "illustration_id": "990000951480205171_0095_Content_Illustration_03",
@@ -4829,7 +4829,7 @@
     },
     {
       "print_id": "SAC_SIL_00664",
-      "print_file": "images_ck_flat/SAC_SIL_00664.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00664.jpg",
       "matches": [
         {
           "illustration_id": "990000951480205171_0013_Content_Illustration_01",
@@ -4841,7 +4841,7 @@
     },
     {
       "print_id": "SAC_SIL_01316",
-      "print_file": "images_ck_flat/SAC_SIL_01316.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01316.jpg",
       "matches": [
         {
           "illustration_id": "990001054090205171_0035_Content_Illustration_03",
@@ -4853,7 +4853,7 @@
     },
     {
       "print_id": "SAC_SIL_01770",
-      "print_file": "images_ck_flat/SAC_SIL_01770.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01770.jpg",
       "matches": [
         {
           "illustration_id": "990001466830205171_0139_Content_Illustration_01",
@@ -4865,7 +4865,7 @@
     },
     {
       "print_id": "SAC_SIL_02906",
-      "print_file": "images_ck_flat/SAC_SIL_02906.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02906.jpg",
       "matches": [
         {
           "illustration_id": "990001310400205171_0099_Content_Illustration_01",
@@ -4877,7 +4877,7 @@
     },
     {
       "print_id": "SAC_SIL_02167",
-      "print_file": "images_ck_flat/SAC_SIL_02167.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02167.jpg",
       "matches": [
         {
           "illustration_id": "990001895310205171_0183_manual_01",
@@ -4889,7 +4889,7 @@
     },
     {
       "print_id": "SAC_SIL_03085",
-      "print_file": "images_ck_flat/SAC_SIL_03085.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03085.jpg",
       "matches": [
         {
           "illustration_id": "990001753350205171_0145_Content_Illustration_01",
@@ -4901,7 +4901,7 @@
     },
     {
       "print_id": "SAC_SIL_00063",
-      "print_file": "images_ck_flat/SAC_SIL_00063.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00063.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0062_Content_Illustration_02",
@@ -4913,7 +4913,7 @@
     },
     {
       "print_id": "SAC_SIL_01127",
-      "print_file": "images_ck_flat/SAC_SIL_01127.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01127.jpg",
       "matches": [
         {
           "illustration_id": "990000914920205171_0156_Content_Illustration_01",
@@ -4925,7 +4925,7 @@
     },
     {
       "print_id": "SAC_SIL_01509",
-      "print_file": "images_ck_flat/SAC_SIL_01509.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01509.jpg",
       "matches": [
         {
           "illustration_id": "990001754200205171_0044_Content_Illustration_01",
@@ -4937,7 +4937,7 @@
     },
     {
       "print_id": "SAC_SIL_03446",
-      "print_file": "images_ck_flat/SAC_SIL_03446.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03446.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0051_Content_Illustration_01",
@@ -4949,7 +4949,7 @@
     },
     {
       "print_id": "SAC_SIL_01810",
-      "print_file": "images_ck_flat/SAC_SIL_01810.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01810.jpg",
       "matches": [
         {
           "illustration_id": "990000834140205171_0020_Content_Illustration_01",
@@ -4961,7 +4961,7 @@
     },
     {
       "print_id": "SAC_SIL_03251",
-      "print_file": "images_ck_flat/SAC_SIL_03251.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03251.jpg",
       "matches": [
         {
           "illustration_id": "990001949390205171_0094_Content_Illustration_04",
@@ -4973,7 +4973,7 @@
     },
     {
       "print_id": "SAC_SIL_00958",
-      "print_file": "images_ck_flat/SAC_SIL_00958.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00958.jpg",
       "matches": [
         {
           "illustration_id": "990001918420205171_0006_Content_Illustration_01",
@@ -4985,7 +4985,7 @@
     },
     {
       "print_id": "SAC_SIL_02965",
-      "print_file": "images_ck_flat/SAC_SIL_02965.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02965.jpg",
       "matches": [
         {
           "illustration_id": "990001905650205171_0213_Content_Illustration_01",
@@ -4997,7 +4997,7 @@
     },
     {
       "print_id": "SAC_SIL_00259",
-      "print_file": "images_ck_flat/SAC_SIL_00259.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00259.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0074_Content_Illustration_01",
@@ -5009,7 +5009,7 @@
     },
     {
       "print_id": "SAC_SIL_03293",
-      "print_file": "images_ck_flat/SAC_SIL_03293.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03293.jpg",
       "matches": [
         {
           "illustration_id": "990000834140205171_0030_Content_Illustration_01",
@@ -5021,7 +5021,7 @@
     },
     {
       "print_id": "SAC_SIL_00855",
-      "print_file": "images_ck_flat/SAC_SIL_00855.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00855.jpg",
       "matches": [
         {
           "illustration_id": "990001905650205171_0173_Content_Illustration_01",
@@ -5033,7 +5033,7 @@
     },
     {
       "print_id": "SAC_SIL_01287",
-      "print_file": "images_ck_flat/SAC_SIL_01287.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01287.jpg",
       "matches": [
         {
           "illustration_id": "990001290100205171_0174_Content_Illustration_01",
@@ -5045,7 +5045,7 @@
     },
     {
       "print_id": "SAC_SIL_02764",
-      "print_file": "images_ck_flat/SAC_SIL_02764.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02764.jpg",
       "matches": [
         {
           "illustration_id": "990000864290205171_0149_Content_Illustration_01",
@@ -5057,7 +5057,7 @@
     },
     {
       "print_id": "SAC_SIL_03727",
-      "print_file": "images_ck_flat/SAC_SIL_03727.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03727.jpg",
       "matches": [
         {
           "illustration_id": "990000692350205171_0011_Content_Illustration_02",
@@ -5069,7 +5069,7 @@
     },
     {
       "print_id": "SAC_SIL_01733",
-      "print_file": "images_ck_flat/SAC_SIL_01733.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01733.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0058_Content_Illustration_01",
@@ -5087,7 +5087,7 @@
     },
     {
       "print_id": "SAC_SIL_03098",
-      "print_file": "images_ck_flat/SAC_SIL_03098.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03098.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0064_Content_Illustration_02",
@@ -5099,7 +5099,7 @@
     },
     {
       "print_id": "SAC_SIL_03799",
-      "print_file": "images_ck_flat/SAC_SIL_03799.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03799.jpg",
       "matches": [
         {
           "illustration_id": "990000463080205171_0018_Content_Illustration_02",
@@ -5123,7 +5123,7 @@
     },
     {
       "print_id": "SAC_SIL_03196",
-      "print_file": "images_ck_flat/SAC_SIL_03196.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03196.jpg",
       "matches": [
         {
           "illustration_id": "990000846580205171_0016_Content_Illustration_03",
@@ -5135,7 +5135,7 @@
     },
     {
       "print_id": "SAC_SIL_03322",
-      "print_file": "images_ck_flat/SAC_SIL_03322.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03322.jpg",
       "matches": [
         {
           "illustration_id": "990001919190205171_0007_manual_04",
@@ -5147,7 +5147,7 @@
     },
     {
       "print_id": "SAC_SIL_01605",
-      "print_file": "images_ck_flat/SAC_SIL_01605.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01605.jpg",
       "matches": [
         {
           "illustration_id": "990000692350205171_0148_Content_Illustration_01",
@@ -5159,7 +5159,7 @@
     },
     {
       "print_id": "SAC_SIL_01195",
-      "print_file": "images_ck_flat/SAC_SIL_01195.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01195.jpg",
       "matches": [
         {
           "illustration_id": "990000692350205171_0017_Content_Illustration_05",
@@ -5171,7 +5171,7 @@
     },
     {
       "print_id": "SAC_SIL_01427",
-      "print_file": "images_ck_flat/SAC_SIL_01427.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01427.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0051_Content_Illustration_02",
@@ -5183,7 +5183,7 @@
     },
     {
       "print_id": "SAC_SIL_00502",
-      "print_file": "images_ck_flat/SAC_SIL_00502.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00502.jpg",
       "matches": [
         {
           "illustration_id": "990001283830205171_0083_manual_02",
@@ -5195,7 +5195,7 @@
     },
     {
       "print_id": "SAC_SIL_01834",
-      "print_file": "images_ck_flat/SAC_SIL_01834.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01834.jpg",
       "matches": [
         {
           "illustration_id": "990000951480205171_0094_manual_01",
@@ -5207,7 +5207,7 @@
     },
     {
       "print_id": "SAC_SIL_02099",
-      "print_file": "images_ck_flat/SAC_SIL_02099.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02099.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0025_Content_Illustration_01",
@@ -5219,7 +5219,7 @@
     },
     {
       "print_id": "SAC_SIL_03897",
-      "print_file": "images_ck_flat/SAC_SIL_03897.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03897.jpg",
       "matches": [
         {
           "illustration_id": "990001379080205171_0027_Content_Illustration_01",
@@ -5231,7 +5231,7 @@
     },
     {
       "print_id": "SAC_SIL_00740",
-      "print_file": "images_ck_flat/SAC_SIL_00740.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00740.jpg",
       "matches": [
         {
           "illustration_id": "990001820390205171_0071_Content_Illustration_01",
@@ -5243,7 +5243,7 @@
     },
     {
       "print_id": "SAC_SIL_03279",
-      "print_file": "images_ck_flat/SAC_SIL_03279.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03279.jpg",
       "matches": [
         {
           "illustration_id": "990000914920205171_0195_Content_Illustration_01",
@@ -5255,7 +5255,7 @@
     },
     {
       "print_id": "SAC_SIL_03466",
-      "print_file": "images_ck_flat/SAC_SIL_03466.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03466.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0063_Content_Illustration_02",
@@ -5267,7 +5267,7 @@
     },
     {
       "print_id": "SAC_SIL_00651",
-      "print_file": "images_ck_flat/SAC_SIL_00651.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00651.jpg",
       "matches": [
         {
           "illustration_id": "990001895310205171_0178_Content_Illustration_04",
@@ -5279,7 +5279,7 @@
     },
     {
       "print_id": "SAC_SIL_00896",
-      "print_file": "images_ck_flat/SAC_SIL_00896.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00896.jpg",
       "matches": [
         {
           "illustration_id": "990000935540205171_0093_Content_Illustration_01",
@@ -5291,7 +5291,7 @@
     },
     {
       "print_id": "SAC_SIL_02279",
-      "print_file": "images_ck_flat/SAC_SIL_02279.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02279.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0060_Initial_03",
@@ -5303,7 +5303,7 @@
     },
     {
       "print_id": "SAC_SIL_02778",
-      "print_file": "images_ck_flat/SAC_SIL_02778.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02778.jpg",
       "matches": [
         {
           "illustration_id": "990001754200205171_0114_Content_Illustration_01",
@@ -5315,7 +5315,7 @@
     },
     {
       "print_id": "SAC_SIL_03227",
-      "print_file": "images_ck_flat/SAC_SIL_03227.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03227.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0045_Content_Illustration_03",
@@ -5333,7 +5333,7 @@
     },
     {
       "print_id": "SAC_SIL_00344",
-      "print_file": "images_ck_flat/SAC_SIL_00344.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00344.jpg",
       "matches": [
         {
           "illustration_id": "990000951480205171_0104_Content_Illustration_01",
@@ -5345,7 +5345,7 @@
     },
     {
       "print_id": "SAC_SIL_01535",
-      "print_file": "images_ck_flat/SAC_SIL_01535.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01535.jpg",
       "matches": [
         {
           "illustration_id": "990001137640205171_0008_Content_Illustration_01",
@@ -5357,7 +5357,7 @@
     },
     {
       "print_id": "SAC_SIL_00812",
-      "print_file": "images_ck_flat/SAC_SIL_00812.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00812.jpg",
       "matches": [
         {
           "illustration_id": "990001752420205171_0104_Content_Illustration_01",
@@ -5369,7 +5369,7 @@
     },
     {
       "print_id": "SAC_SIL_00874",
-      "print_file": "images_ck_flat/SAC_SIL_00874.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00874.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0050_Content_Illustration_01",
@@ -5381,7 +5381,7 @@
     },
     {
       "print_id": "SAC_SIL_03162",
-      "print_file": "images_ck_flat/SAC_SIL_03162.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03162.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0053_Content_Illustration_01",
@@ -5393,7 +5393,7 @@
     },
     {
       "print_id": "SAC_SIL_00040",
-      "print_file": "images_ck_flat/SAC_SIL_00040.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00040.jpg",
       "matches": [
         {
           "illustration_id": "990000951480205171_0094_Content_Illustration_06",
@@ -5405,7 +5405,7 @@
     },
     {
       "print_id": "SAC_SIL_02405",
-      "print_file": "images_ck_flat/SAC_SIL_02405.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02405.jpg",
       "matches": [
         {
           "illustration_id": "990001788800205171_0106_Content_Illustration_01",
@@ -5417,7 +5417,7 @@
     },
     {
       "print_id": "SAC_SIL_00397",
-      "print_file": "images_ck_flat/SAC_SIL_00397.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00397.jpg",
       "matches": [
         {
           "illustration_id": "990000951480205171_0103_Content_Illustration_02",
@@ -5429,7 +5429,7 @@
     },
     {
       "print_id": "SAC_SIL_02246",
-      "print_file": "images_ck_flat/SAC_SIL_02246.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02246.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0065_Content_Illustration_01",
@@ -5441,7 +5441,7 @@
     },
     {
       "print_id": "SAC_SIL_00424",
-      "print_file": "images_ck_flat/SAC_SIL_00424.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00424.jpg",
       "matches": [
         {
           "illustration_id": "990000710110205171_0136_Content_Illustration_01",
@@ -5453,7 +5453,7 @@
     },
     {
       "print_id": "SAC_SIL_01264",
-      "print_file": "images_ck_flat/SAC_SIL_01264.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01264.jpg",
       "matches": [
         {
           "illustration_id": "990001895310205171_0035_manual_02",
@@ -5465,7 +5465,7 @@
     },
     {
       "print_id": "SAC_SIL_03158",
-      "print_file": "images_ck_flat/SAC_SIL_03158.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03158.jpg",
       "matches": [
         {
           "illustration_id": "990000834140205171_0036_Content_Illustration_02",
@@ -5477,7 +5477,7 @@
     },
     {
       "print_id": "SAC_SIL_02317",
-      "print_file": "images_ck_flat/SAC_SIL_02317.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02317.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0077_Content_Illustration_01",
@@ -5489,7 +5489,7 @@
     },
     {
       "print_id": "SAC_SIL_03217",
-      "print_file": "images_ck_flat/SAC_SIL_03217.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03217.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0059_Initial_02",
@@ -5501,7 +5501,7 @@
     },
     {
       "print_id": "SAC_SIL_00168",
-      "print_file": "images_ck_flat/SAC_SIL_00168.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00168.jpg",
       "matches": [
         {
           "illustration_id": "990001895310205171_0055_Content_Illustration_01",
@@ -5513,7 +5513,7 @@
     },
     {
       "print_id": "SAC_SIL_00931",
-      "print_file": "images_ck_flat/SAC_SIL_00931.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00931.jpg",
       "matches": [
         {
           "illustration_id": "990000935540205171_0085_Content_Illustration_02",
@@ -5525,7 +5525,7 @@
     },
     {
       "print_id": "SAC_SIL_00173",
-      "print_file": "images_ck_flat/SAC_SIL_00173.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00173.jpg",
       "matches": [
         {
           "illustration_id": "990000914920205171_0181_manual_01",
@@ -5537,7 +5537,7 @@
     },
     {
       "print_id": "SAC_SIL_00837",
-      "print_file": "images_ck_flat/SAC_SIL_00837.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00837.jpg",
       "matches": [
         {
           "illustration_id": "990001310400205171_0099_Content_Illustration_01",
@@ -5549,7 +5549,7 @@
     },
     {
       "print_id": "SAC_SIL_01983",
-      "print_file": "images_ck_flat/SAC_SIL_01983.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01983.jpg",
       "matches": [
         {
           "illustration_id": "990000410720205171_0025_Content_Illustration_01",
@@ -5561,7 +5561,7 @@
     },
     {
       "print_id": "SAC_SIL_02446",
-      "print_file": "images_ck_flat/SAC_SIL_02446.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02446.jpg",
       "matches": [
         {
           "illustration_id": "990001895310205171_0030_Content_Illustration_01",
@@ -5573,7 +5573,7 @@
     },
     {
       "print_id": "SAC_SIL_01158",
-      "print_file": "images_ck_flat/SAC_SIL_01158.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01158.jpg",
       "matches": [
         {
           "illustration_id": "990001253770205171_0010_Content_Illustration_03",
@@ -5585,7 +5585,7 @@
     },
     {
       "print_id": "SAC_SIL_01569",
-      "print_file": "images_ck_flat/SAC_SIL_01569.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_01569.jpg",
       "matches": [
         {
           "illustration_id": "990000914920205171_0206_Content_Illustration_02",
@@ -5603,7 +5603,7 @@
     },
     {
       "print_id": "SAC_SIL_02321",
-      "print_file": "images_ck_flat/SAC_SIL_02321.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02321.jpg",
       "matches": [
         {
           "illustration_id": "990001283830205171_0029_Content_Illustration_02",
@@ -5615,7 +5615,7 @@
     },
     {
       "print_id": "SAC_SIL_00692",
-      "print_file": "images_ck_flat/SAC_SIL_00692.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_00692.jpg",
       "matches": [
         {
           "illustration_id": "990001283830205171_0293_Content_Illustration_02",
@@ -5627,7 +5627,7 @@
     },
     {
       "print_id": "SAC_SIL_03457",
-      "print_file": "images_ck_flat/SAC_SIL_03457.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03457.jpg",
       "matches": [
         {
           "illustration_id": "990001310530205171_0044_Content_Illustration_01",
@@ -5639,7 +5639,7 @@
     },
     {
       "print_id": "SAC_SIL_03815",
-      "print_file": "images_ck_flat/SAC_SIL_03815.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_03815.jpg",
       "matches": [
         {
           "illustration_id": "990001754200205171_0073_Content_Illustration_02",
@@ -5651,7 +5651,7 @@
     },
     {
       "print_id": "SAC_SIL_02499",
-      "print_file": "images_ck_flat/SAC_SIL_02499.jpg",
+      "print_file": "data/print_corpus/images/SAC_SIL_02499.jpg",
       "matches": [
         {
           "illustration_id": "990001054090205171_0035_Content_Illustration_04",

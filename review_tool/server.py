@@ -47,6 +47,7 @@ if os.environ.get("REVIEW_TEST_DIR"):
 STATIC_DIR = Path(__file__).resolve().parent / "static"
 THUMB_DIR = REVIEW_DIR / "thumbs"
 HISTORY_DIR = REVIEW_DIR / "history"
+HISTORY_KEEP = 200  # undo steps kept on disk
 CLASSES = ["Content Illustration", "Table", "Decoration", "Initial", "Printer's Mark"]
 DIAGRAM = "Content Illustration"
 REBUILD_STEPS = ["04b_apply_extraction_review.py", "05_cluster_illustrations.py",
@@ -74,6 +75,9 @@ def write_json(path, data):
     if path.exists():
         snap = HISTORY_DIR / f"{time.strftime('%Y%m%d-%H%M%S')}-{int(time.time() * 1000) % 1000:03d}_{path.name}"
         snap.write_bytes(path.read_bytes())
+        # keep only the latest HISTORY_KEEP snapshots (Undo steps back through these)
+        for old in sorted(HISTORY_DIR.glob("*.json"))[:-HISTORY_KEEP]:
+            old.unlink()
     tmp = path.with_suffix(".tmp")
     tmp.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
     tmp.replace(path)
@@ -577,7 +581,7 @@ class Handler(BaseHTTPRequestHandler):
             if url.path == "/api/rebuild":
                 return self.send_json(REBUILD)
             # the built visualizer and the files it links (read only)
-            if url.path.split("/")[1] in ("visualizer", "data", "images_ck_flat"):
+            if url.path.split("/")[1] in ("visualizer", "data"):
                 src = (PROJECT_ROOT / unquote(url.path).lstrip("/")).resolve()
                 if PROJECT_ROOT in src.parents and src.is_file():
                     return self.send_file(src, cache=not url.path.startswith("/visualizer/"))

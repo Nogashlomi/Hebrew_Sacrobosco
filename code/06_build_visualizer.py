@@ -12,8 +12,8 @@ Input:  code/visualizer_template/ (index.html, app.js, style.css)
 Output: visualizer/  - open visualizer/index.html in a browser.
         Page images are linked from data/manuscripts/ (not copied), so keep visualizer/ next to data/.
 
-Illustrations and clusters are added to window.SPHAERA_DATA when present; the template has no
-tab that shows them yet.
+Illustrations, clusters, print matches and the network are added to window.SPHAERA_DATA when present
+and shown in the Illustrations, Clusters, Print Parallels and Network tabs.
 
 Usage:  python code/06_build_visualizer.py
 """
@@ -45,7 +45,7 @@ def main():
             ids = [i for i in c["illustration_ids"] if i in distance.index]
             c["example_id"] = min(ids, key=lambda i: distance[i]) if ids else (c["illustration_ids"] or [""])[0]
 
-    # step 7: print clusters that resemble manuscript illustrations (images linked from images_ck_flat/)
+    # step 7: print clusters that resemble manuscript illustrations (images linked from data/print_corpus/images/)
     print_json = PRINT_MATCHES_DIR / "print_matches.json"
     data["print_matches"] = json.loads(print_json.read_text(encoding="utf-8")) if print_json.exists() else None
 

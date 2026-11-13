@@ -60,7 +60,7 @@ def print_nodes_and_units():
                 .agg(n_images=("images", "size"), n_print_books=("bid", "nunique")).reset_index()
                 .rename(columns={"cluster_name": "cluster_id"}))
     clusters["keywords"] = clusters["cluster_id"].map(keywords).fillna("")
-    clusters["image_file"] = [f"{PRINT_CLUSTERS_DIR.name}/{c}.jpg" if (PRINT_CLUSTERS_DIR / f"{c}.jpg").exists() else ""
+    clusters["image_file"] = [f"{PRINT_CLUSTERS_DIR.relative_to(PROJECT_ROOT).as_posix()}/{c}.jpg" if (PRINT_CLUSTERS_DIR / f"{c}.jpg").exists() else ""
                               for c in clusters["cluster_id"]]
 
     n_images = per_image.groupby("bid")["images"].size()

@@ -113,24 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
     navTabs.forEach(t => t.classList.toggle("active", t.dataset.tab === targetId));
     tabPanes.forEach(p => p.classList.toggle("active", p.id === targetId));
 
-    if (targetId === "tab-map") {
-      setTimeout(() => {
-        if (state.map.leafletInstance) {
-          state.map.leafletInstance.invalidateSize();
-        } else {
-          initMap();
-        }
-      }, 100);
-    } else if (targetId === "tab-all-visuals") {
-      // Initialize visuals gallery and clusters
-      if (window.initAllVisuals) {
-        window.initAllVisuals();
-      }
-    }
-    state.activeTab = targetId;
-    navTabs.forEach(t => t.classList.toggle("active", t.dataset.tab === targetId));
-    tabPanes.forEach(p => p.classList.toggle("active", p.id === targetId));
-
+    // the map needs its size recomputed once its tab is visible
     if (targetId === "tab-map") {
       setTimeout(() => {
         if (state.map.leafletInstance) {
