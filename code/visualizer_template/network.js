@@ -6,7 +6,8 @@
  *   clusters     print image clusters (SAC_SIL_...): image_file, keywords, n_print_books
  *   memberships  [node_id, unit_id, n_images, tier]: a book contains a visual unit
  *                unit = a print cluster (for a manuscript: one of its illustrations matched it, step 7, with tier)
- *                       or MSG_<n>, a repeating group among manuscript illustrations (step 5)
+ *                       or MSG_<n>, a computed cluster among manuscript illustrations (step 5),
+ *                       or MSH_<key>, one of your named groups (review tool)
  * Links are recomputed here from the memberships whenever a filter changes:
  * two books are linked by every unit they both contain; line width = number of shared units.
  */
@@ -58,6 +59,8 @@ document.addEventListener("DOMContentLoaded", () => {
     p.matches.forEach(m => addIll(p.print_id, illById[m.illustration_id])));
   ((data.clusters && data.clusters.clusters) || []).filter(c => c.label.startsWith("repeating"))
     .forEach(c => c.illustration_ids.forEach(id => addIll(`MSG_${c.cluster_id}`, illById[id])));
+  (data.groups || []).forEach(g => g.illustration_ids.forEach(id => addIll(`MSH_${g.key}`, illById[id])));
+  const handGroupName = Object.fromEntries((data.groups || []).map(g => [`MSH_${g.key}`, g.name || `Unnamed group ${g.key}`]));
   const msGroupExample = Object.fromEntries(((data.clusters && data.clusters.clusters) || [])
     .map(c => [`MSG_${c.cluster_id}`, illById[c.example_id] || illById[c.illustration_ids[0]]]));
 
@@ -86,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function computeEdges(allowed, f) {
     const pairs = new Map();
     unitMembers.forEach((members, unit) => {
-      const isGroup = unit.startsWith("MSG_");
+      const isGroup = unit.startsWith("MSG_") || unit.startsWith("MSH_");
       const ms = members.filter(m => allowed.has(m.node.node_id) && m.rank >= f.tier);
       for (let i = 0; i < ms.length; i++) {
         for (let j = i + 1; j < ms.length; j++) {
@@ -362,8 +365,12 @@ document.addEventListener("DOMContentLoaded", () => {
       ? (msIllustrations.get(`${n.node_id}|${unit}`) || []).map(il =>
           `<img class="net-ill" src="../${esc(il.crop_file)}" data-ill="${esc(il.illustration_id)}" title="${esc(n.short_label)}, p. ${esc(il.page_number)} — open in reader" loading="lazy">`).join("")
       : "";
+    if (unit.startsWith("MSH_")) {
+      return `<div class="net-unit"><div class="net-unit-head">Group: ${esc(handGroupName[unit] || unit.slice(4))}</div>
+        <div class="net-unit-imgs">${side(a)}${side(b)}</div></div>`;
+    }
     if (unit.startsWith("MSG_")) {
-      return `<div class="net-unit"><div class="net-unit-head">Manuscript group ${unit.slice(4)}</div>
+      return `<div class="net-unit"><div class="net-unit-head">Cluster ${unit.slice(4)}</div>
         <div class="net-unit-imgs">${side(a)}${side(b)}</div></div>`;
     }
     const c = clusterById.get(unit) || {};

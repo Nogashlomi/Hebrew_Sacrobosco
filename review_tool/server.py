@@ -8,11 +8,11 @@ Run:   python review_tool/server.py             then open http://localhost:8766
 
 1. Extraction - go through the manuscripts one by one: mark wrong detections, correct a class, draw boxes the
    detector missed, tick pages and manuscripts as checked.        -> data/review/extraction_review.json
-2. Clusters - go through the groups: confirm a group, remove what does not belong (back to the pool, or as
-   "unique"), move items between groups, merge groups, make a new group from selected items.
-   A group you touched is kept exactly as you left it on every later run of step 5.
-                                                                   -> data/review/clusters_review.json
-3. "Apply & rebuild" runs steps 4b, 5, 7, 8 and 6, so the visualizer shows the reviewed data.
+2. Clusters - browse the computational clusters of step 5 (read only) and pick diagrams from them.
+3. Groups - your own named groups: build them from clusters, from "similar" suggestions or one by one,
+   name and describe them. A diagram can be in any number of groups; the rest is "not grouped".
+                                                                   -> data/review/groups.json
+"Apply & rebuild" runs steps 4b, 5, 7, 8 and 6, so the visualizer shows the reviewed data and your groups.
 
 Every change is saved at once; the previous version of the file goes to data/review/history/ (Undo).
 """
@@ -34,7 +34,7 @@ from PIL import Image
 CODE_DIR = Path(__file__).resolve().parent.parent / "code"
 sys.path.insert(0, str(CODE_DIR))
 from paths import (PROJECT_ROOT, DATA_DIR, MANUSCRIPTS_DIR, CLUSTERS_DIR, CLEAN_METADATA_DIR, REVIEW_DIR,  # noqa: E402
-                   EXTRACTION_REVIEW_JSON, CLUSTERS_REVIEW_JSON, EMBEDDINGS_NPZ, ILLUSTRATIONS_DETECTED_CSV)
+                   EXTRACTION_REVIEW_JSON, GROUPS_JSON, EMBEDDINGS_NPZ, ILLUSTRATIONS_DETECTED_CSV)
 
 import os  # noqa: E402
 
@@ -43,7 +43,7 @@ PORT = int(os.environ.get("REVIEW_PORT", 8766))
 if os.environ.get("REVIEW_TEST_DIR"):
     REVIEW_DIR = Path(os.environ["REVIEW_TEST_DIR"])
     EXTRACTION_REVIEW_JSON = REVIEW_DIR / "extraction_review.json"
-    CLUSTERS_REVIEW_JSON = REVIEW_DIR / "clusters_review.json"
+    GROUPS_JSON = REVIEW_DIR / "groups.json"
 STATIC_DIR = Path(__file__).resolve().parent / "static"
 THUMB_DIR = REVIEW_DIR / "thumbs"
 HISTORY_DIR = REVIEW_DIR / "history"
@@ -98,14 +98,6 @@ def extraction_review():
     r = read_json(EXTRACTION_REVIEW_JSON, {})
     for k in ("deleted", "class_changes", "added", "pages_checked", "manuscripts_done"):
         r.setdefault(k, {})
-    return r
-
-
-def clusters_review():
-    r = read_json(CLUSTERS_REVIEW_JSON, {})
-    r.setdefault("groups", {})
-    r.setdefault("unique", {})
-    r.setdefault("next_key", 1)
     return r
 
 
@@ -279,7 +271,7 @@ def extraction_op(body):
     return result
 
 
-# ------------------------------------------------------------------ clusters (last run of step 5 + review, live)
+# ------------------------------------------------------------------ clusters (computational, read only) and your groups
 _EMB = {"mtime": None}
 
 
@@ -309,59 +301,59 @@ def illustration_info():
     return info
 
 
-def last_run():
-    """clusters.json of the last step-5 run and an id for that run (automatic group numbers belong to one run)."""
-    path = CLUSTERS_DIR / "clusters.json"
-    run = read_json(path, {"clusters": []})
-    return run, run.get("run_id") or (str(int(path.stat().st_mtime)) if path.exists() else "")
+def groups_data():
+    g = read_json(GROUPS_JSON, {})
+    g.setdefault("groups", {})
+    g.setdefault("next_key", 1)
+    return g
 
 
-def current_groups():
-    """Reviewed groups (as saved) + automatic groups from the last step-5 run, minus what the review moved."""
-    rev = clusters_review()
-    alive = illustration_info()
-    run_data, run_id = last_run()
-    run = run_data["clusters"]
-    groups = []
-    taken = set()
-    # automatic groups of this run that you have already taken over (they live on as reviewed groups)
-    adopted = {g["was"]["number"] for g in rev["groups"].values() if g.get("was", {}).get("run") == run_id}
-    adopted |= {m["number"] for g in rev["groups"].values() for m in g.get("merged", []) if m.get("run") == run_id}
-    for key, g in rev["groups"].items():
+def group_list(alive):
+    out = []
+    for key, g in groups_data()["groups"].items():
         members = [i for i in g["members"] if i in alive]
-        if len(members) < 2:          # a group of one is no group: step 5 treats its diagram as unassigned too
+        out.append({"key": key, "name": g.get("name", ""), "description": g.get("description", ""),
+                    "members": members, "size": len(members), "created": g.get("created", ""),
+                    "n_manuscripts": len({alive[i]["folder"] for i in members})})
+    return sorted(out, key=lambda x: (not x["name"], x["name"].lower(), int(x["key"][1:])))
+
+
+def computed_clusters(alive, grouped):
+    """Clusters of the last step-5 run, without the diagrams that are in one of your groups
+    (a diagram has one place: your group, or else its cluster)."""
+    run = read_json(CLUSTERS_DIR / "clusters.json", {"clusters": []})
+    clusters, clustered = [], set()
+    for c in run["clusters"]:
+        if not c["label"].startswith("repeating"):
             continue
-        taken |= set(members)
-        groups.append({"gid": f"R:{key}", "key": key, "number": None, "reviewed": True,
-                       "confirmed": bool(g.get("confirmed")), "note": g.get("label", ""), "members": members})
-    # the number each reviewed group had in the last run (to recognise it in the visualizer)
-    run_number = {c.get("review_key"): c["cluster_id"] for c in run if c.get("review_key")}
+        members = [i for i in c["illustration_ids"] if i in alive and i not in grouped]
+        clustered |= set(members)
+        if members:
+            clusters.append({"number": c["cluster_id"], "members": members, "size": len(members),
+                             "n_manuscripts": len({alive[i]["folder"] for i in members})})
+    other = [i for i in alive if i not in clustered and i not in grouped]
+    return clusters, other, run
+
+
+def state():
+    alive = illustration_info()
+    groups = group_list(alive)
+    seen, several = {}, set()
     for g in groups:
-        g["number"] = run_number.get(g["key"])
-        g["was"] = rev["groups"][g["key"]].get("was", {}).get("number")
-    unique = set(rev["unique"]) & set(alive)
-    for c in run:
-        if not c["label"].startswith("repeating") or c.get("review_key") or c["cluster_id"] in adopted:
-            continue
-        members = [i for i in c["illustration_ids"] if i in alive and i not in taken and i not in unique]
-        if len(members) >= 2:
-            groups.append({"gid": f"A:{c['cluster_id']}", "key": None, "number": c["cluster_id"], "reviewed": False,
-                           "confirmed": False, "note": "", "members": members})
-            taken |= set(members)
-    pool = [i for i in alive if i not in taken and i not in unique]
-    for g in groups:
-        g["n_manuscripts"] = len({alive[i]["folder"] for i in g["members"]})
-        g["size"] = len(g["members"])
-    groups.sort(key=lambda g: (-g["size"], g["gid"]))
-    return groups, pool, sorted(unique), alive
+        for i in g["members"]:
+            if i in seen:
+                several.add(i)
+            seen[i] = g["key"]
+    clusters, other, run = computed_clusters(alive, set(seen))
+    return alive, groups, clusters, other, sorted(several), run
 
 
 def clusters_payload():
-    groups, pool, unique, alive = current_groups()
-    run = read_json(CLUSTERS_DIR / "clusters.json", {})
-    return {"groups": groups, "pool": pool, "unique": unique, "cards": alive,
-            "last_run": {"n_groups": len([c for c in run.get("clusters", []) if c["label"].startswith("repeating")]),
-                         "threshold": run.get("similarity_threshold")}}
+    alive, groups, clusters, other, several, run = state()
+    return {"clusters": clusters, "other": other, "groups": groups, "several": several, "cards": alive,
+            "n_in_groups": len({i for g in groups for i in g["members"]}),
+            "last_run": {"n_clusters": len(clusters), "threshold": run.get("similarity_threshold"),
+                         "run_id": run.get("run_id")}}
 
 
 def unit(v):
@@ -369,115 +361,87 @@ def unit(v):
     return v / n if n else v
 
 
-def suggestions(gid, ids=None, all_items=False):
-    """Groups and unassigned diagrams closest to a group's centre (or to a set of selected ids).
-    all_items: also suggest diagrams that are already in another group (each with the group it is in)."""
-    groups, pool, unique, alive = current_groups()
+def suggestions(ids):
+    """Diagrams, groups and clusters closest to the centre of `ids` (one diagram, a selection, a group or a cluster)."""
+    alive, groups, clusters, other, several, run = state()
     emb = embeddings()
-    g = next((x for x in groups if x["gid"] == gid), None)
-    members = ids or (g["members"] if g else [])
-    vecs = [emb[i] for i in members if i in emb]
+    vecs = [emb[i] for i in ids if i in emb]
     if not vecs:
-        return {"groups": [], "items": []}
+        return {"items": [], "units": []}
     centre = unit(np.mean(vecs, axis=0))
-    near_groups = []
-    for o in groups:
-        if o["gid"] == gid:
-            continue
-        ov = [emb[i] for i in o["members"] if i in emb]
-        if ov:
-            near_groups.append((float(unit(np.mean(ov, axis=0)) @ centre), o))
-    near_groups.sort(key=lambda t: -t[0])
-    group_of = {i: o["gid"] for o in groups for i in o["members"]}
-    others = list(alive) if all_items else pool + unique
-    cand = [(float(unit(emb[i]) @ centre), i) for i in others if i in emb and i not in members]
-    cand.sort(key=lambda t: -t[0])
-    return {"groups": [{"gid": o["gid"], "similarity": round(s, 3), "size": o["size"], "number": o["number"],
-                        "key": o["key"], "reviewed": o["reviewed"], "note": o["note"], "n_manuscripts": o["n_manuscripts"],
-                        "members": o["members"][:4]}
-                       for s, o in near_groups[:8]],
-            "items": [{"id": i, "similarity": round(s, 3), "gid": group_of.get(i), "unique": i in unique}
-                      for s, i in cand[:60 if all_items else 24]]}
+    skip = set(ids)
+    place = {}
+    for c in clusters:
+        for i in c["members"]:
+            place[i] = f"C:{c['number']}"
+    for g in groups:
+        for i in g["members"]:
+            place[i] = f"G:{g['key']}"
+    units = []
+    for kind, lst in (("G", groups), ("C", clusters)):
+        for u in lst:
+            if set(u["members"]) <= skip:
+                continue
+            uv = [emb[i] for i in u["members"] if i in emb]
+            if uv:
+                uid = f"G:{u['key']}" if kind == "G" else f"C:{u['number']}"
+                units.append((float(unit(np.mean(uv, axis=0)) @ centre), uid, u))
+    units.sort(key=lambda t: -t[0])
+    cand = sorted(((float(unit(emb[i]) @ centre), i) for i in alive if i in emb and i not in skip), key=lambda t: -t[0])
+    return {"units": [{"uid": uid, "similarity": round(s, 3), "size": u["size"], "n_manuscripts": u["n_manuscripts"],
+                       "name": u.get("name", ""), "members": u["members"][:4]} for s, uid, u in units[:12]],
+            "items": [{"id": i, "similarity": round(s, 3), "place": place.get(i)} for s, i in cand[:60]]}
 
 
-def clusters_op(body):
-    rev = clusters_review()
-
-    def new_key():
-        k = f"R{rev['next_key']}"
-        rev["next_key"] += 1
-        return k
-
-    def release(ids):
-        """Take ids out of every reviewed group and out of 'unique'."""
-        ids = set(ids)
-        for g in rev["groups"].values():
-            g["members"] = [i for i in g["members"] if i not in ids]
-        for i in ids:
-            rev["unique"].pop(i, None)
-
-    def adopt(gid, members):
-        """The reviewed key for a group; an automatic group becomes a reviewed one with its current members."""
-        if gid and gid.startswith("R:"):
-            return gid[2:]
-        key = new_key()
-        release(members)
-        rev["groups"][key] = {"members": list(members), "label": "", "confirmed": False, "created": now()}
-        if gid and gid.startswith("A:"):
-            rev["groups"][key]["was"] = {"run": last_run()[1], "number": int(gid[2:])}
-        return key
-
+def groups_op(body):
+    """Your groups. A diagram is in at most one group: adding it to a group takes it out of any other."""
+    data = groups_data()
+    groups = data["groups"]
     op = body["op"]
-    result = {}
-    if op == "confirm":
-        key = adopt(body.get("gid"), body["members"])
-        rev["groups"][key]["confirmed"] = body.get("value", True)
-        result["gid"] = f"R:{key}"
-    elif op == "remove":                 # remove ids from a group: back to the pool, or marked unique
-        key = adopt(body.get("gid"), body["members"])
+    key = body.get("key")
+
+    def take_out(ids, except_key=None):
+        ids = set(ids)
+        for k, g in groups.items():
+            if k != except_key:
+                g["members"] = [i for i in g["members"] if i not in ids]
+
+    if op != "new" and key not in groups:
+        raise ValueError(f"no group {key}")
+    if op == "new":                       # new group from some diagrams (they leave any other group)
+        ids = list(dict.fromkeys(body.get("ids", [])))
+        take_out(ids)
+        key = f"G{data['next_key']}"
+        data["next_key"] += 1
+        groups[key] = {"name": body.get("name", "").strip(), "description": "", "members": ids, "created": now()}
+    elif op == "add":                     # move diagrams into this group
+        take_out(body["ids"], except_key=key)
+        groups[key]["members"] = list(dict.fromkeys(groups[key]["members"] + body["ids"]))
+    elif op == "remove":                  # back to "not grouped" (their cluster)
         drop = set(body["ids"])
-        rev["groups"][key]["members"] = [i for i in rev["groups"][key]["members"] if i not in drop]
-        if body.get("unique"):
-            for i in drop:
-                rev["unique"][i] = now()
-        result["gid"] = f"R:{key}"
-    elif op == "add":                    # add ids to a group (from the pool, suggestions or another group)
-        key = adopt(body.get("gid"), body["members"])
-        release(body["ids"])
-        rev["groups"][key]["members"] = list(dict.fromkeys(rev["groups"][key]["members"] + body["ids"]))
-        result["gid"] = f"R:{key}"
-    elif op == "merge":                  # merge group b into group a
-        key = adopt(body.get("gid"), body["members"])
-        other = body["other_members"]
-        if body.get("other_gid", "").startswith("R:"):
-            rev["groups"].pop(body["other_gid"][2:], None)
-        elif body.get("other_gid", "").startswith("A:"):
-            rev["groups"][key].setdefault("merged", []).append({"run": last_run()[1], "number": int(body["other_gid"][2:])})
-        release(other)
-        rev["groups"][key]["members"] = list(dict.fromkeys(rev["groups"][key]["members"] + other))
-        result["gid"] = f"R:{key}"
-    elif op == "new_group":
-        release(body["ids"])
-        key = new_key()
-        rev["groups"][key] = {"members": list(body["ids"]), "label": "", "confirmed": False, "created": now()}
-        result["gid"] = f"R:{key}"
-    elif op == "unique":
-        release(body["ids"])
-        for i in body["ids"]:
-            if body.get("value", True):
-                rev["unique"][i] = now()
-        result["gid"] = body.get("gid")
-    elif op == "note":
-        key = adopt(body.get("gid"), body["members"])
-        rev["groups"][key]["label"] = body.get("note", "")
-        result["gid"] = f"R:{key}"
-    elif op == "dissolve":               # forget the review of this group: step 5 clusters it again
-        rev["groups"].pop(body["gid"][2:], None)
+        groups[key]["members"] = [i for i in groups[key]["members"] if i not in drop]
+    elif op == "rename":
+        groups[key]["name"] = body.get("name", "").strip()
+    elif op == "describe":
+        groups[key]["description"] = body.get("description", "").strip()
+    elif op == "merge":                   # the other group joins this one and is deleted; a name is kept if this had none
+        other = body["other"]
+        if other == key or other not in groups:
+            raise ValueError(f"cannot merge {other} into {key}")
+        o = groups.pop(other)
+        groups[key]["members"] = list(dict.fromkeys(groups[key]["members"] + o["members"]))
+        if not groups[key].get("name") and o.get("name"):
+            groups[key]["name"] = o["name"]
+        if not groups[key].get("description") and o.get("description"):
+            groups[key]["description"] = o["description"]
+    elif op == "delete":
+        del groups[key]
     else:
         raise ValueError(f"unknown op {op}")
-    rev["groups"] = {k: g for k, g in rev["groups"].items() if len(g["members"]) >= 2}
-    write_json(CLUSTERS_REVIEW_JSON, rev)
-    return result
+    # a group that is emptied (all moved elsewhere) disappears, unless it has a name
+    data["groups"] = {k: g for k, g in groups.items() if g["members"] or g.get("name") or k == key}
+    write_json(GROUPS_JSON, data)
+    return {"key": key if key in data["groups"] else None}
 
 
 # ------------------------------------------------------------------ rebuild
@@ -576,8 +540,7 @@ class Handler(BaseHTTPRequestHandler):
             if url.path == "/api/clusters":
                 return self.send_json(clusters_payload())
             if url.path == "/api/suggestions":
-                ids = q["ids"].split(",") if q.get("ids") else None
-                return self.send_json(suggestions(q.get("gid", ""), ids, q.get("all") == "1"))
+                return self.send_json(suggestions([i for i in q.get("ids", "").split(",") if i]))
             if url.path == "/api/rebuild":
                 return self.send_json(REBUILD)
             # the built visualizer and the files it links (read only)
@@ -596,8 +559,8 @@ class Handler(BaseHTTPRequestHandler):
             with LOCK:
                 if url.path == "/api/extraction":
                     return self.send_json(extraction_op(body))
-                if url.path == "/api/clusters":
-                    return self.send_json(clusters_op(body))
+                if url.path == "/api/groups":
+                    return self.send_json(groups_op(body))
                 if url.path == "/api/undo":
                     return self.send_json({"undone": undo()})
                 if url.path == "/api/rebuild":

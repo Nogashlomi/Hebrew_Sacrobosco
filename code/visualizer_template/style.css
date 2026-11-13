@@ -1088,6 +1088,24 @@ body {
 /* ========================================================== */
 /* ILLUSTRATIONS (TAB 6) & CLUSTERS (TAB 7)                   */
 /* ========================================================== */
+/* Illustrations tab: per-manuscript overview */
+.ipm { margin-top: 0.9rem; }
+.ipm > summary { cursor: pointer; font-weight: 600; color: var(--ink-primary); }
+.ipm-controls { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin: 0.6rem 0; }
+.ipm-hint { font-size: 0.8rem; color: var(--ink-muted); }
+.ipm-chart { max-height: 520px; overflow-y: auto; padding-right: 0.4rem; }
+.ipm-section { margin: 0.8rem 0 0.25rem; font-weight: 600; font-size: 0.85rem; color: var(--ink-primary);
+  border-bottom: 1px solid var(--border-light); padding-bottom: 0.15rem; }
+.ipm-section .muted, .ipm-label .muted { font-weight: 400; color: var(--ink-muted); font-size: 0.78rem; }
+.ipm-row { display: grid; grid-template-columns: minmax(150px, 230px) 1fr 3rem; align-items: center; gap: 0.5rem;
+  padding: 2px 0; cursor: pointer; font-size: 0.82rem; }
+.ipm-row:hover { background: var(--bg-hover); }
+.ipm-label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ipm-track { display: flex; height: 12px; background: var(--bg-subtle); border-radius: 3px; overflow: hidden; }
+.ipm-track span { display: block; height: 100%; }
+.ipm-n { font-family: var(--font-mono); text-align: right; color: var(--ink-secondary); }
+.ipm-swatch { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 0.3rem; vertical-align: 0; }
+
 .ill-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
@@ -1941,6 +1959,117 @@ button.rip-group:hover {
 /* ========================================================== */
 /* CLUSTER DETAIL: MANUSCRIPTS OVER TIME AND BY PLACE          */
 /* ========================================================== */
+/* Cards used by the Persons and Included Texts tabs */
+.families-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-xs);
+  padding: 1.1rem 1.3rem 1.3rem;
+  margin-bottom: 1.25rem;
+}
+
+.families-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Groups tab: comparison of the groups by time, script, place */
+.group-compare-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-xs);
+  padding: 1.1rem 1.3rem 1.3rem;
+  margin-bottom: 1.25rem;
+}
+
+.gc-head-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.gc-controls { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+.group-compare-wrap { overflow-x: auto; margin-top: 0.6rem; }
+
+.group-compare {
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  min-width: 100%;
+}
+
+.group-compare th, .group-compare td {
+  border: 1px solid var(--border-light);
+  padding: 0.3rem 0.5rem;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.group-compare thead th {
+  font-weight: 600;
+  color: var(--ink-secondary);
+  background: var(--bg-subtle);
+  font-size: 0.78rem;
+}
+
+.group-compare .gc-name { text-align: left; font-weight: 500; }
+.group-compare .gc-name .link-btn { text-align: left; }
+.group-compare .gc-n { font-family: var(--font-mono); color: var(--ink-muted); }
+
+.group-compare .gc-cell {
+  font-family: var(--font-mono);
+  min-width: 3.2rem;
+  background: color-mix(in srgb, var(--accent-crimson) calc(var(--share, 0) * 85%), var(--bg-surface));
+  color: var(--ink-primary);
+}
+
+.group-compare td.gc-cell[style*="--share:0.5"], .group-compare td.gc-cell[style*="--share:0.6"],
+.group-compare td.gc-cell[style*="--share:0.7"], .group-compare td.gc-cell[style*="--share:0.8"],
+.group-compare td.gc-cell[style*="--share:0.9"], .group-compare td.gc-cell[style*="--share:1"] { color: #fff; }
+
+.group-compare .gc-none { color: var(--ink-muted); }
+.group-compare td.gc-none.gc-cell { background: color-mix(in srgb, var(--ink-dim) calc(var(--share, 0) * 45%), var(--bg-surface)); color: var(--ink-secondary); }
+
+.gc-legend { display: flex; flex-wrap: wrap; gap: 0.3rem 0.4rem; margin: 0.4rem 0 0.7rem; align-items: center; }
+.gc-key {
+  font: inherit; font-size: 0.8rem; background: var(--bg-surface); border: 1px solid var(--border-color);
+  border-radius: 999px; padding: 0.15rem 0.55rem; cursor: pointer; color: var(--ink-primary);
+}
+.gc-key .muted { color: var(--ink-muted); }
+.gc-key.off { opacity: 0.4; text-decoration: line-through; }
+.gc-swatch { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 0.35rem; vertical-align: -1px; }
+.gc-chart-wrap { overflow-x: auto; }
+.gc-chart { display: block; width: 100%; min-width: 560px; height: auto; font-family: var(--font-sans); }
+.gc-grid { stroke: var(--border-light); }
+.gc-axis { font-size: 12px; fill: var(--ink-muted); }
+.gc-series path { stroke-width: 2.2; transition: opacity 0.15s; }
+.gc-series circle { stroke: var(--bg-surface); stroke-width: 1; }
+.gc-series { cursor: pointer; }
+.gc-series.dim { opacity: 0.12; }
+.gc-series.hi path { stroke-width: 4; }
+.gc-hit { stroke-width: 14; pointer-events: stroke; }
+#groups-compare { position: relative; }
+.gc-tip { position: absolute; z-index: 20; pointer-events: none; background: var(--bg-surface); border: 1px solid var(--border-dark);
+  border-radius: var(--radius-sm); box-shadow: var(--shadow-md); padding: 0.35rem 0.55rem; font-size: 0.8rem; max-width: 280px; }
+.gc-map { height: 480px; border-radius: var(--radius-sm); border: 1px solid var(--border-light); }
+.gc-pie { background: none; border: none; }
+.gc-pie svg { overflow: visible; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3)); }
+.gc-pie text { font: 600 11px var(--font-sans); fill: #fff; paint-order: stroke; stroke: rgba(0,0,0,0.45); stroke-width: 2px; }
+
+.group-description {
+  margin: 0.2rem 0 0.8rem;
+  color: var(--ink-secondary);
+  font-family: var(--font-serif-text);
+  font-size: 1.05rem;
+}
+
 .cl-stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));

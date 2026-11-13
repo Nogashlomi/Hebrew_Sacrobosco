@@ -11,13 +11,15 @@
     <div class="brand">Illustration Review <span class="muted">· Hebrew Sacrobosco</span></div>
     <nav class="tabs">
       <button class="tab active" data-view="extraction">1 · Extraction</button>
-      <button class="tab" data-view="clusters">2 · Clusters</button>
-      <button class="tab" data-view="board">3 · Board (drag &amp; merge)</button>
+      <button class="tab" data-view="clusters">2 · Clusters (computed)</button>
+      <button class="tab" data-view="groups">3 · My groups</button>
+      <button class="tab" data-view="board">4 · Board (drag &amp; merge)</button>
+      <button class="tab" data-view="assign">5 · All diagrams</button>
     </nav>
     <div class="actions">
       <span id="saved" class="saved"></span>
       <button id="btn-undo" class="btn" title="Undo the last change (Ctrl/Cmd+Z)">Undo</button>
-      <button id="btn-rebuild" class="btn primary" title="Run steps 4b, 5, 7, 8 and 6 with your review">Apply &amp; rebuild visualizer</button>
+      <button id="btn-rebuild" class="btn primary" title="Run steps 4b, 5, 7, 8 and 6 with your review and groups">Apply &amp; rebuild visualizer</button>
       <a class="btn" href="/visualizer/index.html" target="_blank" rel="noopener">Open visualizer ↗</a>
     </div>
   </header>
@@ -41,32 +43,47 @@
   <div id="view-clusters" class="view" hidden>
     <aside class="side">
       <div class="side-head">
-        <input id="grp-search" type="search" placeholder="Group name, number or R-key…">
-        <select id="grp-filter">
-          <option value="todo">To review</option>
-          <option value="reviewed">Reviewed</option>
-          <option value="all">All groups</option>
+        <input id="cl-search" type="search" placeholder="Cluster number or shelfmark…">
+        <select id="cl-filter">
+          <option value="all">All clusters</option>
+          <option value="across">Shared by 2+ manuscripts</option>
+          <option value="within">Within one manuscript</option>
         </select>
-        <select id="grp-sort">
+        <select id="cl-sort">
           <option value="size">Largest first</option>
           <option value="mss">Most manuscripts first</option>
-          <option value="named">Named first (A–Z)</option>
         </select>
       </div>
-      <div id="grp-progress" class="side-progress"></div>
-      <div id="grp-list" class="side-list"></div>
+      <div id="cl-progress" class="side-progress"></div>
+      <div id="cl-list" class="side-list"></div>
     </aside>
-    <main id="grp-main" class="main"><p class="empty">Choose a group on the left.</p></main>
+    <main id="cl-main" class="main"><p class="empty">Choose a cluster on the left.</p></main>
+  </div>
+
+  <div id="view-groups" class="view" hidden>
+    <aside class="side">
+      <div class="side-head">
+        <button class="btn primary" id="gr-new">＋ New group</button>
+        <input id="gr-search" type="search" placeholder="Group name, key or description…">
+        <select id="gr-sort">
+          <option value="name">Named first (A–Z)</option>
+          <option value="size">Largest first</option>
+          <option value="mss">Most manuscripts first</option>
+        </select>
+      </div>
+      <div id="gr-progress" class="side-progress"></div>
+      <div id="gr-list" class="side-list"></div>
+    </aside>
+    <main id="gr-main" class="main"><p class="empty">Choose a group on the left, or make a new one.</p></main>
   </div>
 
   <div id="view-board" class="board-view" hidden>
     <div class="board-bar">
-      <input id="bd-search" type="search" placeholder="Group name, number or shelfmark…">
+      <input id="bd-search" type="search" placeholder="Group name, cluster number or shelfmark…">
       <select id="bd-filter">
-        <option value="all">All groups</option>
-        <option value="todo">Not reviewed</option>
-        <option value="reviewed">Reviewed</option>
-        <option value="unconfirmed">Not confirmed</option>
+        <option value="all">Groups and clusters</option>
+        <option value="G">My groups only</option>
+        <option value="C">Clusters only</option>
       </select>
       <select id="bd-sort">
         <option value="size">Largest first</option>
@@ -77,26 +94,49 @@
       <label class="lbl">Size <input id="bd-size" type="range" min="70" max="200" value="110"></label>
       <span id="bd-count" class="lbl"></span>
       <span id="bd-focus" class="focus-note" hidden></span>
-      <span class="bd-help">Drag a <b>group</b> onto another group to merge them · open a group (▾) and drag
-        single <b>diagrams</b> to another group or to the drop zones · click diagrams to select several, then drag them together ·
-        ≈ shows the most similar groups · ⤢ (or double-click) opens one diagram with suggestions · ✎ names a group · ⇢ merges into a group chosen by name · Cmd+Z undoes</span>
+      <span class="bd-help">Gold cards are <b>your groups</b>, white cards are computed <b>clusters</b>; every diagram is in one of them.
+        Drag a card onto another to <b>merge</b> (onto a cluster: a new group) · open a card (▾) and drag single <b>diagrams</b>
+        to another card or to the drop zones · click diagrams to select several · ≈ most similar · ⤢ or double-click opens one diagram ·
+        ✎ names · ⇢ puts everything into a group chosen by name · Cmd+Z undoes</span>
     </div>
     <div class="board-body">
       <div id="bd-grid" class="board-grid"></div>
       <aside class="board-side">
         <div class="dz" data-zone="new"><b>＋ New group</b><span>drop diagrams here</span></div>
-        <div class="dz" data-zone="pool"><b>Unassigned</b><span>take out of their group</span></div>
-        <div class="dz" data-zone="unique"><b>Unique</b><span>no partner anywhere</span></div>
+        <div class="dz" data-zone="ungroup"><b>Not grouped</b><span>take them out of their group (back to their cluster)</span></div>
         <div id="bd-selbox" class="selbox" hidden>
           <b id="bd-seln"></b>
           <span class="muted small">drag one of them, or move them to:</span>
-          <input id="bd-move-to" type="text" list="bd-names" placeholder="group name or number">
+          <input id="bd-move-to" type="text" list="group-names" placeholder="group name (new or existing)">
           <div class="row"><button class="btn primary" id="bd-move">Move</button><button class="btn" id="bd-clear">Clear selection</button></div>
         </div>
-        <div class="pool-head"><b>Unassigned diagrams</b> <span id="bd-pool-n" class="muted"></span>
-          <span class="muted small">drag onto a group</span></div>
+        <div class="pool-head"><b>In no cluster</b> <span id="bd-pool-n" class="muted"></span>
+          <span class="muted small">no close match: drag onto a card</span></div>
         <div id="bd-pool" class="pool-grid"></div>
       </aside>
+    </div>
+  </div>
+
+  <div id="view-assign" class="assign-view" hidden>
+    <div class="board-bar as-bar">
+      <select id="as-filter"></select>
+      <select id="as-sort">
+        <option value="ms">By manuscript and page</option>
+        <option value="cluster">Similar diagrams together (by cluster)</option>
+      </select>
+      <input id="as-search" type="search" placeholder="Shelfmark…">
+      <label class="lbl">Size <input id="as-size" type="range" min="90" max="260" value="150"></label>
+      <span id="as-count" class="lbl"></span>
+      <div class="as-pick">
+        <span id="as-seln" class="lbl"></span>
+        <button class="btn" id="as-all" title="Select every diagram loaded so far">Select all shown</button>
+        <button class="btn" id="as-clear">Clear</button>
+        <div id="as-groups" class="as-groups"></div>
+      </div>
+    </div>
+    <div id="as-scroll" class="as-scroll">
+      <div id="as-grid" class="as-grid"></div>
+      <div id="as-more" class="note as-more">Loading more…</div>
     </div>
   </div>
 
@@ -137,12 +177,13 @@
     </div>
   </div>
 
-  <datalist id="bd-names"></datalist>
-  <!-- Inspector: one diagram, its possible groups and similar diagrams -->
+  <datalist id="group-names"></datalist>
+  <!-- Inspector: one diagram, the groups it is in and similar diagrams -->
   <div id="inspect" class="modal inspect" hidden><div id="inspect-box" class="inspect-box"></div></div>
   <div id="toast" class="toast" hidden></div>
   <script src="/static/review.js"></script>
+  <script src="/static/groups.js"></script>
   <script src="/static/board.js"></script>
-  <script src="/static/inspect.js"></script>
+  <script src="/static/assign.js"></script>
 </body>
 </html>

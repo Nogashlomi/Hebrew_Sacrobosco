@@ -51,7 +51,7 @@ NETWORK_DIR = DATA_DIR / "network"
 # manual review (review_tool/): your decisions, kept apart from the automatic output so re-runs keep them
 REVIEW_DIR = DATA_DIR / "review"
 EXTRACTION_REVIEW_JSON = REVIEW_DIR / "extraction_review.json"   # wrong boxes, class changes, drawn boxes, checked pages
-CLUSTERS_REVIEW_JSON = REVIEW_DIR / "clusters_review.json"       # fixed (reviewed) groups, items marked unique
+GROUPS_JSON = REVIEW_DIR / "groups.json"                         # your named groups of illustrations (any number per illustration)
 
 # illustration tables: step 4 writes the detector's output; step 4b applies the extraction review
 ILLUSTRATIONS_DETECTED_CSV = ILLUSTRATIONS_DIR / "illustrations.csv"

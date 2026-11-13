@@ -8,7 +8,8 @@ Data only; the visualizer (step 6) draws it.
 Input:  data/print_corpus/print_images_clusters.csv   print images -> print cluster (SAC_SIL_...) + book (bid)
         data/print_corpus/print_books.csv              printed editions: title, authors, printers, place, year
         data/print_matches/print_matches.csv           (step 7) print cluster <-> manuscript illustration
-        data/clusters/clusters.json                    (step 5) repeating groups among manuscript illustrations
+        data/clusters/clusters.json                    (step 5) clusters among manuscript illustrations not in your groups
+        data/review/groups.json                        your named groups of manuscript illustrations (review tool)
         data/illustrations/illustrations[_reviewed].csv (step 4 / 4b) illustration -> manuscript record
         data/metadata/clean/visualizer_data.json       (step 3) codices, places (coordinates)
 Output: data/network/
@@ -17,7 +18,8 @@ Output: data/network/
         memberships.csv  which node contains which visual unit, the "bipartite" table everything else is derived from:
                          node_id, unit_id, unit_kind, n_images, tier, score
                          unit_kind = print_cluster (print book has images in that cluster, or a manuscript
-                         illustration was matched to it in step 7, with tier/score) | ms_group (step-5 group)
+                         illustration was matched to it in step 7, with tier/score) | ms_group (step-5 cluster,
+                         MSG_<n>) | ms_hand_group (one of your named groups, MSH_<key>)
         edges.csv        node pairs that share units: source, target, kind (print-print | print-ms | ms-ms),
                          shared (all units), shared_probable (manuscript matches of tier probable+ only),
                          shared_strong, units (semicolon list)
@@ -37,7 +39,7 @@ from collections import defaultdict
 import pandas as pd
 
 from paths import (illustrations_csv, PROJECT_ROOT, CLEAN_METADATA_DIR, ILLUSTRATIONS_DIR, CLUSTERS_DIR, PRINT_MATCHES_DIR,
-                   PRINT_CLUSTERS_DIR, PRINT_CORPUS_DIR, NETWORK_DIR)
+                   PRINT_CLUSTERS_DIR, PRINT_CORPUS_DIR, NETWORK_DIR, GROUPS_JSON)
 
 TIER_RANK = {"strong": 3, "probable": 2, "possible": 1}
 
@@ -111,6 +113,17 @@ def manuscript_nodes_and_units():
             per_codex[codex_of_ill[iid]] += 1
         for codex, n in per_codex.items():
             memberships.append({"node_id": f"M_{codex}", "unit_id": f"MSG_{grp['cluster_id']}", "unit_kind": "ms_group",
+                                "n_images": n, "tier": "", "score": ""})
+
+    # your named groups link manuscripts too (a diagram is in one group, or else in a step-5 cluster)
+    hand = json.loads(GROUPS_JSON.read_text(encoding="utf-8"))["groups"] if GROUPS_JSON.exists() else {}
+    for key, grp in hand.items():
+        per_codex = defaultdict(int)
+        for iid in grp["members"]:
+            if iid in codex_of_ill:
+                per_codex[codex_of_ill[iid]] += 1
+        for codex, n in per_codex.items():
+            memberships.append({"node_id": f"M_{codex}", "unit_id": f"MSH_{key}", "unit_kind": "ms_hand_group",
                                 "n_images": n, "tier": "", "score": ""})
 
     n_ill = ill[ill["class"] == "Content Illustration"].groupby("codex_id").size()

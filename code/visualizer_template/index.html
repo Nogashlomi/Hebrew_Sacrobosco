@@ -32,6 +32,7 @@
       <button class="nav-tab" data-tab="tab-persons">Prosopography & Scholars</button>
       <button class="nav-tab" data-tab="tab-map">Geography & Timeline</button>
       <button class="nav-tab" data-tab="tab-illustrations">Illustrations</button>
+      <button class="nav-tab" data-tab="tab-groups">Groups</button>
       <button class="nav-tab" data-tab="tab-clusters">Clusters</button>
       <button class="nav-tab" data-tab="tab-print">Print Parallels</button>
       <button class="nav-tab" data-tab="tab-network">Network</button>
@@ -334,6 +335,7 @@
     <!-- TAB 6: ILLUSTRATIONS (all crops from step 4)         -->
     <!-- ==================================================== -->
     <section id="tab-illustrations" class="tab-pane">
+      <div id="ill-overview" class="clusters-summary"></div>
       <div class="filter-card">
         <div class="filter-row">
           <select id="ill-filter-ms" class="filter-select">
@@ -354,6 +356,16 @@
       </div>
     </section>
 
+
+    <!-- ==================================================== -->
+    <!-- TAB: GROUPS (named by hand in the review tool)       -->
+    <!-- ==================================================== -->
+    <section id="tab-groups" class="tab-pane">
+      <div id="groups-summary" class="clusters-summary"></div>
+      <div id="groups-compare" class="group-compare-card"></div>
+      <div id="group-detail" class="cluster-detail" hidden></div>
+      <div id="groups-body"></div>
+    </section>
 
     <!-- ==================================================== -->
     <!-- TAB 7: CLUSTERS (repeating illustrations, step 5)    -->

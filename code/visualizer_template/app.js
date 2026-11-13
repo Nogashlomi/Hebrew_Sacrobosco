@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const repeatingGroups = ((data.clusters && data.clusters.clusters) || []).filter(c => c.label.startsWith("repeating"));
   const acrossGroups = repeatingGroups.filter(c => c.n_manuscripts > 1).length;
   document.getElementById("stat-clusters").textContent = data.clusters
-    ? `${repeatingGroups.length} repeating groups (${acrossGroups} across manuscripts)`
+    ? `${repeatingGroups.length} clusters (${acrossGroups} across manuscripts)`
     : "not computed yet";
 
   // -----------------------------------------------------------
@@ -472,6 +472,9 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   const readerClusterOf = {};
   ((data.clusters && data.clusters.clusters) || []).forEach(c => c.illustration_ids.forEach(id => { readerClusterOf[id] = c; }));
+  // your named groups (a diagram is in one group, or else in a computed cluster)
+  const readerGroupOf = {};
+  (data.groups || []).forEach(g => g.illustration_ids.forEach(id => { readerGroupOf[id] = g; }));
   const recordsByFolder = {};
   data.manuscripts.filter(m => m.image_folder).forEach(m => {
     (recordsByFolder[m.image_folder] = recordsByFolder[m.image_folder] || []).push(m);
@@ -573,9 +576,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const groups = new Set(ills.map(il => readerClusterOf[il.illustration_id])
       .filter(c => c && c.label.startsWith("repeating")));
     const sharedGroups = [...groups].filter(c => c.n_manuscripts > 1).length;
+    const handGroups = new Set(ills.map(il => readerGroupOf[il.illustration_id]).filter(Boolean));
     const illText = ills.length
       ? `${ills.length} found on ${new Set(ills.map(il => il.page_number)).size} pages<br>
-         ${groups.size} repeating group${groups.size === 1 ? "" : "s"}${sharedGroups ? `, ${sharedGroups} shared with other manuscripts` : ""}`
+         ${handGroups.size ? `${handGroups.size} group${handGroups.size === 1 ? "" : "s"}, ` : ""}${groups.size} cluster${groups.size === 1 ? "" : "s"}${sharedGroups ? `, ${sharedGroups} shared with other manuscripts` : ""}`
       : "";
 
     const people = (readerPersonsByMs[ms.mms_id] || []);
@@ -635,12 +639,15 @@ document.addEventListener("DOMContentLoaded", () => {
       : all;
 
     const groupBadge = il => {
+      const g = readerGroupOf[il.illustration_id];
+      if (g) return `<button class="rip-group across" data-ugroup="${escapeHtml(g.key)}"
+                  title="Show this group in the Groups tab">${escapeHtml(g.name || `Group ${g.key}`)}</button>`;
       const c = readerClusterOf[il.illustration_id];
       if (!c) return "";
       if (c.label.startsWith("repeating")) {
         const across = c.n_manuscripts > 1;
         return `<button class="rip-group ${across ? "across" : "within"}" data-cluster="${c.cluster_id}"
-                  title="Show this group in the Clusters tab">Group ${c.cluster_id}${c.note ? ` (${escapeHtml(c.note)})` : ""} · ${across ? `${c.n_manuscripts} mss` : "this ms only"}</button>`;
+                  title="Show this cluster in the Clusters tab">Cluster ${c.cluster_id} · ${across ? `${c.n_manuscripts} mss` : "this ms only"}</button>`;
       }
       return `<span class="rip-group">${c.cluster_id === 0 ? "no close match" : "not compared"}</span>`;
     };
@@ -680,7 +687,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
     readerIllPanel.querySelectorAll("button.rip-group").forEach(btn => {
-      btn.addEventListener("click", () => goToCluster(btn.dataset.cluster));
+      btn.addEventListener("click", () => btn.dataset.ugroup ? openUserGroup(btn.dataset.ugroup) : goToCluster(btn.dataset.cluster));
     });
     markPageIllustrations();
   }
@@ -1452,7 +1459,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   illFilterMs.addEventListener("change", renderIllustrations);
-  illFilterClass.addEventListener("change", renderIllustrations);
+  illFilterClass.addEventListener("change", () => { renderIllustrations(); renderIllOverview(); });
 
   // -----------------------------------------------------------
   // 9. Tab 7: Clusters (repeating illustrations from step 5)
@@ -1494,7 +1501,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function clusterTile(c) {
     const ex = exampleOf(c);
     const mss = (groupCodices[c.cluster_id] || []).map(id => codexLabel(codexById[id] || codexOfMms(id)));
-    const name = c.label.startsWith("repeating") ? `Group ${c.cluster_id}${c.note ? ` · ${c.note}` : ""}` : c.label.replace(" (not compared)", "");
+    const name = c.label.startsWith("repeating") ? `Cluster ${c.cluster_id}` : c.label.replace(" (not compared)", "");
     return `
       <div class="cluster-tile" data-cluster="${c.cluster_id}" title="Open this group">
         <div class="ill-thumb">${ex ? `<img src="../${escapeHtml(ex.crop_file)}" alt="${escapeHtml(name)}" loading="lazy">` : ""}</div>
@@ -1525,7 +1532,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const detail = document.getElementById("cluster-detail");
     const mss = (groupCodices[c.cluster_id] || []).map(id => codexById[id] || codexOfMms(id))
       .sort((a, b) => (codexYear(a) || 9999) - (codexYear(b) || 9999));
-    const name = c.label.startsWith("repeating") ? `Group ${c.cluster_id}${c.note ? ` · ${c.note}` : ""}` : c.label;
+    const name = c.label.startsWith("repeating") ? `Cluster ${c.cluster_id}` : c.label;
     detail.innerHTML = `
       <div class="cluster-detail-head">
         <span class="cluster-detail-title">${escapeHtml(name)}</span>
@@ -1585,28 +1592,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
     summary.innerHTML = `
       <div class="clusters-headline">
-        <span class="clusters-big">${nClustered}</span> of ${nCompared} diagrams (${pct}%) were found in repeating groups
+        <span class="clusters-big">${nClustered}</span> of ${nCompared} diagrams (${pct}%) were found in clusters of similar diagrams
       </div>
       <div class="clusters-stats">
-        <div class="stat-item"><span class="label">Repeating groups</span> <span class="value">${repGroups.length}</span></div>
+        <div class="stat-item"><span class="label">Clusters</span> <span class="value">${repGroups.length}</span></div>
         <div class="stat-item"><span class="label">Shared by 2+ manuscripts</span> <span class="value">${across.length}</span></div>
         <div class="stat-item"><span class="label">Within one manuscript</span> <span class="value">${within.length}</span></div>
         <div class="stat-item"><span class="label">No close match</span> <span class="value">${other.illustration_ids.length}</span></div>
       </div>
       <div class="overview-grid">
         <div class="overview-box">
-          <h4>How many manuscripts share each group</h4>
+          <h4>How many manuscripts share each cluster</h4>
           ${barRows(spreadRows, Math.max(...spreadRows.map(r => r[1]), 1), true)}
         </div>
         <div class="overview-box">
-          <h4>Manuscripts in the most shared groups</h4>
+          <h4>Manuscripts in the most shared clusters</h4>
           ${barRows(topCodices, topCodices.length ? topCodices[0][1] : 1)}
         </div>
       </div>
       <p class="clusters-note">
-        A group is formed only when every two diagrams in it are at least
+        Clusters are computed, only for the diagrams that are in none of your named groups (those are in the Groups tab).
+        A cluster is formed only when every two diagrams in it are at least
         ${threshold != null ? `<strong>${Math.round(threshold * 100)}%</strong>` : "the chosen level"} similar
-        (${escapeHtml(data.clusters.method)}). Each tile shows the group's most typical illustration; click it to see the whole group.
+        (${escapeHtml(data.clusters.method)}). Each tile shows the cluster's most typical illustration; click it to see the whole cluster.
       </p>
     `;
 
@@ -1616,10 +1624,10 @@ document.addEventListener("DOMContentLoaded", () => {
       ${inner}
     `;
     body.innerHTML =
-      section(`Shared by several manuscripts (${across.length} groups)`,
+      section(`Shared by several manuscripts (${across.length} clusters)`,
               "The same kind of diagram found in two or more manuscripts, most widely shared first.",
               `<div class="cluster-tiles">${across.map(clusterTile).join("")}</div>`) +
-      section(`Repeating within one manuscript (${within.length} groups)`,
+      section(`Repeating within one manuscript (${within.length} clusters)`,
               "Similar diagrams that recur inside a single manuscript.",
               `<div class="cluster-tiles">${within.map(clusterTile).join("")}</div>`) +
       (notCompared.length ? section(`Initials, decorations and tables`,
@@ -1636,6 +1644,338 @@ document.addEventListener("DOMContentLoaded", () => {
       attachIllustrationClicks(grid);
       e.target.remove();
     });
+  }
+
+  // -----------------------------------------------------------
+  // Tab: Groups (your named groups from the review tool; an illustration can be in several)
+  // -----------------------------------------------------------
+  const userGroups = (data.groups || []).map(g => {
+    const ills = g.illustration_ids.map(id => illById[id]).filter(Boolean);
+    const mss = [...new Set(ills.map(il => codexOfIll(il).codex_id))].map(id => codexById[id] || codexOfMms(id))
+      .sort((a, b) => (codexYear(a) || 9999) - (codexYear(b) || 9999));
+    return { ...g, ills, mss, label: g.name || `Unnamed group ${g.key}` };
+  }).filter(g => g.ills.length)
+    .sort((a, b) => (!a.name - !b.name) || a.label.localeCompare(b.label));
+
+  function userGroupTile(g) {
+    const ex = g.ills[0];
+    const names = g.mss.map(codexLabel);
+    return `
+      <div class="cluster-tile" data-ugroup="${escapeHtml(g.key)}" title="Open this group">
+        <div class="ill-thumb">${ex ? `<img src="../${escapeHtml(ex.crop_file)}" alt="${escapeHtml(g.label)}" loading="lazy">` : ""}</div>
+        <div class="cluster-tile-caption">
+          <div class="cluster-tile-name">${escapeHtml(g.label)}</div>
+          <div class="cluster-tile-counts">${g.ills.length} illustrations · ${g.mss.length} manuscript${g.mss.length === 1 ? "" : "s"}</div>
+          <div class="cluster-tile-mss" title="${escapeHtml(names.join(", "))}">${escapeHtml(g.description || names.join(" · "))}</div>
+        </div>
+      </div>`;
+  }
+
+  function openUserGroup(key) {
+    const g = userGroups.find(x => x.key === key);
+    if (!g) return;
+    switchTab("tab-groups");
+    const detail = document.getElementById("group-detail");
+    detail.innerHTML = `
+      <div class="cluster-detail-head">
+        <span class="cluster-detail-title">${escapeHtml(g.label)}</span>
+        <span class="cluster-counts">${g.ills.length} illustrations · ${g.mss.length} manuscript${g.mss.length === 1 ? "" : "s"}</span>
+        <button class="btn-quiet" id="group-detail-close">Close ✕</button>
+      </div>
+      ${g.description ? `<p class="group-description">${escapeHtml(g.description)}</p>` : ""}
+      <div class="cluster-ms-list">${g.mss.map(msChip).join("")}</div>
+      ${clusterTimeAndPlace(g.mss)}
+      <div class="ill-grid compact">${g.ills.map(illustrationCard).join("")}</div>`;
+    detail.hidden = false;
+    attachIllustrationClicks(detail);
+    document.getElementById("group-detail-close").addEventListener("click", () => { detail.hidden = true; });
+    requestAnimationFrame(() => requestAnimationFrame(() => detail.scrollIntoView({ block: "start" })));
+  }
+
+  // comparison of the groups: their manuscripts over time (line graph), on a map, and by script (table)
+  const groupCompare = { by: "time", pct: true, table: false, links: true, hidden: new Set(), hover: null, map: null };
+  // place at country level: "Venice (Italy)" -> "Italy"; a place without a country in brackets stays as it is
+  const countryOf = c => { const p = codexPlace(c); if (!p) return null; const m = /\(([^()]+)\)\s*$/.exec(p); return (m ? m[1] : p).split(",")[0].trim(); };
+  // coordinates of places of writing (the same as the Geography tab)
+  const placeCoords = {};
+  (data.places || []).filter(p => p.type === "writing" && p.lat != null).forEach(p => { placeCoords[p.name] = p; });
+  const GROUP_COLOURS = ["#4e79a7", "#e15759", "#59a14f", "#f28e2b", "#b07aa1", "#76b7b2", "#edc948", "#ff9da7", "#9c755f",
+                         "#1b9e77", "#d95f02", "#7570b3", "#e7298a", "#66a61e", "#a6761d", "#17becf", "#bcbd22", "#8c564b", "#393b79", "#637939"];
+  const compareGroups = () => userGroups.slice().sort((a, b) => b.mss.length - a.mss.length);
+  const groupColour = g => GROUP_COLOURS[compareGroups().indexOf(g) % GROUP_COLOURS.length];
+  const visibleGroups = () => compareGroups().filter(g => !groupCompare.hidden.has(g.key));
+
+  // table: rows = groups, columns = categories of one dimension
+  function groupComparisonTable(by) {
+    const dims = {
+      time: { of: c => centuryOf(c), none: "undated", cols: () => corpusCenturies, label: k => `${ordinal(k)}` },
+      script: { of: c => scriptOf(c), none: "no script recorded" },
+      place: { of: c => countryOf(c), none: "no place recorded" },
+    };
+    const d = dims[by];
+    let cols = d.cols ? d.cols() : null;
+    if (!cols) {                               // categories present in the groups, most frequent first
+      const tot = {};
+      userGroups.forEach(g => g.mss.forEach(c => { const k = d.of(c); if (k) tot[k] = (tot[k] || 0) + 1; }));
+      cols = Object.keys(tot).sort((a, b) => tot[b] - tot[a] || a.localeCompare(b));
+    }
+    const shown = cols.slice(0, 10), rest = cols.slice(10);
+    const rows = visibleGroups().map(g => {
+      const n = {};
+      let none = 0, other = 0;
+      g.mss.forEach(c => {
+        const k = d.of(c);
+        if (!k) none++;
+        else if (shown.includes(k)) n[k] = (n[k] || 0) + 1;
+        else other++;
+      });
+      return { g, n, none, other, total: g.mss.length };
+    });
+    const cell = (v, total, extra) => {
+      if (!v) return `<td class="gc-cell ${extra || ""}"></td>`;
+      const share = v / total;
+      const text = groupCompare.pct ? `${Math.round(100 * share)}%` : v;
+      return `<td class="gc-cell ${extra || ""}" style="--share:${share.toFixed(3)}" title="${v} of ${total} manuscripts (${Math.round(100 * share)}%)">${text}</td>`;
+    };
+    return `
+      <table class="group-compare">
+        <thead><tr><th class="gc-name">Group</th><th class="gc-n">mss</th>
+          ${shown.map(k => `<th>${escapeHtml(d.label ? d.label(k) : k)}</th>`).join("")}
+          ${rest.length ? `<th title="${escapeHtml(rest.join(", "))}">other</th>` : ""}
+          <th class="gc-none">${escapeHtml(d.none)}</th></tr></thead>
+        <tbody>${rows.map(r => `<tr>
+          <th class="gc-name"><span class="gc-swatch" style="background:${groupColour(r.g)}"></span><button class="link-btn" data-ugroup-row="${escapeHtml(r.g.key)}">${escapeHtml(r.g.label)}</button></th>
+          <td class="gc-n">${r.total}</td>
+          ${shown.map(k => cell(r.n[k] || 0, r.total)).join("")}
+          ${rest.length ? cell(r.other, r.total) : ""}
+          ${cell(r.none, r.total, "gc-none")}</tr>`).join("")}</tbody>
+      </table>`;
+  }
+
+  // line graph: one line per group, manuscripts per century (% of the group, or number)
+  function groupTimeChart() {
+    const W = 900, H = 380, m = { l: 48, r: 20, t: 16, b: 36 };
+    const xs = corpusCenturies;
+    const gs = visibleGroups();
+    const series = gs.map(g => {
+      const n = {};
+      let undated = 0;
+      g.mss.forEach(c => { const k = centuryOf(c); if (k) n[k] = (n[k] || 0) + 1; else undated++; });
+      return { g, undated, pts: xs.map(k => ({ k, v: n[k] || 0, share: (n[k] || 0) / g.mss.length })) };
+    });
+    const val = p => groupCompare.pct ? 100 * p.share : p.v;
+    const maxY = groupCompare.pct ? Math.min(100, Math.ceil(Math.max(10, ...series.flatMap(s => s.pts.map(val))) / 10) * 10)
+      : Math.max(2, ...series.flatMap(s => s.pts.map(val)));
+    const x = d3.scalePoint().domain(xs).range([m.l, W - m.r]).padding(0.3);
+    const y = d3.scaleLinear().domain([0, maxY]).nice().range([H - m.b, m.t]);
+    const line = d3.line().x(p => x(p.k)).y(p => y(val(p)));
+    const ticks = y.ticks(5);
+    return `<svg class="gc-chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Manuscripts of each group per century">
+      ${ticks.map(t => `<line x1="${m.l}" x2="${W - m.r}" y1="${y(t)}" y2="${y(t)}" class="gc-grid"/>
+        <text x="${m.l - 8}" y="${y(t) + 4}" text-anchor="end" class="gc-axis">${t}${groupCompare.pct ? "%" : ""}</text>`).join("")}
+      ${xs.map(k => `<text x="${x(k)}" y="${H - m.b + 22}" text-anchor="middle" class="gc-axis">${ordinal(k)} c.</text>`).join("")}
+      ${series.map(s => {
+        const c = groupColour(s.g), dim = groupCompare.hover && groupCompare.hover !== s.g.key;
+        return `<g class="gc-series ${dim ? "dim" : ""} ${groupCompare.hover === s.g.key ? "hi" : ""}" data-key="${escapeHtml(s.g.key)}">
+          <path d="${line(s.pts)}" stroke="${c}" fill="none"/>
+          <path d="${line(s.pts)}" class="gc-hit" stroke="transparent" fill="none"/>
+          ${s.pts.map(p => `<circle cx="${x(p.k)}" cy="${y(val(p))}" r="${p.v ? 4 : 2.5}" fill="${c}">
+            <desc>${escapeHtml(s.g.label)}, ${ordinal(p.k)} century: ${p.v} of ${s.g.mss.length} manuscripts (${Math.round(100 * p.share)}%)${s.undated ? `; ${s.undated} undated` : ""}</desc></circle>`).join("")}
+        </g>`;
+      }).join("")}
+    </svg>`;
+  }
+
+  // map: one pie per place, slices = groups, size = number of manuscripts
+  function drawGroupMap() {
+    const el = document.getElementById("gc-map");
+    if (!el || typeof L === "undefined") return;
+    if (groupCompare.map) { groupCompare.map.remove(); groupCompare.map = null; }
+    const map = L.map(el, { scrollWheelZoom: false }).setView([44, 15], 4);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: "&copy; OpenStreetMap contributors", maxZoom: 12 }).addTo(map);
+    groupCompare.map = map;
+    const byPlace = {};
+    let unplaced = 0, total = 0;
+    visibleGroups().forEach(g => g.mss.forEach(c => {
+      total++;
+      const p = placeCoords[codexPlace(c)];
+      if (!p) { unplaced++; return; }
+      const e = byPlace[p.name] = byPlace[p.name] || { p, groups: new Map() };
+      if (!e.groups.has(g)) e.groups.set(g, []);
+      e.groups.get(g).push(c);
+    }));
+    // lines: two places are joined, in a group's colour, when that group has manuscripts in both
+    let nLinks = 0;
+    groupCompare.mapLines = [];
+    if (groupCompare.links) {
+      const pairGroups = new Map();          // "place|place" -> groups linking them
+      visibleGroups().forEach(g => {
+        const ps = Object.values(byPlace).filter(e => e.groups.has(g)).map(e => e.p).sort((a, b) => a.name.localeCompare(b.name));
+        ps.forEach((a, i) => ps.slice(i + 1).forEach(b => {
+          const k = `${a.name}|${b.name}`;
+          if (!pairGroups.has(k)) pairGroups.set(k, { a, b, gs: [] });
+          pairGroups.get(k).gs.push(g);
+        }));
+      });
+      pairGroups.forEach(({ a, b, gs }) => {
+        gs.forEach((g, i) => {
+          // a gentle curve, bent a little differently for each group that links the same two places
+          const bend = 0.12 + 0.1 * (i - (gs.length - 1) / 2);
+          const mx = (a.lat + b.lat) / 2 - (b.lon - a.lon) * bend, my = (a.lon + b.lon) / 2 + (b.lat - a.lat) * bend;
+          const pts = [];
+          for (let t = 0; t <= 1.0001; t += 0.05) {
+            pts.push([(1 - t) ** 2 * a.lat + 2 * (1 - t) * t * mx + t ** 2 * b.lat, (1 - t) ** 2 * a.lon + 2 * (1 - t) * t * my + t ** 2 * b.lon]);
+          }
+          const na = byPlace[a.name].groups.get(g).length, nb = byPlace[b.name].groups.get(g).length;
+          const line = L.polyline(pts, { color: groupColour(g), weight: 2.5, opacity: 0.75 });
+          groupCompare.mapLines.push({ key: g.key, line });
+          line.addTo(map)
+            .bindTooltip(`<span class="gc-swatch" style="background:${groupColour(g)}"></span><strong>${escapeHtml(g.label)}</strong><br>
+              ${escapeHtml(a.name)} (${na} ms) — ${escapeHtml(b.name)} (${nb} ms)`, { sticky: true });
+          nLinks++;
+        });
+      });
+    }
+    const bounds = [];
+    Object.values(byPlace).forEach(e => {
+      const parts = [...e.groups.entries()].map(([g, cs]) => ({ g, n: cs.length, cs }));
+      const n = parts.reduce((s, q) => s + q.n, 0);
+      const r = 9 + Math.sqrt(n) * 5;
+      let a0 = -Math.PI / 2, paths = "";
+      parts.forEach(q => {
+        const a1 = a0 + 2 * Math.PI * q.n / n;
+        if (parts.length === 1) paths += `<circle cx="${r}" cy="${r}" r="${r - 1}" fill="${groupColour(q.g)}"/>`;
+        else paths += `<path d="M${r},${r} L${r + (r - 1) * Math.cos(a0)},${r + (r - 1) * Math.sin(a0)} A${r - 1},${r - 1} 0 ${a1 - a0 > Math.PI ? 1 : 0} 1 ${r + (r - 1) * Math.cos(a1)},${r + (r - 1) * Math.sin(a1)} Z" fill="${groupColour(q.g)}"/>`;
+        a0 = a1;
+      });
+      const icon = L.divIcon({ className: "gc-pie", iconSize: [2 * r, 2 * r], iconAnchor: [r, r],
+        html: `<svg width="${2 * r}" height="${2 * r}">${paths}<circle cx="${r}" cy="${r}" r="${r - 1}" fill="none" stroke="#fff" stroke-width="1.5"/>
+          <text x="${r}" y="${r + 4}" text-anchor="middle">${n}</text></svg>` });
+      L.marker([e.p.lat, e.p.lon], { icon }).addTo(map).bindPopup(`<strong>${escapeHtml(e.p.label || e.p.name)}</strong><br>
+        ${parts.sort((a, b) => b.n - a.n).map(q => `<span class="gc-swatch" style="background:${groupColour(q.g)}"></span>${escapeHtml(q.g.label)}: ${q.n}
+          <span class="muted">(${q.cs.map(c => escapeHtml(codexLabel(c))).join(", ")})</span>`).join("<br>")}`);
+      bounds.push([e.p.lat, e.p.lon]);
+    });
+    if (bounds.length > 1) map.fitBounds(bounds, { padding: [30, 30], maxZoom: 6 });
+    document.getElementById("gc-map-note").innerHTML = `${groupCompare.links ? `${nLinks} lines join places that share a group. ` : ""}${total - unplaced} of ${total} manuscripts of the shown groups have a place of writing on the map;
+      <strong>${unplaced}</strong> have none recorded (or one without coordinates). A manuscript in two groups is counted in both.`;
+    setTimeout(() => map.invalidateSize(), 50);
+  }
+
+  function renderGroupComparison() {
+    const box = document.getElementById("groups-compare");
+    if (!box) return;
+    const by = groupCompare.by, asTable = by === "script" || groupCompare.table;
+    const legend = compareGroups().map(g => `<button class="gc-key ${groupCompare.hidden.has(g.key) ? "off" : ""}" data-key="${escapeHtml(g.key)}"
+        title="Click to show or hide this group"><span class="gc-swatch" style="background:${groupColour(g)}"></span>${escapeHtml(g.label)} <span class="muted">${g.mss.length}</span></button>`).join("");
+    const note = by === "time" ? (asTable ? "Each cell: the group's manuscripts in that century; the darker, the larger its share of the group."
+        : "One line per group: how its manuscripts spread over the centuries. Shown as a share of the group's manuscripts, so groups of different sizes can be compared; switch to \"Number\" for counts. Hover a point for details.")
+        + " Dates are the catalogue year, else the recorded century."
+      : by === "place" ? (asTable ? "Each cell: the group's manuscripts written in that country (\"Venice (Italy)\" and \"Italy, Northern\" count as Italy)."
+        : "Each circle is a place of writing, divided by group; its size and number give the manuscripts. A line in a group's colour joins two places that both have manuscripts of that group; hover a line for its group, click a circle for the list. Hide groups in the legend to see one group's links.")
+      : "Each cell: the group's manuscripts in that script (regional hand); the darker, the larger its share of the group.";
+    box.innerHTML = `
+      <div class="gc-head-row">
+        <h3 class="clusters-section-title" style="margin: 0;">Compare the groups</h3>
+        <div class="gc-controls">
+          <div class="net-seg">${[["time", "Over time"], ["place", "On the map"], ["script", "By script"]].map(([k, t]) =>
+            `<button class="chip-btn ${by === k ? "active" : ""}" data-by="${k}">${t}</button>`).join("")}</div>
+          ${by !== "place" || asTable ? `<div class="net-seg">
+            <button class="chip-btn ${groupCompare.pct ? "active" : ""}" data-pct="1">% of the group</button>
+            <button class="chip-btn ${groupCompare.pct ? "" : "active"}" data-pct="0">Number</button></div>` : ""}
+          ${by === "place" && !asTable ? `<label class="rip-toggle"><input type="checkbox" id="gc-links" ${groupCompare.links ? "checked" : ""}> connect places that share a group</label>` : ""}
+          ${by !== "script" ? `<label class="rip-toggle"><input type="checkbox" id="gc-table" ${groupCompare.table ? "checked" : ""}> as a table</label>` : ""}
+        </div>
+      </div>
+      <p class="clusters-section-note">${note}</p>
+      <div class="gc-legend">${legend}
+        <button class="link-btn" data-all="1">show all</button> <button class="link-btn" data-all="0">hide all</button></div>
+      ${asTable ? `<div class="group-compare-wrap">${groupComparisonTable(by)}</div>`
+        : by === "time" ? `<div class="gc-chart-wrap">${groupTimeChart()}</div><div class="gc-tip" hidden></div>`
+        : `<div id="gc-map" class="gc-map"></div><p class="clusters-section-note" id="gc-map-note"></p>`}`;
+    box.querySelectorAll("[data-by]").forEach(b => b.addEventListener("click", () => { groupCompare.by = b.dataset.by; renderGroupComparison(); }));
+    box.querySelectorAll("[data-pct]").forEach(b => b.addEventListener("click", () => { groupCompare.pct = b.dataset.pct === "1"; renderGroupComparison(); }));
+    if (box.querySelector("#gc-links")) box.querySelector("#gc-links").addEventListener("change", e => { groupCompare.links = e.target.checked; renderGroupComparison(); });
+    if (box.querySelector("#gc-table")) box.querySelector("#gc-table").addEventListener("change", e => { groupCompare.table = e.target.checked; renderGroupComparison(); });
+    box.querySelectorAll(".gc-key").forEach(b => {
+      b.addEventListener("click", () => {
+        const k = b.dataset.key;
+        groupCompare.hidden.has(k) ? groupCompare.hidden.delete(k) : groupCompare.hidden.add(k);
+        renderGroupComparison();
+      });
+      b.addEventListener("mouseenter", () => { groupCompare.hover = b.dataset.key; highlightSeries(box); });
+      b.addEventListener("mouseleave", () => { groupCompare.hover = null; highlightSeries(box); });
+    });
+    box.querySelectorAll("[data-all]").forEach(b => b.addEventListener("click", () => {
+      groupCompare.hidden = b.dataset.all === "1" ? new Set() : new Set(userGroups.map(g => g.key));
+      renderGroupComparison();
+    }));
+    const tip = box.querySelector(".gc-tip");
+    box.querySelectorAll(".gc-series").forEach(s => {
+      const g = userGroups.find(x => x.key === s.dataset.key);
+      s.addEventListener("mouseenter", () => { groupCompare.hover = s.dataset.key; highlightSeries(box); });
+      s.addEventListener("mousemove", ev => {
+        const pt = ev.target.closest("circle");
+        const detail = pt ? pt.querySelector("desc").textContent.replace(/^.*?, /, "") : `${g.mss.length} manuscripts · click to open`;
+        tip.innerHTML = `<span class="gc-swatch" style="background:${groupColour(g)}"></span><strong>${escapeHtml(g.label)}</strong><br><span>${escapeHtml(detail)}</span>`;
+        const r = box.getBoundingClientRect();
+        tip.style.left = `${ev.clientX - r.left + 14}px`;
+        tip.style.top = `${ev.clientY - r.top + 14}px`;
+        tip.hidden = false;
+      });
+      s.addEventListener("mouseleave", () => { groupCompare.hover = null; highlightSeries(box); tip.hidden = true; });
+      s.addEventListener("click", () => openUserGroup(s.dataset.key));
+    });
+    box.querySelectorAll("[data-ugroup-row]").forEach(b => b.addEventListener("click", () => openUserGroup(b.dataset.ugroupRow)));
+    if (!asTable && by === "place") drawGroupMap();
+    else if (groupCompare.map) { groupCompare.map.remove(); groupCompare.map = null; }
+  }
+
+  // the map needs its size recomputed when the Groups tab becomes visible
+  document.querySelector('[data-tab="tab-groups"]').addEventListener("click", () => {
+    if (groupCompare.map) setTimeout(() => groupCompare.map.invalidateSize(), 100);
+  });
+
+  function highlightSeries(box) {
+    (groupCompare.mapLines || []).forEach(({ key, line }) => {
+      const on = !groupCompare.hover || key === groupCompare.hover;
+      line.setStyle({ opacity: on ? 0.85 : 0.06, weight: groupCompare.hover && on ? 4 : 2.5 });
+      if (on && groupCompare.hover) line.bringToFront();
+    });
+    box.querySelectorAll(".gc-series").forEach(s => {
+      s.classList.toggle("dim", !!groupCompare.hover && s.dataset.key !== groupCompare.hover);
+      s.classList.toggle("hi", s.dataset.key === groupCompare.hover);
+    });
+  }
+
+  function renderUserGroups() {
+    const summary = document.getElementById("groups-summary");
+    const body = document.getElementById("groups-body");
+    if (!userGroups.length) {
+      summary.innerHTML = `<p class="empty-note">No groups yet. Make them in the review tool (review_tool/server.py, "My groups") and rebuild.</p>`;
+      body.innerHTML = "";
+      return;
+    }
+    const grouped = new Set(userGroups.flatMap(g => g.illustration_ids));
+    const nDiagrams = illustrations.filter(il => il.class === "Content Illustration").length;
+    const named = userGroups.filter(g => g.name);
+    summary.innerHTML = `
+      <div class="clusters-headline">
+        <span class="clusters-big">${userGroups.length}</span> groups, made by hand: ${grouped.size} of ${nDiagrams} diagrams are in a group
+      </div>
+      <p class="clusters-note">Groups are made and named by hand in the review tool; each diagram is in one group at most.
+        The diagrams in no group are in the computational <button class="link-btn" id="goto-clusters">Clusters</button>. Click a group to see its
+        illustrations, manuscripts, dates, places and scripts.</p>`;
+    document.getElementById("goto-clusters").addEventListener("click", () => switchTab("tab-clusters"));
+    renderGroupComparison();
+    const unnamed = userGroups.filter(g => !g.name);
+    body.innerHTML =
+      `<h3 class="clusters-section-title">Named groups (${named.length})</h3>
+       <div class="cluster-tiles">${named.map(userGroupTile).join("")}</div>` +
+      (unnamed.length ? `<h3 class="clusters-section-title">Not named yet (${unnamed.length})</h3>
+       <div class="cluster-tiles">${unnamed.map(userGroupTile).join("")}</div>` : "");
+    body.querySelectorAll("[data-ugroup]").forEach(t => t.addEventListener("click", () => openUserGroup(t.dataset.ugroup)));
   }
 
   // -----------------------------------------------------------
@@ -2029,8 +2369,87 @@ document.addEventListener("DOMContentLoaded", () => {
   makeSortable(document.getElementById("persons-table"), state.personsSort, renderPersons);
   renderCatalogue();
   renderPersons();
+  // ---------- overview above the Illustrations grid: how many, from how many manuscripts, per manuscript ----------
+  const ILL_CLASS_COLOURS = { "Content Illustration": "#8e283b", "Table": "#1d6fa5", "Decoration": "#b07d2b",
+                              "Initial": "#2b7042", "Printer's Mark": "#6b3fa0" };
+  const illClassColour = c => ILL_CLASS_COLOURS[c] || "#7d8794";
+  const illOverview = { by: "count" };
+
+  function renderIllOverview() {
+    const box = document.getElementById("ill-overview");
+    if (!box || !illustrations.length) { if (box) box.innerHTML = ""; return; }
+    const cls = illFilterClass.value;
+    const ills = illustrations.filter(il => !cls || il.class === cls);
+    const classes = cls ? [cls] : [...new Set(illustrations.map(il => il.class))].sort((a, b) =>
+      illustrations.filter(il => il.class === b).length - illustrations.filter(il => il.class === a).length);
+    // per codex: counts by class
+    const per = new Map();
+    ills.forEach(il => {
+      const c = codexOfIll(il);
+      if (!per.has(c.codex_id)) per.set(c.codex_id, { c, n: 0, byClass: {}, mms: il.mms_id });
+      const e = per.get(c.codex_id);
+      e.n++; e.byClass[il.class] = (e.byClass[il.class] || 0) + 1;
+    });
+    const rows = [...per.values()];
+    const allMs = new Set(illustrations.map(il => codexOfIll(il).codex_id)).size;
+    const byClassTotal = classes.map(k => [k, illustrations.filter(il => il.class === k).length]);
+
+    // arrangement: sections (century / country / script) or one list (count / date)
+    const by = illOverview.by;
+    const keyOf = { century: e => centuryOf(e.c), place: e => countryOf(e.c), script: e => scriptOf(e.c) }[by];
+    const noneLabel = { century: "Undated", place: "No place recorded", script: "No script recorded" }[by];
+    const sectionLabel = k => by === "century" ? `${ordinal(k)} century` : k;
+    const byDate = (a, b) => (codexYear(a.c) || 9999) - (codexYear(b.c) || 9999) || b.n - a.n;
+    let sections;
+    if (!keyOf) sections = [{ label: null, rows: rows.slice().sort(by === "date" ? byDate : (a, b) => b.n - a.n) }];
+    else {
+      const m = new Map();
+      rows.forEach(e => { const k = keyOf(e) || null; if (!m.has(k)) m.set(k, []); m.get(k).push(e); });
+      const keys = [...m.keys()].filter(k => k !== null);
+      if (by === "century") keys.sort((a, b) => a - b);
+      else keys.sort((a, b) => m.get(b).reduce((s, e) => s + e.n, 0) - m.get(a).reduce((s, e) => s + e.n, 0));
+      if (m.has(null)) keys.push(null);
+      sections = keys.map(k => ({ label: k === null ? noneLabel : sectionLabel(k), rows: m.get(k).sort(by === "century" ? byDate : (a, b) => b.n - a.n) }));
+    }
+    const max = Math.max(1, ...rows.map(e => e.n));
+    const bar = e => {
+      const place = codexPlace(e.c), sc = scriptOf(e.c);
+      const segs = classes.filter(k => e.byClass[k]).map(k =>
+        `<span style="width:${100 * e.byClass[k] / max}%; background:${illClassColour(k)}" title="${escapeHtml(k)}: ${e.byClass[k]}"></span>`).join("");
+      return `<div class="ipm-row" data-mms="${escapeHtml(e.mms)}" title="${escapeHtml(`${codexLabel(e.c)}, ${e.c.library || ""} · ${shortCentury(e.c)}${place ? " · " + place : ""}${sc ? " · " + sc : ""}: ${e.n} illustrations — click to show them`)}">
+        <span class="ipm-label">${escapeHtml(codexLabel(e.c))} <span class="muted">${escapeHtml(shortCentury(e.c))}</span></span>
+        <span class="ipm-track">${segs}</span><span class="ipm-n">${e.n}</span></div>`;
+    };
+    box.innerHTML = `
+      <div class="clusters-headline">
+        <span class="clusters-big">${illustrations.length}</span> illustrations from <span class="clusters-big">${allMs}</span> manuscripts
+      </div>
+      <div class="clusters-stats">${byClassTotal.map(([k, n]) =>
+        `<div class="stat-item"><span class="label"><span class="ipm-swatch" style="background:${illClassColour(k)}"></span>${escapeHtml(k)}</span> <span class="value">${n}</span></div>`).join("")}</div>
+      <details class="ipm" open>
+        <summary>Illustrations per manuscript${cls ? ` (${escapeHtml(cls)} only)` : ""}: ${rows.length} manuscripts</summary>
+        <div class="ipm-controls"><span class="net-label">Arrange by:</span>
+          <div class="net-seg">${[["count", "Number"], ["date", "Date"], ["century", "Century"], ["place", "Place"], ["script", "Script"]].map(([k, t]) =>
+            `<button class="chip-btn ${by === k ? "active" : ""}" data-ipm="${k}">${t}</button>`).join("")}</div>
+          <span class="muted ipm-hint">Click a manuscript to show its illustrations below. ${cls ? "" : "Colours: illustration classes (see the counts above)."}</span>
+        </div>
+        <div class="ipm-chart">${sections.map(s => `
+          ${s.label !== null ? `<div class="ipm-section">${escapeHtml(String(s.label))}
+            <span class="muted">${s.rows.length} manuscript${s.rows.length === 1 ? "" : "s"} · ${s.rows.reduce((t, e) => t + e.n, 0)} illustrations</span></div>` : ""}
+          ${s.rows.map(bar).join("")}`).join("")}</div>
+      </details>`;
+    box.querySelectorAll("[data-ipm]").forEach(b => b.addEventListener("click", () => { illOverview.by = b.dataset.ipm; renderIllOverview(); }));
+    box.querySelectorAll(".ipm-row").forEach(r => r.addEventListener("click", () => {
+      illFilterMs.value = r.dataset.mms;
+      renderIllustrations();
+      document.querySelector("#tab-illustrations .filter-card").scrollIntoView({ block: "start", behavior: "smooth" });
+    }));
+  }
+
+  renderIllOverview();
   renderIllustrations();
   renderClusters();
+  renderUserGroups();
   renderTextsSummary();
   renderSubjects();
   renderTexts();

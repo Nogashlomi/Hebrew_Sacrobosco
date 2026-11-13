@@ -4,7 +4,7 @@
 STEP 5 - Find repeating illustrations by visual similarity.
 
 Input:  data/illustrations/illustrations_reviewed.csv (step 4b; else illustrations.csv) + the crop files
-        data/review/clusters_review.json   groups you reviewed in review_tool/ (kept exactly as you left them)
+        data/review/groups.json            your named groups (review tool): their diagrams are not clustered
 Cache:  data/clusters/embeddings.npz       one embedding per illustration id; only new crops are embedded
 Output: data/clusters/clusters.csv    one row per illustration: illustration_id, cluster_id, distance
         data/clusters/clusters.json   {"method": ..., "similarity_threshold": ...,
@@ -32,12 +32,9 @@ cluster_id N+1...  = Initials, Decorations and Tables: one fixed group per class
 
 CorDeep false positives (microfilm target cards, the ruler) end up in their own small groups or in "other".
 
-Manual review (data/review/clusters_review.json, written by the review tool):
-  groups  {key: {members, label, confirmed}}  each reviewed group is kept exactly, and its members are left
-                                             out of the automatic clustering
-  unique  {illustration_id: ...}             diagrams you marked as having no partner: always "other"
-Only the remaining diagrams are clustered automatically. Every group in clusters.json says where it came from
-("review_key" and "confirmed" for reviewed groups).
+Every diagram has one place: one of your named groups (data/review/groups.json, made in the review tool), or
+else a computed cluster. So only the diagrams that are in none of your groups are clustered here; the grouped
+ones are left out of clusters.csv and clusters.json. The clusters themselves are never edited by hand.
 
 The earlier whole-page pHash attempt, which put 882 of 951 pages in single-page clusters,
 is in git history, commit ce3442a.
@@ -57,7 +54,7 @@ from sklearn.cluster import AgglomerativeClustering
 from sklearn.preprocessing import normalize
 from transformers import AutoImageProcessor, AutoModel, CLIPModel, CLIPProcessor
 
-from paths import PROJECT_ROOT, CLUSTERS_DIR, CLUSTERS_REVIEW_JSON, EMBEDDINGS_NPZ, illustrations_csv
+from paths import PROJECT_ROOT, CLUSTERS_DIR, EMBEDDINGS_NPZ, GROUPS_JSON, illustrations_csv
 CLUSTERS_CSV = CLUSTERS_DIR / "clusters.csv"
 CLUSTERS_JSON = CLUSTERS_DIR / "clusters.json"
 
@@ -153,57 +150,21 @@ def embeddings_for(ids: List[str], crop_paths: List[str]) -> np.ndarray:
     return np.stack([cache[i] for i in ids])
 
 
-def load_cluster_review():
-    review = json.loads(CLUSTERS_REVIEW_JSON.read_text(encoding="utf-8")) if CLUSTERS_REVIEW_JSON.exists() else {}
-    review.setdefault("groups", {})
-    review.setdefault("unique", {})
-    return review
-
-
 def main():
     ill = pd.read_csv(illustrations_csv(), dtype=str)
+    is_diagram = ill["class"] == CLUSTERED_CLASS
+    # diagrams in one of your groups have their place already: they are not clustered
+    groups = json.loads(GROUPS_JSON.read_text(encoding="utf-8"))["groups"] if GROUPS_JSON.exists() else {}
+    grouped = {i for g in groups.values() for i in g["members"]}
+    ill = ill[~ill["illustration_id"].isin(grouped)].reset_index(drop=True)
     is_diagram = ill["class"] == CLUSTERED_CLASS
     diagrams = ill[is_diagram].reset_index(drop=True)
     ids = diagrams["illustration_id"].tolist()
     features = embeddings_for(ids, [str(PROJECT_ROOT / p) for p in diagrams["crop_file"]])
-    row_of = {i: n for n, i in enumerate(ids)}
 
-    # reviewed groups are kept as they are; unique diagrams go to "other"; the rest is clustered automatically
-    review = load_cluster_review()
-    fixed = []
-    for key, g in review["groups"].items():
-        members = [i for i in g.get("members", []) if i in row_of]
-        if len(members) >= 2:
-            fixed.append((key, g, members))
-    taken = {i for _, _, m in fixed for i in m}
-    unique = {i for i in review["unique"] if i in row_of} - taken
-    pool = [i for i in ids if i not in taken and i not in unique]
-    pool_rows = [row_of[i] for i in pool]
-    auto = dict(zip(pool, cluster(features[pool_rows]))) if len(pool) > 1 else {}
-
-    similarity = features @ features.T
-    np.fill_diagonal(similarity, -1)
-    groups = []          # (members, review_key, review entry)
-    for key, g, members in fixed:
-        groups.append((members, key, g))
-    auto_groups = {}
-    for i, a in auto.items():
-        if a["cluster_id"] != OTHER_ID:
-            auto_groups.setdefault(a["cluster_id"], []).append(i)
-    groups += [(m, None, None) for m in auto_groups.values()]
-    groups.sort(key=lambda t: (-len(t[0]), t[0][0]))
-
-    assignments, meta = {}, {}
-    for n, (members, key, g) in enumerate(groups, start=1):
-        rows = [row_of[i] for i in members]
-        centre = normalize(features[rows].mean(axis=0, keepdims=True))[0]
-        for i, d in zip(members, 1 - normalize(features[rows]) @ centre):
-            assignments[i] = {"cluster_id": n, "distance": round(float(d), 4)}
-        meta[n] = {"review_key": key, "confirmed": bool(g and g.get("confirmed")),
-                   "note": (g or {}).get("label", "")}
-    for i in ids:
-        if i not in assignments:      # automatic singles and diagrams marked unique
-            assignments[i] = {"cluster_id": OTHER_ID, "distance": round(float(1 - similarity[row_of[i]].max()), 4)}
+    auto = cluster(features) if len(ids) > 1 else [{"cluster_id": OTHER_ID, "distance": 0.0} for _ in ids]
+    assignments = dict(zip(ids, auto))
+    groups = sorted({a["cluster_id"] for a in auto} - {OTHER_ID})
     n_groups = len(groups)
     labels = {OTHER_ID: "other (no close match)"}
     labels.update({i: f"repeating group {i}" for i in range(1, n_groups + 1)})
@@ -229,17 +190,16 @@ def main():
         json.dump({"method": METHOD,
                    "run_id": time.strftime("%Y%m%d-%H%M%S"),
                    "similarity_threshold": SIMILARITY_THRESHOLD,
-                   "n_reviewed_groups": len(fixed), "n_marked_unique": len(unique),
+                   "n_in_your_groups": len(grouped),
                    "clusters": [{"cluster_id": k, "label": labels[k],
                                  "n_manuscripts": len({manuscript[i] for i in v}),
-                                 **meta.get(k, {"review_key": None, "confirmed": False, "note": ""}),
                                  "illustration_ids": v}
                                 for k, v in sorted(members_of.items())]},
                   f, ensure_ascii=False, indent=2)
     n_other = len(members_of.get(OTHER_ID, []))
     n_cross = sum(1 for k in range(1, n_groups + 1) if len({manuscript[i] for i in members_of[k]}) > 1)
-    print(f"{len(diagrams)} diagrams: {n_groups} repeating groups ({len(fixed)} reviewed, {n_cross} spanning several "
-          f"manuscripts), {n_other} other ({len(unique)} marked unique); {len(rows)} illustrations in total "
+    print(f"{len(grouped)} diagrams are in your groups; {len(diagrams)} others: {n_groups} repeating groups ({n_cross} spanning several "
+          f"manuscripts), {n_other} other; {len(rows)} illustrations in total "
           f"-> {CLUSTERS_DIR.relative_to(PROJECT_ROOT)}")
 
 

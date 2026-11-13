@@ -7,13 +7,14 @@ Input:  code/visualizer_template/ (index.html, app.js, style.css)
         data/metadata/clean/visualizer_data.json     (step 3)
         data/illustrations/illustrations[_reviewed].csv  (step 4 / 4b, optional)
         data/clusters/clusters.json                  (step 5, optional)
+        data/review/groups.json                      your named groups, from the review tool (optional)
         data/print_matches/print_matches.json        (step 7, optional)
         data/network/network.json                    (step 8, optional)
 Output: visualizer/  - open visualizer/index.html in a browser.
         Page images are linked from data/manuscripts/ (not copied), so keep visualizer/ next to data/.
 
-Illustrations, clusters, print matches and the network are added to window.SPHAERA_DATA when present
-and shown in the Illustrations, Clusters, Print Parallels and Network tabs.
+Illustrations, clusters, your groups, print matches and the network are added to window.SPHAERA_DATA when
+present and shown in the Illustrations, Clusters, Groups, Print Parallels and Network tabs.
 
 Usage:  python code/06_build_visualizer.py
 """
@@ -25,7 +26,7 @@ import time
 import pandas as pd
 
 from paths import illustrations_csv, PROJECT_ROOT, CLEAN_METADATA_DIR, ILLUSTRATIONS_DIR, CLUSTERS_DIR, PRINT_MATCHES_DIR, NETWORK_DIR, \
-    VISUALIZER_TEMPLATE_DIR, VISUALIZER_DIR
+    VISUALIZER_TEMPLATE_DIR, VISUALIZER_DIR, GROUPS_JSON
 
 
 def main():
@@ -44,6 +45,14 @@ def main():
         for c in data["clusters"]["clusters"]:
             ids = [i for i in c["illustration_ids"] if i in distance.index]
             c["example_id"] = min(ids, key=lambda i: distance[i]) if ids else (c["illustration_ids"] or [""])[0]
+
+    # your named groups (review tool): only illustrations that are in the current illustration table
+    known = {r["illustration_id"] for r in data["illustrations"]}
+    groups = json.loads(GROUPS_JSON.read_text(encoding="utf-8"))["groups"] if GROUPS_JSON.exists() else {}
+    data["groups"] = [{"key": k, "name": g.get("name", ""), "description": g.get("description", ""),
+                       "illustration_ids": [i for i in g["members"] if i in known]}
+                      for k, g in groups.items()]
+    data["groups"] = [g for g in data["groups"] if g["illustration_ids"]]
 
     # step 7: print clusters that resemble manuscript illustrations (images linked from data/print_corpus/images/)
     print_json = PRINT_MATCHES_DIR / "print_matches.json"
@@ -73,7 +82,7 @@ def main():
 
     print(f"Built {VISUALIZER_DIR.relative_to(PROJECT_ROOT)}/index.html "
           f"({len(data['manuscripts'])} manuscripts, {len(data['illustrations'])} illustrations, "
-          f"{'with' if data['clusters'] else 'no'} clusters, "
+          f"{'with' if data['clusters'] else 'no'} clusters, {len(data['groups'])} groups, "
           f"{len(data['print_matches']['print_clusters']) if data['print_matches'] else 'no'} matched print clusters)")
 
 
