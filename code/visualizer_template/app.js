@@ -1813,6 +1813,17 @@ document.addEventListener("DOMContentLoaded", () => {
     return out;
   })();
 
+  // script (regional hand), as recorded in the catalogue (Hebrew) -> English
+  const SCRIPT_NAMES = {
+    "אשכנזית": "Ashkenazi", "איטלקית": "Italian", "ספרדית": "Sephardi", "מזרחית": "Eastern", "ביזנטית": "Byzantine",
+    "ספרדית-מזרחית": "Sephardi-Eastern", "ספרדית-פרובנצלית": "Sephardi-Provençal", "ספרדית-איטלקית": "Sephardi-Italian",
+    "איטלקית-אשכנזית": "Italian-Ashkenazi", "פרובנצלית": "Provençal", "תימנית": "Yemenite",
+  };
+  const scriptOf = c => {
+    const s = (c.script || "").split("|")[0].trim();
+    return !s || s === "Not Specified" ? null : (SCRIPT_NAMES[s] || s);
+  };
+
   function clusterTimeAndPlace(mss) {
     const perCentury = {};
     let undated = 0;
@@ -1834,6 +1845,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const places = Object.entries(perPlace).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
       .map(([p, n]) => [p, n, `${p}: ${mss.filter(c => codexPlace(c) === p).map(codexLabel).join(", ")}`]);
 
+    const perScript = {};
+    let noScript = 0;
+    mss.forEach(c => { const sc = scriptOf(c); if (sc) perScript[sc] = (perScript[sc] || 0) + 1; else noScript++; });
+    const scripts = Object.entries(perScript).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+      .map(([sc, n]) => [sc, n, `${sc}: ${mss.filter(c => scriptOf(c) === sc).map(codexLabel).join(", ")}`]);
+
     return `
       <div class="cl-stats">
         <div class="overview-box">
@@ -1846,6 +1863,11 @@ document.addEventListener("DOMContentLoaded", () => {
           <h4>Manuscripts by place of writing</h4>
           ${places.length ? barRows(places, places[0][1], true) : `<p class="cl-stats-note">No place recorded for any of them.</p>`}
           ${places.length ? `<p class="cl-stats-note">${unplaced ? `<strong>${unplaced}</strong> manuscript${unplaced === 1 ? "" : "s"} with no place recorded` : "All manuscripts have a place"}</p>` : ""}
+        </div>
+        <div class="overview-box">
+          <h4>Manuscripts by script</h4>
+          ${scripts.length ? barRows(scripts, scripts[0][1]) : `<p class="cl-stats-note">No script recorded for any of them.</p>`}
+          ${scripts.length ? `<p class="cl-stats-note">${noScript ? `<strong>${noScript}</strong> manuscript${noScript === 1 ? "" : "s"} with no script recorded` : "All manuscripts have a script recorded"} · regional hand, from the catalogue</p>` : ""}
         </div>
       </div>`;
   }
